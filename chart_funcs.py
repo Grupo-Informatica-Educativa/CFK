@@ -23,8 +23,8 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 				 color_continuous_scale=px.colors.sequential.GnBu,
 				 text="Frecuencia",
 				 facet_col_wrap=4)
+
 	fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat = ',.0%'))
-	#fig.layout.yaxis.tickformat = ',.0%'
 	fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
 	return fig
 

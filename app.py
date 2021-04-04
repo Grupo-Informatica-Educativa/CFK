@@ -64,7 +64,7 @@ def main():
 							pivot=datos, ejex=ejex, color=color,
 							fila=fila, columna=columna, indices=indices)
 			fig.update_yaxes(col=1, title=None)
-		elif chart_type == "Dispersión":
+		else:
 			fig = scatter_chart(columna_unica=columna_unica,
 							pivot=datos, ejex=ejex, color=color,
 							fila=fila, columna=columna, lista_agrupadores=[pregunta]+lista_agrupadores)
