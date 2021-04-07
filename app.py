@@ -51,6 +51,7 @@ def main():
 		ejex, color, columna, fila = filtros_def
 		height = st.slider("Ajuste el tamaño vertical de la gráfica", 500,1000)
 
+		category_orders = categories_order(set(df[pregunta]))
 
 		#Selecciona tipo de gráfica
 		if chart_type == "Barras":
@@ -58,16 +59,17 @@ def main():
 			pivot = pivot_data(datos, indices, columna_unica)
 			fig = bar_chart(columna_unica=columna_unica,
 							pivot=pivot, ejex=ejex, color=color,
-							fila=fila, columna=columna, indices=indices)
+							fila=fila, columna=columna, indices=indices, category_orders=category_orders)
 		elif chart_type == "Cajas":
 			fig = box_chart(columna_unica=pregunta,
 							pivot=datos, ejex=ejex, color=color,
-							fila=fila, columna=columna, indices=indices)
+							fila=fila, columna=columna, indices=indices, category_orders=category_orders)
 			fig.update_yaxes(col=1, title=None)
 		else:
 			fig = scatter_chart(columna_unica=columna_unica,
 							pivot=datos, ejex=ejex, color=color,
-							fila=fila, columna=columna, lista_agrupadores=[pregunta]+lista_agrupadores)
+							fila=fila, columna=columna, lista_agrupadores=[pregunta]+lista_agrupadores,
+							category_orders=category_orders)
 
 		#Evita que los títulos de las subfiguras sean de forma VARIABLE=valor
 		fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
