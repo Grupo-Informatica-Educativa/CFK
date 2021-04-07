@@ -51,7 +51,7 @@ def main():
 		ejex, color, columna, fila = filtros_def
 		height = st.slider("Ajuste el tamaño vertical de la gráfica", 500,1000)
 
-		category_orders = categories_order(set(df[pregunta]))
+		category_orders = categories_order(set(datos[pregunta]))
 
 		#Selecciona tipo de gráfica
 		if chart_type == "Barras":
