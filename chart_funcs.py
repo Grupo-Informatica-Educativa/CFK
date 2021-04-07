@@ -78,9 +78,11 @@ def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=No
 	return fig
 
 def categories_order(answers):
+    satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
+    yes_no = ["Sí", "No"]
 	if len(set(satisfaction) - answers) < 2 :
         cat_order = satisfaction
-    elif  len(set(yes_no) - answers) < 2:
+    elif len(set(yes_no) - answers) < 2:
         cat_order = yes_no
     else:
         cat_order = list(answers)        
