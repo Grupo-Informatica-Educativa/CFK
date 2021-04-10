@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import copy
-from chart_funcs import *
-from helper_funcs import *
+from src.utils.chart_funcs import *
+from src.utils.helper_funcs import *
 #bar_chart = __import__("chart_funcs").bar_chart
 
 
@@ -36,7 +36,7 @@ def main():
 	#file = st.file_uploader('File uploader')
 
 	#Nombre del archivo con los datos
-	file = "Ejemplo2020.xlsx"
+	file = "data/Ejemplo2020.xlsx"
 	#Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Respuesta'
 	#A partir de esta columna comienzan las preguntas (columnas de interés)
