@@ -150,7 +150,7 @@ def add_equal_columns(pivot_inicial):
         "Dedicar una clase exclusiva a reflexionar sobre el género, por ejemplo, con una película, una lectura o una conversación, etc",
         "Dar referencias o modelos de mujeres destacadas en las áreas STEM, por ejemplo, mostrar la película de Marie Curie."
     ]
-    print(pivot_inicial[col].str.contains(opciones_preg10[3]))
+
     for count, subpregunta in enumerate(opciones_preg10):
         pivot_inicial[f'10.{count+1} {subpregunta}'] = pivot_inicial[col].str.contains(subpregunta)
     
