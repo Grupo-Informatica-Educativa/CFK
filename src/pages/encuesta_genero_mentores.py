@@ -8,7 +8,7 @@ def app():
     # Nombre del archivo con los datos
     file = "data/limpios/Encuesta_genero_mentores.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
-    columna_unica = 'Número de documento de identificación'
+    columna_unica = 'Registro'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
     col_preguntas = 15
 
