@@ -2,6 +2,7 @@ import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
+
 def app():
     st.write("""# Pretest Avanzado""")
 
@@ -36,8 +37,7 @@ def app():
         elif chart_type == "Cajas":
             fig = box_chart(columna_unica=pregunta,
                             pivot=datos, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices,
-                            category_orders=category_orders)
+                            fila=fila, columna=columna, indices=indices)
             fig.update_yaxes(col=1, title=None)
         else:
             fig = scatter_chart(columna_unica=columna_unica,
@@ -52,4 +52,3 @@ def app():
         fig.update_layout(height=height)
 
         st.plotly_chart(fig, use_container_width=True, config=config_chart)
-

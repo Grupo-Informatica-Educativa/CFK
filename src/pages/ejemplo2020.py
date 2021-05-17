@@ -15,14 +15,15 @@ def app():
     st.write("""# Plantilla Visualizaciones""")
 
     # La línea de abajo es una opción para cargar un archivo desde el computador
-    #file = st.file_uploader('File uploader')
+    file = st.file_uploader('File uploader')
 
     # Nombre del archivo con los datos
-    file = "data/Ejemplo2020.xlsx"
+    #file = "data/Ejemplo2020.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Respuesta'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 11
+    col_preguntas = st.number_input(
+        "Cuántas columnas tiene de datos sociodemográficos", 1, 20)
 
     if file:
         datos = load_data(file)
@@ -48,8 +49,7 @@ def app():
         elif chart_type == "Cajas":
             fig = box_chart(columna_unica=pregunta,
                             pivot=datos, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices,
-                            category_orders=category_orders)
+                            fila=fila, columna=columna, indices=indices)
             fig.update_yaxes(col=1, title=None)
         else:
             fig = scatter_chart(columna_unica=columna_unica,

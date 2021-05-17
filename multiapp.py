@@ -47,7 +47,7 @@ class MultiApp:
         })
 
     def run(self):
-        
+
         app = st.sidebar.radio(
             'Secciones:',
             self.apps,
