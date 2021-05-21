@@ -16,7 +16,7 @@ config_chart = {
 
 
 def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
-                       ejex=None, color=None, fila=None, columna=None, indices=None):
+                       ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
     if columna_total == "Total":
         total = pivot[columna_unica].sum()
         pivot['Frecuencia'] = pivot[columna_unica] / total
@@ -33,7 +33,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                  y="Frecuencia", color=color,
                  facet_row=fila, facet_col=columna, barmode="group",
                  color_discrete_sequence=px.colors.qualitative.Pastel,
-                 color_continuous_scale=px.colors.sequential.GnBu,
+                 color_continuous_scale=px.colors.sequential.GnBu, category_orders=category_orders,
                  text="Frecuencia",
                  facet_col_wrap=4)
 
@@ -98,8 +98,12 @@ def categories_order(answers=None, pregunta=None):
     satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
                     "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
     yes_no = ["Sí", "No"]
+    de_acuerdo = ["Totalmente en desacuerdo", "En desacuerdo",
+                  "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
+    elif len(set(de_acuerdo) - answers) < 2:
+        cat_order = de_acuerdo
     elif len(set(yes_no) - answers) < 2:
         cat_order = yes_no
     else:
