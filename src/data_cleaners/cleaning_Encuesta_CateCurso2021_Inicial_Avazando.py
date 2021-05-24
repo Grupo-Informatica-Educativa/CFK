@@ -55,7 +55,7 @@ encuesta_caraterizacion = {
     'Institución Educativa en la que laboro' : '8. Institución Educativa en la que laboro',
     'Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)': '9. Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)',
     'Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)' : '10. Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)',
-    #'Por favor evalúa tus habilidades previas en programación, según la siguiente escala:               1. Totalmente en desacuerdo               2. En desacuerdo                    3. Neutro              4. De acuerdo                    5. Totalmente de acuerdo': '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala',
+    'Por favor evalúa tus habilidades previas en programación, según la siguiente escala:               1. Totalmente en desacuerdo               2. En desacuerdo                    3. Neutro              4. De acuerdo                    5. Totalmente de acuerdo': '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala',
     'Agrega cualquier comentario adicional que quieras hacer, con relación a tus conocimientos previos y/o cómo espera beneficiarse de los contenidos que estudiará.' : "12. Agrega cualquier comentario adicional que quieras hacer, con relación a tus conocimientos previos y/o cómo espera beneficiarse de los contenidos que estudiará.",
     'Considero que tengo la autorregulación, disciplina y responsabilidad que se requieren para ser exitoso(a) en este programa de formación virtual' : '13. Considero que tengo la autorregulación, disciplina y responsabilidad que se requieren para ser exitoso(a) en este programa de formación virtual',
     'Considero que los conocimientos y materiales que adquiriré durante el programa serán relevantes para mi trabajo como docente.' : "14. Considero que los conocimientos y materiales que adquiriré durante el programa serán relevantes para mi trabajo como docente.",
@@ -76,9 +76,6 @@ def fix_caracterizacion(df,df2):
     aux2 = df2[to_drop] # Avanzado
     aux = pd.concat([aux,aux2]).drop_duplicates().reset_index(drop=True)
     aux.rename(encuesta_caraterizacion, axis=1,inplace=True)
-    # La pregunta la primera y 11 solo la encontré en la encuesta de inicial más no en avando
-    # De igual manera se tiene que unir a la mondaca mas grande entonces verificate y confirma que efectivamente no está en el avanzado o que tal vez śi está pero con otro nombre o o algo así para añadirla
-    # Te amo bb 
 
     #Pregunta 9
     col = '9. Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)'
@@ -110,24 +107,38 @@ def fix_caracterizacion(df,df2):
     add_columns(aux,df2)
 
     #Pregunta 11
-    col = '11. La pregunta malparida'
-    print(aux[col].iloc[1]) # Para ver los valores para el rename
+    col = '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala'
+    print(aux[col].iloc[0]) # Para ver los valores para el rename
     df2 = aux[col].str.split(r'\b\D+\b', expand=True)
+    
     df2.rename({
-        1: '10.1 Estrategias pedagógicas para promover el Pensamiento Computacional',
-        2: '10.2 Gestión de Aula',
-        3: '10.3 Estrategias pedagógicas para incluir más niñas en las áreas STEM',
-        4: '10.4 Estrategias pedagógicas para fomentar la metacognición en los y las estudiantes',
+        1: '11.1 Puedo hacer un programa de computador para resolver un problema de matemáticas',
+        2: '11.2 Puedo crear un programa que calcule el promedio de muchos datos en poco tiempo',
+        3: '11.3 Puedo crear un programa que encienda una luz cuando una habitación esté muy oscura',
+        4: '11.4 Puedo hacer un algoritmo que describa una receta de cocina',
+        5: '11.5 Puedo crear un programa que pueda identificar cuando una planta necesita agua, y encienda la regadera'
     },axis=1, inplace=True)
     df2 = df2.drop([0],axis=1)
     add_columns(aux,df2)
+    # save csv (aux)
     
 
+col_inicial = [i for i in pivot_inicial.columns if i.startswith('Por favor evalúa tus habilidades previas en programación')][0]
+col_avanzado = [i for i in pivot_avanzado.columns if i.startswith('Por favor evalúa tus habilidades previas en programación')][0]
+print(col_inicial)
+print(col_avanzado)
+
+pivot_inicial.rename({col_inicial: col_avanzado}, axis=1,inplace=True)
+col_inicial = [i for i in pivot_inicial.columns if i.startswith('Por favor evalúa tus habilidades previas en programación')][0]
+print('Columna cambiada.')
+print(col_inicial)
+print('*************')
 
 fix_caracterizacion(pivot_inicial,pivot_avanzado)
 
-'''
 
+
+'''
 filtros = ["ID Moodle",
     "Cédula",
     "Nombre",
@@ -166,8 +177,8 @@ pivot_avanzado.rename(preguntas_compartidas, axis=1,inplace=True)
 # Pregunta 16
 # Pregunta 18
 # Pregunta 20
-def add_equal_columns(pivot_inicial):
 
+def add_equal_columns(pivot_inicial):
     # Pregunta 9
     col = "9. ¿Cuáles de las siguientes áreas enseña y en qué grado? (Marque 'NS/NC' si no enseña el área)"
     pivot_inicial[col] = pivot_inicial[col].str.replace('-1','0')
@@ -201,8 +212,6 @@ def add_equal_columns(pivot_inicial):
     for count, subpregunta in enumerate(opciones_preg10):
         pivot_inicial[f'10.{count+1} {subpregunta}'] = pivot_inicial[col].str.contains(subpregunta)
     
-    
-
     #Pregunta 11
     col = "11 .Por favor evalúe los siguientes enunciados de acuerdo con su experiencia (izquierda totalmente en desacuerdo y derecha totalmente de acuerdo)"
     df2 = pivot_inicial[col].str.split(r'\b\D+\b', expand=True)
@@ -338,13 +347,4 @@ add_equal_columns(pivot_avanzado)
 
 fix_inicial(pivot_inicial)
 fix_avanzado(pivot_avanzado)
-
 '''
-
-
-
-
-
-
-
-
