@@ -10,7 +10,7 @@ def add_columns(df1,df2):
 
 df_inicial = pd.read_csv('data/crudos/Detalles_Encuesta_CateCurso2021_Inicial.csv',  error_bad_lines=False,warn_bad_lines=False)
 df_avanzado = pd.read_csv('data/crudos/Detalles_Encuesta_CateCurso2021_Avanzado.csv')
-    
+    # 
 pivot_inicial = df_inicial.pivot_table(index=['Nombre', 'Apellido', 'Correo Electrónico', 'Curso', 'ID Asignado Por Moodle', 'Nombre De Usuario'],
                       columns='Pregunta', values='Respuesta', aggfunc='first')
 
@@ -154,10 +154,8 @@ filtros = ["ID Moodle",
     "Municipio",
     "Institución Educativa",    
     '¿Es usted cabeza de hogar? ',
-    '¿Es usted líder comunitario?']
-
-
-
+    '¿Es usted líder comunitario?'
+    ]
 
 pivot_inicial = pivot_inicial.reset_index()
 pivot_inicial = pivot_inicial.drop(to_drop,axis=1)
