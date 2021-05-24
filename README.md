@@ -1,7 +1,7 @@
 # CFK
 
 ## Prerequisites
-Make sure that you have **Python 3.6 - Python 3.8** installed.
+Make sure that you have **Python 3.6 - Python 3.8** installed
 
 ## Installation
 1. Clone the repo
