@@ -1,4 +1,3 @@
-from helpers import clean_database
 import pandas as pd
 
 pd.set_option('display.max_rows', 50)
@@ -11,7 +10,7 @@ def add_columns(df1,df2):
 
 df_inicial = pd.read_csv('data/crudos/Detalles_Encuesta_CateCurso2021_Inicial.csv',  error_bad_lines=False,warn_bad_lines=False)
 df_avanzado = pd.read_csv('data/crudos/Detalles_Encuesta_CateCurso2021_Avanzado.csv')
-    
+    # 
 pivot_inicial = df_inicial.pivot_table(index=['Nombre', 'Apellido', 'Correo Electrónico', 'Curso', 'ID Asignado Por Moodle', 'Nombre De Usuario'],
                       columns='Pregunta', values='Respuesta', aggfunc='first')
 
@@ -56,6 +55,7 @@ encuesta_caraterizacion = {
     'Institución Educativa en la que laboro' : '8. Institución Educativa en la que laboro',
     'Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)': '9. Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)',
     'Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)' : '10. Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)',
+    #'Por favor evalúa tus habilidades previas en programación, según la siguiente escala:               1. Totalmente en desacuerdo               2. En desacuerdo                    3. Neutro              4. De acuerdo                    5. Totalmente de acuerdo': '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala',
     'Agrega cualquier comentario adicional que quieras hacer, con relación a tus conocimientos previos y/o cómo espera beneficiarse de los contenidos que estudiará.' : "12. Agrega cualquier comentario adicional que quieras hacer, con relación a tus conocimientos previos y/o cómo espera beneficiarse de los contenidos que estudiará.",
     'Considero que tengo la autorregulación, disciplina y responsabilidad que se requieren para ser exitoso(a) en este programa de formación virtual' : '13. Considero que tengo la autorregulación, disciplina y responsabilidad que se requieren para ser exitoso(a) en este programa de formación virtual',
     'Considero que los conocimientos y materiales que adquiriré durante el programa serán relevantes para mi trabajo como docente.' : "14. Considero que los conocimientos y materiales que adquiriré durante el programa serán relevantes para mi trabajo como docente.",
@@ -71,12 +71,62 @@ pivot_inicial.columns = [col.replace("\n"," ").strip() for col in pivot_inicial.
 pivot_avanzado.columns = [col.replace("\n"," ").strip() for col in pivot_avanzado.columns]
 
 def fix_caracterizacion(df,df2):
-    aux = df[to_drop]
-    aux2 = df2[to_drop]
-    aux = aux.append(aux2,ignore_index=True)
+    # Hacer merge de las dos bases de datos
+    aux = df[to_drop] # Inicial
+    aux2 = df2[to_drop] # Avanzado
+    aux = pd.concat([aux,aux2]).drop_duplicates().reset_index(drop=True)
+    aux.rename(encuesta_caraterizacion, axis=1,inplace=True)
+    # La pregunta la primera y 11 solo la encontré en la encuesta de inicial más no en avando
+    # De igual manera se tiene que unir a la mondaca mas grande entonces verificate y confirma que efectivamente no está en el avanzado o que tal vez śi está pero con otro nombre o o algo así para añadirla
+    # Te amo bb 
+
+    #Pregunta 9
+    col = '9. Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)'
+    df2 = aux[col].str.split(r'\b\D+\b', expand=True)
+    df2.rename({
+        1: '9.1 Entorno virtual de aprendizaje (Moodle)',
+        2: '9.2 Herramienta para videoconferencias (Zoom)',
+        3: '9.3 Almacenamiento en la nube (Google drive)',
+        4: '9.4 Editor de texto (Microsoft Word o Google docs)',
+        5: '9.5 Herramienta de presentación (Power Point)',
+        6: '9.6 Hojas de cálculo (Microsoft Excel o Google spreadsheets)',
+        7: '9.7 Herramienta de mensajería instantánea (WhatsApp)',
+        8: '9.8 Correo electrónico (Gmail, Hotmail, Outlook, etc.,)',
+    },axis=1, inplace=True)
+    df2 = df2.drop([0],axis=1)
+    add_columns(aux,df2)
+
+
+    #Pregunta 10
+    col = '10. Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)'
+    df2 = aux[col].str.split(r'\b\D+\b', expand=True)
+    df2.rename({
+        1: '10.1 Estrategias pedagógicas para promover el Pensamiento Computacional',
+        2: '10.2 Gestión de Aula',
+        3: '10.3 Estrategias pedagógicas para incluir más niñas en las áreas STEM',
+        4: '10.4 Estrategias pedagógicas para fomentar la metacognición en los y las estudiantes',
+    },axis=1, inplace=True)
+    df2 = df2.drop([0],axis=1)
+    add_columns(aux,df2)
+
+    #Pregunta 11
+    col = '11. La pregunta malparida'
+    print(aux[col].iloc[1]) # Para ver los valores para el rename
+    df2 = aux[col].str.split(r'\b\D+\b', expand=True)
+    df2.rename({
+        1: '10.1 Estrategias pedagógicas para promover el Pensamiento Computacional',
+        2: '10.2 Gestión de Aula',
+        3: '10.3 Estrategias pedagógicas para incluir más niñas en las áreas STEM',
+        4: '10.4 Estrategias pedagógicas para fomentar la metacognición en los y las estudiantes',
+    },axis=1, inplace=True)
+    df2 = df2.drop([0],axis=1)
+    add_columns(aux,df2)
+    
 
 
 fix_caracterizacion(pivot_inicial,pivot_avanzado)
+
+'''
 
 filtros = ["ID Moodle",
     "Cédula",
@@ -93,10 +143,8 @@ filtros = ["ID Moodle",
     "Municipio",
     "Institución Educativa",    
     '¿Es usted cabeza de hogar? ',
-    '¿Es usted líder comunitario?']
-
-
-
+    '¿Es usted líder comunitario?'
+    ]
 
 pivot_inicial = pivot_inicial.reset_index()
 pivot_inicial = pivot_inicial.drop(to_drop,axis=1)
@@ -119,7 +167,7 @@ pivot_avanzado.rename(preguntas_compartidas, axis=1,inplace=True)
 # Pregunta 18
 # Pregunta 20
 def add_equal_columns(pivot_inicial):
-    '''
+
     # Pregunta 9
     col = "9. ¿Cuáles de las siguientes áreas enseña y en qué grado? (Marque 'NS/NC' si no enseña el área)"
     pivot_inicial[col] = pivot_inicial[col].str.replace('-1','0')
@@ -139,7 +187,6 @@ def add_equal_columns(pivot_inicial):
     },axis=1, inplace=True)
     df2 = df2.drop([0],axis=1)
     add_columns(pivot_inicial,df2)
-    '''
 
     #Pregunta 10
     col = "10. ¿Cuáles de las siguientes estrategias usted ha usado en sus clases? (Selección múltiple con múltiple respuesta)"
@@ -155,9 +202,7 @@ def add_equal_columns(pivot_inicial):
         pivot_inicial[f'10.{count+1} {subpregunta}'] = pivot_inicial[col].str.contains(subpregunta)
     
     
-    
 
-    
     #Pregunta 11
     col = "11 .Por favor evalúe los siguientes enunciados de acuerdo con su experiencia (izquierda totalmente en desacuerdo y derecha totalmente de acuerdo)"
     df2 = pivot_inicial[col].str.split(r'\b\D+\b', expand=True)
@@ -259,7 +304,6 @@ def add_equal_columns(pivot_inicial):
     df2 = df2.drop([0],axis=1)
     add_columns(pivot_inicial,df2)
     
-
 def fix_avanzado(df):
     preguntas_rename = {
         "Dada la definición de la función:¿Cuál de las siguientes afirmaciones describe mejor el llamado a la función sumar (8, 5, 12)?" : "23. Dada la definición de la función:¿Cuál de las siguientes afirmaciones describe mejor el llamado a la función sumar (8, 5, 12)?",
@@ -295,33 +339,12 @@ add_equal_columns(pivot_avanzado)
 fix_inicial(pivot_inicial)
 fix_avanzado(pivot_avanzado)
 
-
-
 '''
 
-avan = list(pivot_avanzado.columns)
-igual = []
-inicial = []
-avanzado = []
-for col in pivot_inicial.columns:
-    if col in avan:
-        igual.append(col)
-    else:
-        inicial.append(col)
 
-for col in avan:
-    if col in igual:
-        pass
-    else:
-        avanzado.append(col)
 
-for col in igual: 
-    print("################")
-    print(col)
 
-# Para organizar la tabla después
 
-'''
 
 
 
