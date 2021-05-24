@@ -16,3 +16,4 @@ app.add_app("Encuesta Caracterización", encuesta_caracterizacion.app)
 
 # The main app
 app.run()
+
