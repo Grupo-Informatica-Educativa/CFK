@@ -8,7 +8,6 @@ from src.pages import encuesta_caracterizacion
 app = MultiApp('CFK 2021')
 
 # Add all your application here
-app.add_app("Ejemplo 2020", ejemplo2020.app)
 app.add_app("Encuesta Género a Mentores", encuesta_genero_mentores.app)
 app.add_app("Pretest Inicial", pretest_inicial.app)
 app.add_app("Pretest Avanzado", pretest_avanzado.app)

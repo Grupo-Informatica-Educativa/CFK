@@ -27,6 +27,7 @@ class MultiApp:
 
     def __init__(self, page_title):
         self.apps = []
+        self.page_title = page_title
         st.set_page_config(
             page_title=page_title,
             layout="wide",
@@ -47,7 +48,7 @@ class MultiApp:
         })
 
     def run(self):
-
+        st.sidebar.write(f'# {self.page_title}')
         app = st.sidebar.radio(
             'Secciones:',
             self.apps,
