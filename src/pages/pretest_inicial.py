@@ -11,21 +11,26 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Cédula'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 20
+    col_preguntas = 21
 
     if file:
         datos = load_data(file)
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
-        pregunta, filtros_def, indices, lista_agrupadores = filtros(
-            datos, col_preguntas)
+        pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros(
+            datos, col_preguntas, chart_type)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        category_orders = categories_order(set(datos[pregunta]), pregunta)
+        orden_cursos = ["I"+str(x) for x in range(87)]
 
+        category_orders = categories_order(
+            set(datos[pregunta]), pregunta, orden_cursos)
+
+        if lista_cursos != []:
+            datos = datos.loc[datos.Curso.isin(lista_cursos)]
         # Selecciona tipo de gráfica
         if chart_type == "Barras":
             """ Los diagramas de barra exigen agrupar la información antes de graficar """
@@ -48,6 +53,9 @@ def app():
 
         # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+        # Quita los nombres de los ejes (se ven feos cuando se divide por columnas)
+        fig.update_yaxes(col=1, title=None)
+        fig.update_xaxes(row=1, title=None)
 
         fig.update_layout(height=height)
 

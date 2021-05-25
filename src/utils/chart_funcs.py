@@ -58,7 +58,7 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
 
 
 def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
-    st.write(columna_unica)
+    # st.write(columna_unica)
     if st.checkbox("Visualizar frecuencia relativa"):
         columna_total = st.selectbox(
             "Relativo respecto a: ", ["Total"]+indices)
@@ -94,7 +94,7 @@ def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=No
     return fig
 
 
-def categories_order(answers=None, pregunta=None):
+def categories_order(answers=None, pregunta=None, orden_cursos=None):
     satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
                     "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
     yes_no = ["Sí", "No"]
@@ -109,6 +109,7 @@ def categories_order(answers=None, pregunta=None):
     else:
         cat_order = list(answers)
 
-    category_orders = {pregunta: cat_order, "GENERO": ["F", "M"]}
+    category_orders = {pregunta: cat_order,
+                       "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"], 'Curso': orden_cursos}
 
     return category_orders
