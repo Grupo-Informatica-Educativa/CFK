@@ -73,7 +73,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
-def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None):
+def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
     fig = px.box(pivot, x=ejex, y=columna_unica,
                  color=color, facet_row=fila,
                  facet_col=columna,

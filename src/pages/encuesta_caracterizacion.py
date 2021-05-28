@@ -38,7 +38,7 @@ def app():
         elif chart_type == "Cajas":
             fig = box_chart(columna_unica=pregunta,
                             pivot=datos, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices)
+                            fila=fila, columna=columna, indices=indices, category_orders=category_orders)
             fig.update_yaxes(col=1, title=None)
         else:
             fig = scatter_chart(columna_unica=columna_unica,

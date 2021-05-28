@@ -53,5 +53,7 @@ class MultiApp:
             'Secciones:',
             self.apps,
             format_func=lambda app: app['title'])
-
+        graph_expander = st.sidebar.beta_expander(label='Graficador')
+        with graph_expander:
+            graph_expander.write("s")
         app['function']()
