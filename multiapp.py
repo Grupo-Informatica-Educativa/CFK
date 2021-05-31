@@ -1,7 +1,7 @@
 """Frameworks for running multiple Streamlit applications as a single app.
 """
 import streamlit as st
-
+from src.pages import ejemplo2020
 
 class MultiApp:
     # From  https://github.com/upraneelnihar/streamlit-multiapps
@@ -53,10 +53,17 @@ class MultiApp:
             'Secciones:',
             self.apps,
             format_func=lambda app: app['title'])
-        graph_expander = st.sidebar.beta_expander(label='Graficador')
-        with graph_expander:
-            graph_expander.write("s")
-        expander = st.sidebar.beta_expander(label='Changelog')
-        with expander:
-            expander.write("Changelog test")
-        app['function']()
+        ischecked = st.sidebar.checkbox('Habilitar herramientas:')
+        if not ischecked:
+            app['function']()
+        else:
+            graph_expander = st.sidebar.beta_expander(label='Herramientas')
+            with graph_expander:
+                pages = [{
+                    'title': 'Graficador',
+                    'function': ejemplo2020.app
+                }]
+                app_expander = st.radio("Seleccione herramienta: ", pages, format_func=lambda app: app['title'])
+            app_expander['function']()
+        
+        
