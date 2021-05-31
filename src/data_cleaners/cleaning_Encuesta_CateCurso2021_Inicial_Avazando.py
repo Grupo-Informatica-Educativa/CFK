@@ -20,7 +20,7 @@ pivot_avanzado = df_avanzado.pivot_table(index=['Nombre', 'Apellido', 'Correo El
 #Preguntas compartidas // Las que son iguales en ambas tablas
 preguntas_compartidas = {
     "ID Asignado Por Moodle" : "ID Moodle",
-    "Número De Usuario" : "Cédula",
+    "Nombre De Usuario" : "Cédula",
     "Nombre":"Nombre",
     "Apellido": "Apellido",
     "Correo Electrónico":"Correo Electrónico",

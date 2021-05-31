@@ -56,4 +56,7 @@ class MultiApp:
         graph_expander = st.sidebar.beta_expander(label='Graficador')
         with graph_expander:
             graph_expander.write("s")
+        expander = st.sidebar.beta_expander(label='Changelog')
+        with expander:
+            expander.write("Changelog test")
         app['function']()
