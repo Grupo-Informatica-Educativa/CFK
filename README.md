@@ -1,7 +1,7 @@
 # CFK
 
 ## Prerequisites
-Make sure that you have **Python 3.6 - Python 3.8** installed.
+Make sure that you have **Python 3.6 - Python 3.8** installed
 
 ## Installation
 1. Clone the repo
@@ -16,6 +16,6 @@ Make sure that you have **Python 3.6 - Python 3.8** installed.
 
     `pip install -r requirements.txt`
 
-## Run this project
+## Run this project.
 
 `streamlit run app.py`
