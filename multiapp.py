@@ -49,15 +49,15 @@ class MultiApp:
 
     def run(self):
         st.sidebar.write(f'# {self.page_title}')
-        app = st.sidebar.radio(
-            'Secciones:',
-            self.apps,
-            format_func=lambda app: app['title'])
         ischecked = st.sidebar.checkbox('Habilitar herramientas:')
         if not ischecked:
+            app = st.sidebar.radio(
+                'Secciones:',
+                self.apps,
+                format_func=lambda app: app['title'])
             app['function']()
         else:
-            graph_expander = st.sidebar.beta_expander(label='Herramientas')
+            graph_expander = st.sidebar.beta_expander(label='Herramientas', expanded=True)
             with graph_expander:
                 pages = [{
                     'title': 'Graficador',
