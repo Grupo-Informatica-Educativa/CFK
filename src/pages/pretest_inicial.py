@@ -7,11 +7,11 @@ def app():
     st.write("""# Pretest Inicial""")
 
     # Nombre del archivo con los datos
-    file = "data/limpios/pretest_inicial.xlsx"
+    file = "data/limpios/pre_inicial_conocimientos.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Cédula'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 20
+    col_preguntas = 30
 
     if file:
         datos = load_data(file)
