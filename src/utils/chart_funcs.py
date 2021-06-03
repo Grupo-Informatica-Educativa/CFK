@@ -58,7 +58,7 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
 
 
 def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
-    st.write(columna_unica)
+    # st.write(columna_unica)
     if st.checkbox("Visualizar frecuencia relativa"):
         columna_total = st.selectbox(
             "Relativo respecto a: ", ["Total"]+indices)
