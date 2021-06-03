@@ -9,9 +9,9 @@ def app():
     # Nombre del archivo con los datos
     file = "data/limpios/pre_inicial_conocimientos.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
-    columna_unica = 'Cédula'
+    columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 30
+    col_preguntas = 28
 
     if file:
         datos = load_data(file)
