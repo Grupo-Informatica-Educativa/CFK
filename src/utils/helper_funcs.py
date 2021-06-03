@@ -25,7 +25,7 @@ def filtros(datos, col_preguntas, tipo_grafica):
     pregunta = st.selectbox("Seleccione la pregunta: ", preguntas_filtro)
 
     try:
-        cursos = datos.Curso.unique()
+        cursos = datos.Grupo.unique()
         cursos.sort()
         lista_cursos = st.multiselect(
             'Seleccione los cursos que desea visualizar', cursos)
