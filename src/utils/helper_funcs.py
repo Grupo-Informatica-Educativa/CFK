@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 
 
-@st.cache
+#@st.cache
 def load_data(file):
     return pd.read_excel(file)
 
