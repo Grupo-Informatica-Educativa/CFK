@@ -73,7 +73,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
-def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None):
+def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
     fig = px.box(pivot, x=ejex, y=columna_unica,
                  color=color, facet_row=fila,
                  facet_col=columna,
@@ -97,7 +97,7 @@ def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=No
 def categories_order(answers=None, pregunta=None, orden_cursos=None):
     satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
                     "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
-    yes_no = ["Sí", "No"]
+    yes_no = ["SI", "NO"]
     de_acuerdo = ["Totalmente en desacuerdo", "En desacuerdo",
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     if len(set(satisfaction) - answers) < 2:
@@ -107,7 +107,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
     elif len(set(yes_no) - answers) < 2:
         cat_order = yes_no
     else:
-        cat_order = list(answers)
+        cat_order = [x for x in list(
+            answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
 
     category_orders = {pregunta: cat_order,
                        "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"], 'Curso': orden_cursos}
