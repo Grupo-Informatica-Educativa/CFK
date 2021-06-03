@@ -63,5 +63,6 @@ def app():
                 lambda a: a.update(text=a.text.split("=")[-1]))
 
             fig.update_layout(height=height)
+            fig.update_xaxes(row=1, title=None)
 
             st.plotly_chart(fig, use_container_width=True, config=config_chart)
