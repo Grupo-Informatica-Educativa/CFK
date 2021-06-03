@@ -26,6 +26,7 @@ def filtros(datos, col_preguntas, tipo_grafica):
 
     try:
         cursos = datos.Grupo.unique()
+        st.write(cursos)
         cursos.sort()
         lista_cursos = st.multiselect(
             'Seleccione los cursos que desea visualizar', cursos)
