@@ -7,7 +7,7 @@ def app():
     st.write("""# Pretest Inicial""")
 
     # Nombre del archivo con los datos
-    file = "data/limpios/pre_inicial_conocimientos.xlsx"
+    file = "data/limpios/pretest_inicial_v2.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -33,7 +33,7 @@ def app():
         if len(datos) == 0:
             st.warning(
                 "El / los grupos seleccionados no tienen datos para mostrar")
-        elif (fila == "Grupo" or columna == "Grupo") and (len(df.Grupo.unique()) > 10):
+        elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
             st.warning(
                 "Por favor use los filtros para seleccionar menos grupos")
         else:
