@@ -18,7 +18,7 @@ def app():
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
-        pregunta, filtros_def, indices, lista_agrupadores = filtros(
+        pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
             datos, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(

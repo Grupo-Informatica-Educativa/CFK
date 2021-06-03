@@ -18,7 +18,7 @@ def app():
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
-        pregunta, filtros_def, indices, lista_agrupadores = filtros(
+        pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
             datos, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
@@ -26,29 +26,42 @@ def app():
 
         category_orders = categories_order(set(datos[pregunta]), pregunta)
 
-        # Selecciona tipo de gráfica
-        if chart_type == "Barras":
-            """ Los diagramas de barra exigen agrupar la información antes de graficar """
-            pivot = pivot_data(datos, indices, columna_unica)
-            fig = bar_chart(columna_unica=columna_unica,
-                            pivot=pivot, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices,
-                            category_orders=category_orders)
-        elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta,
-                            pivot=datos, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
+        if grupo != []:
+            datos = datos.loc[datos.Grupo.isin(grupo)]
+
+        datos["Grupo"] = datos["Grupo"].astype(str)
+        if len(datos) == 0:
+            st.warning(
+                "El / los grupos seleccionados no tienen datos para mostrar")
+        elif (fila == "Grupo" or columna == "Grupo") and (len(df.Grupo.unique()) > 10):
+            st.warning(
+                "Por favor use los filtros para seleccionar menos grupos")
         else:
-            fig = scatter_chart(columna_unica=columna_unica,
-                                pivot=datos, ejex=ejex, color=color,
-                                fila=fila, columna=columna,
-                                lista_agrupadores=[pregunta]+lista_agrupadores,
+            # Selecciona tipo de gráfica
+            if chart_type == "Barras":
+                """ Los diagramas de barra exigen agrupar la información antes de graficar """
+                pivot = pivot_data(datos, indices, columna_unica)
+                fig = bar_chart(columna_unica=columna_unica,
+                                pivot=pivot, ejex=ejex, color=color,
+                                fila=fila, columna=columna, indices=indices,
                                 category_orders=category_orders)
+            elif chart_type == "Cajas":
+                fig = box_chart(columna_unica=pregunta,
+                                pivot=datos, ejex=ejex, color=color,
+                                fila=fila, columna=columna, indices=indices)
+                fig.update_yaxes(col=1, title=None)
+            else:
+                fig = scatter_chart(columna_unica=columna_unica,
+                                    pivot=datos, ejex=ejex, color=color,
+                                    fila=fila, columna=columna,
+                                    lista_agrupadores=[
+                                        pregunta]+lista_agrupadores,
+                                    category_orders=category_orders)
 
-        # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor
-        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+            # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor
+            fig.for_each_annotation(
+                lambda a: a.update(text=a.text.split("=")[-1]))
 
-        fig.update_layout(height=height)
+            fig.update_layout(height=height)
 
-        st.plotly_chart(fig, use_container_width=True, config=config_chart)
+            st.plotly_chart(fig, use_container_width=True, config=config_chart)
