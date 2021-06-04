@@ -22,7 +22,7 @@ def filtros(datos, col_preguntas, tipo_grafica):
         set(lista_preguntas).difference(set(lista_comentarios)))
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
-    pregunta = st.selectbox("Seleccione la pregunta: ", preguntas_filtro)
+    pregunta = st.selectbox("Seleccione la pregunta: ", sorted(preguntas_filtro))
 
     try:
         cursos = datos.Grupo.unique()

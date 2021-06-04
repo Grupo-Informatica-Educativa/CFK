@@ -2,12 +2,26 @@ import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
+files = [
+    {
+        "title": "Autoeficacia",
+        "file":  "pre_inicial_autoeficacia.xlsx"
+    },
+    {
+        "title": "Conocimientos",
+        "file":  "pre_inicial_conocimientos.xlsx"
+    },
+    {
+        "title": "Género",
+        "file":  "pre_inicial_genero.xlsx"
+    }
+]
 
 def app():
     st.write("""# Pretest Inicial""")
-
+    pregunta = st.selectbox("Seleccione la categoría",files,format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = "data/limpios/pretest_inicial_v2.xlsx"
+    file = f"data/limpios/{pregunta['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -31,7 +45,7 @@ def app():
 
         if lista_grupo != []:
             datos = datos.loc[datos.Grupo.isin(lista_grupo)]
-         if len(datos) == 0:
+        if len(datos) == 0:
             st.warning(
                 "El / los grupos seleccionados no tienen datos para mostrar")
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
