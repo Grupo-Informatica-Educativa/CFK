@@ -15,7 +15,7 @@ def app():
 
     if file:
         datos = load_data(file)
-        print(datos.columns)
+
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 

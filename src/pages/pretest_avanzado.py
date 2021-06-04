@@ -3,11 +3,27 @@ from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
 
+files = [
+    {
+        "title": "Autoeficacia",
+        "file":  "pre_avanzado_autoeficacia.xlsx"
+    },
+    {
+        "title": "Conocimientos",
+        "file":  "pre_avanzado_conocimientos.xlsx"
+    },
+    {
+        "title": "Género",
+        "file":  "pre_avanzado_genero.xlsx"
+    }
+]
+
 def app():
     st.write("""# Pretest Avanzado""")
 
+    pregunta = st.selectbox("Seleccione la categoría",files,format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = "data/limpios/pretest_avanzado_v2.xlsx"
+    file = f"data/limpios/{pregunta['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
