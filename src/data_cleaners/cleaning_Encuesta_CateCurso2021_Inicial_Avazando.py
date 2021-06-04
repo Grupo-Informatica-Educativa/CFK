@@ -11,18 +11,19 @@ def add_columns(df1, df2):
     for col in df2.columns:
         df1[col] = df2[col]
 
-
-df_inicial = pd.read_csv('/data/crudos/Encuesta_Inicio_29521.csv',
-                         error_bad_lines=False, warn_bad_lines=False)
-df_avanzado = pd.read_csv('data/crudos/Encuesta_Avanzado_29521.csv',
-                          error_bad_lines=False, warn_bad_lines=False)
+df_inicial = pd.read_csv('data\crudos\Encuesta_Inicio_02062021.csv',
+                         error_bad_lines=False, warn_bad_lines=False,
+                         low_memory=False)
+df_avanzado = pd.read_csv('data\crudos\Encuesta_Avanzado_02062021.csv',
+                          error_bad_lines=False, warn_bad_lines=False,
+                          low_memory=False)
 #
+
 pivot_inicial = df_inicial.pivot_table(index=['Nombre', 'Apellido', 'Correo Electrónico', 'Curso', 'ID Asignado Por Moodle', 'Nombre De Usuario'],
-                                       columns='Pregunta', values='Respuesta', aggfunc='first')
+                                       columns='Pregunta', values='Respuesta', aggfunc='first').reset_index()
 
 pivot_avanzado = df_avanzado.pivot_table(index=['Nombre', 'Apellido', 'Correo Electrónico', 'Curso', 'ID Asignado Por Moodle', 'Nombre De Usuario'],
-                                         columns='Pregunta', values='Respuesta', aggfunc='first')
-
+                                         columns='Pregunta', values='Respuesta', aggfunc='first').reset_index()
 
 '''
 preg30 = ''
@@ -456,6 +457,6 @@ fix_avanzado(pivot_avanzado)
 
 if save_new:
     merge = pretest_inicial + pretest_iguales
-    pivot_inicial[merge].to_excel("PretestInicial.xlsx")
+    pivot_inicial[merge].to_excel("PretestInicial.xlsx", encoding='utf-8-sig')
     merge2 = pretest_avanzado + pretest_iguales
-    pivot_avanzado[merge2].to_excel("PretestAvanzado.xlsx")
+    pivot_avanzado[merge2].to_excel("PretestAvanzado.xlsx", encoding='utf-8-sig')
