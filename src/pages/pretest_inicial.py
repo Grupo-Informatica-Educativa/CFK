@@ -17,11 +17,13 @@ files = [
     }
 ]
 
+
 def app():
     st.write("""# Pretest Inicial""")
-    pregunta = st.selectbox("Seleccione la categoría",files,format_func=lambda itemArray: itemArray['title'])
+    preguntas = st.selectbox("Seleccione la categoría", files,
+                             format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = f"data/limpios/{pregunta['file']}"
+    file = f"data/limpios/{preguntas['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -40,6 +42,8 @@ def app():
 
         orden_grupos = ["I"+str(x) for x in range(87)]
 
+        if preguntas['title'] == 'Conocimientos':
+            datos[pregunta] = datos[pregunta].astype(str)
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
 
@@ -52,7 +56,7 @@ def app():
             st.warning(
                 "Por favor use los filtros para seleccionar menos grupos")
         else:
-        # Selecciona tipo de gráfica
+            # Selecciona tipo de gráfica
             if chart_type == "Barras":
                 """ Los diagramas de barra exigen agrupar la información antes de graficar """
                 pivot = pivot_data(datos, indices, columna_unica)
@@ -69,11 +73,13 @@ def app():
                 fig = scatter_chart(columna_unica=columna_unica,
                                     pivot=datos, ejex=ejex, color=color,
                                     fila=fila, columna=columna,
-                                    lista_agrupadores=[pregunta]+lista_agrupadores,
+                                    lista_agrupadores=[
+                                        pregunta]+lista_agrupadores,
                                     category_orders=category_orders)
 
             # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor
-            fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+            fig.for_each_annotation(
+                lambda a: a.update(text=a.text.split("=")[-1]))
             # Quita los nombres de los ejes (se ven feos cuando se divide por columnas)
             fig.update_yaxes(col=1, title=None)
             fig.update_xaxes(row=1, title=None)
