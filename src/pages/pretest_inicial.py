@@ -4,8 +4,8 @@ from src.utils.helper_funcs import *
 
 files = [
     {
-        "title": "Conocimientos",
-        "file":  "pre_inicial_conocimientos.xlsx"
+        "title": "Autoeficacia",
+        "file":  "pre_inicial_autoeficacia.xlsx"
     },
     {
         "title": "Conocimientos",
