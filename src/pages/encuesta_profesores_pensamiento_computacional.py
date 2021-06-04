@@ -8,7 +8,7 @@ def app():
 	st.write("""# Instrumento de Caracterización Previo al Pilotaje (Docentes)""")
 
 	# Nombre del archivo con los datos
-	file = "data/limpios/instrumento_caracterización_previo_pilotaje_docentes.xlsx"
+	file = "data/limpios/instrumento_caracterizacion_previo_pilotaje_docentes.xlsx"
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
