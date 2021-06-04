@@ -44,6 +44,7 @@ def app():
 
         if preguntas['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
+
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
 

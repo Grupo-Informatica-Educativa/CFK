@@ -43,6 +43,7 @@ def app():
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
         if preguntas['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
+
         orden_grupos = ["A"+str(x) for x in range(36)]
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
