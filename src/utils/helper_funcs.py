@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 
 
-#@st.cache
+# @st.cache
 def load_data(file):
     return pd.read_excel(file)
 
@@ -22,11 +22,12 @@ def filtros(datos, col_preguntas, tipo_grafica):
         set(lista_preguntas).difference(set(lista_comentarios)))
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
-    pregunta = st.selectbox("Seleccione la pregunta: ", sorted(preguntas_filtro))
+    pregunta = st.selectbox("Seleccione la pregunta: ",
+                            sorted(preguntas_filtro))
 
     try:
         cursos = datos.Grupo.unique()
-        st.write(cursos)
+        # st.write(cursos)
         cursos.sort()
         lista_cursos = st.multiselect(
             'Seleccione los cursos que desea visualizar', cursos)
