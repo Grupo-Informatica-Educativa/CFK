@@ -6,13 +6,20 @@ files = [
     {
         "title": "Conocimientos",
         "file":  "pre_inicial_conocimientos.xlsx"
+    },
+    {
+        "title": "Conocimientos",
+        "file":  "pre_inicial_conocimientos.xlsx"
+    },
+    {
+        "title": "Género",
+        "file":  "pre_inicial_genero.xlsx"
     }
 ]
 
 
 def app():
     st.write("""# Pretest Inicial""")
-    st.write("""## Testing""")
     preguntas = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
