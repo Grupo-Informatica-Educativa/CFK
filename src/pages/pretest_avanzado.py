@@ -29,7 +29,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 28
+    col_preguntas = 29
 
     if file:
         datos = load_data(file)
