@@ -5,15 +5,17 @@ from src.utils.helper_funcs import *
 files = [
     {
         "title": "Autoeficacia",
-        "file":  "pre_inicial_autoeficacia.xlsx"
+        "preguntas": [
+            13,15,16,18,20
+        ]
     },
     {
         "title": "Conocimientos",
-        "file":  "pre_inicial_conocimientos.xlsx"
+        "preguntas": [22,23,24,25,26,27,28,29,31]
     },
     {
         "title": "Género",
-        "file":  "pre_inicial_genero.xlsx"
+        "preguntas":  [10,11]
     }
 ]
 
@@ -23,7 +25,7 @@ def app():
     preguntas = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = f"data/limpios/{preguntas['file']}"
+    file =f"data/limpios/pretest_inicial_v2.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -31,11 +33,27 @@ def app():
 
     if file:
         datos = load_data(file)
+        pregs = []
+        for n in preguntas['preguntas']:
+            for col in datos.columns:            
+                if type(col) != None:
+                    num = col.split(' ')[0]
+                    if num[-1:] == ".":
+                        num = num[:-1]
+
+                    print(num)
+                    if (num == str(n)):
+                        pregs.append(col)
+                        break
+            
+        datos = datos[pregs]
+
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
             datos, col_preguntas, chart_type)
+       
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
