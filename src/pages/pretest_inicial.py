@@ -41,7 +41,6 @@ def app():
                     if num[-1:] == ".":
                         num = num[:-1]
 
-                    print(num)
                     if (num == str(n)):
                         pregs.append(col)
                         break
