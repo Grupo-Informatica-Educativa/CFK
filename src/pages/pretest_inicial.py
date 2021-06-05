@@ -31,7 +31,7 @@ def app():
 
         if lista_grupo != []:
             datos = datos.loc[datos.Grupo.isin(lista_grupo)]
-         if len(datos) == 0:
+        if len(datos) == 0:
             st.warning(
                 "El / los grupos seleccionados no tienen datos para mostrar")
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
