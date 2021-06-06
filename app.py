@@ -5,7 +5,7 @@ from src.pages import pretest_inicial
 from src.pages import pretest_avanzado
 from src.pages import encuesta_caracterizacion
 
-from src.preguntas import pregunta1
+from src.preguntas.p1 import pregunta1
 
 app = MultiApp('CFK 2021')
 

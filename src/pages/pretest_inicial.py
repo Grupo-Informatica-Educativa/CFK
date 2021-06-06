@@ -25,7 +25,7 @@ def app():
     preguntas = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file =f"data/limpios/pretest_inicial_v2.xlsx"
+    file =f"data/limpios/pretest_inicial.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
