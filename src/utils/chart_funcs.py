@@ -35,7 +35,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                  color_discrete_sequence=px.colors.qualitative.Pastel,
                  color_continuous_scale=px.colors.sequential.GnBu, category_orders=category_orders,
                  text="Frecuencia",
-                 facet_col_wrap=4)
+                 facet_col_wrap=4, range_y=(0, 1))
 
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
@@ -106,9 +106,11 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = de_acuerdo
     elif len(set(yes_no) - answers) < 2:
         cat_order = yes_no
-    else:
+    elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
+    else:
+        cat_order = list(answers)
 
     category_orders = {pregunta: cat_order,
                        "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"], 'Curso': orden_cursos}

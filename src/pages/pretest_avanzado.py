@@ -3,15 +3,33 @@ from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
 
+files = [
+    {
+        "title": "Autoeficacia",
+        "file":  "pre_avanzado_autoeficacia.xlsx"
+    },
+    {
+        "title": "Conocimientos",
+        "file":  "pre_avanzado_conocimientos.xlsx"
+    },
+    {
+        "title": "Género",
+        "file":  "pre_avanzado_genero.xlsx"
+    }
+]
+
+
 def app():
     st.write("""# Pretest Avanzado""")
 
+    preguntas = st.selectbox("Seleccione la categoría", files,
+                             format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = "data/limpios/pretest_avanzado_v2.xlsx"
+    file = f"data/limpios/{preguntas['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 28
+    col_preguntas = 29
 
     if file:
         datos = load_data(file)
@@ -23,6 +41,8 @@ def app():
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
+        if preguntas['title'] == 'Conocimientos':
+            datos[pregunta] = datos[pregunta].astype(str)
 
         orden_grupos = ["A"+str(x) for x in range(36)]
         category_orders = categories_order(

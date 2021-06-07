@@ -31,7 +31,7 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores = filtros(
-            datos, col_preguntas)
+            datos, col_preguntas, chart_type)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
