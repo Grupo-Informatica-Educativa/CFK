@@ -43,9 +43,9 @@ def filtros(datos, col_preguntas, tipo_grafica,preguntas):
                             sorted(preguntas))
     
     numero = pregunta.split(' ')[0]
-    respuestas_preguntas = [x for x in datos.columns if x.startswith(numero)]
-    if len(respuestas_preguntas) > 1:
-        respuesta = st.selectbox("Seleccione las respuestas",respuestas_preguntas[1:])
+    respuestas_preguntas = [x for x in datos.columns if x.startswith(numero) and x != pregunta]
+    if len(respuestas_preguntas) > 0:
+        pregunta = st.selectbox("Seleccione las respuestas",respuestas_preguntas)
    
 
     try:
@@ -78,10 +78,10 @@ def filtros(datos, col_preguntas, tipo_grafica,preguntas):
                 lista_filtros.append(st.selectbox("Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
-    filtros_def = [respuesta if x == "Pregunta" else x for x in filtros_def]
+    filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
     indices = list(set(filtros_def).difference([None]))
 
-    return respuesta, filtros_def, indices, lista_agrupadores, lista_cursos#, respuestas
+    return pregunta, filtros_def, indices, lista_agrupadores, lista_cursos
 
 
 def pivot_data(datos, indices, columna_unica):

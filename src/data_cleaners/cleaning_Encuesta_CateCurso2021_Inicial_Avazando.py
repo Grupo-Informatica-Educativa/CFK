@@ -11,10 +11,10 @@ def add_columns(df1, df2):
     for col in df2.columns:
         df1[col] = df2[col]
 
-df_inicial = pd.read_csv('data\crudos\Encuesta_Inicio_02062021.csv',
+df_inicial = pd.read_csv('data/crudos/Encuesta_Inicio_29521.csv',
                          error_bad_lines=False, warn_bad_lines=False,
                          low_memory=False)
-df_avanzado = pd.read_csv('data\crudos\Encuesta_Avanzado_02062021.csv',
+df_avanzado = pd.read_csv('data/crudos/Encuesta_Avanzado_29521.csv',
                           error_bad_lines=False, warn_bad_lines=False,
                           low_memory=False)
 #
