@@ -68,6 +68,6 @@ def filtros(datos, col_preguntas, tipo_grafica):
 
 
 def pivot_data(datos, indices, columna_unica):
-    return datos.pivot_table(index=indices,
-                             values=columna_unica,
-                             aggfunc="count").reset_index()
+	return datos.pivot_table(index=indices,
+							 values=columna_unica,
+							 aggfunc="count").reset_index()
