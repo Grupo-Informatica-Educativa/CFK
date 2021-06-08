@@ -6,8 +6,27 @@ import streamlit as st
 def load_data(file):
     return pd.read_excel(file)
 
+filtros_dict = [
+    "Grupo",
+    "Monitor",
+    "Mentor",
+    "Edad",
+    "Género",
+    "Departamento",
+    "Estrato",
+    "Pertecene a etnia",
+    "Etnia",
+    "Nivel educativo",
+    "Cargo",
+    "Acceso a internet",
+    "Modelo educativo actual",
+    "Participó 2020",
+    "Contexto IE",
+    "¿Es usted cabeza de hogar?",
+    "¿Es usted líder comunitario?"
+]
 
-def filtros(datos, col_preguntas, tipo_grafica):
+def filtros(datos, col_preguntas, tipo_grafica,preguntas):
     lista_filtros = []
 
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
@@ -18,17 +37,15 @@ def filtros(datos, col_preguntas, tipo_grafica):
     except:
         lista_comentarios = []
 
-    preguntas_filtro = list(
-        set(lista_preguntas).difference(set(lista_comentarios)))
-    lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
+    lista_agrupadores = filtros_dict
 
     pregunta = st.selectbox("Seleccione la pregunta: ",
-                            sorted(preguntas_filtro))
+                            sorted(preguntas))
     
     numero = pregunta.split(' ')[0]
-    respuestas_preguntas = [x for x in datos.columns if numero.startswith(x)]
+    respuestas_preguntas = [x for x in datos.columns if x.startswith(numero)]
     if len(respuestas_preguntas) > 1:
-        respuestas = st.multiselect("Seleccione las respuestas",respuestas_preguntas)
+        respuesta = st.selectbox("Seleccione las respuestas",respuestas_preguntas[1:])
    
 
     try:
@@ -61,10 +78,10 @@ def filtros(datos, col_preguntas, tipo_grafica):
                 lista_filtros.append(st.selectbox("Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
-    filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
+    filtros_def = [respuesta if x == "Pregunta" else x for x in filtros_def]
     indices = list(set(filtros_def).difference([None]))
 
-    return pregunta, filtros_def, indices, lista_agrupadores, lista_cursos
+    return respuesta, filtros_def, indices, lista_agrupadores, lista_cursos#, respuestas
 
 
 def pivot_data(datos, indices, columna_unica):

@@ -27,7 +27,7 @@ def app():
     # Nombre del archivo con los datos
     file =f"data/limpios/pretest_inicial.xlsx"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
-    columna_unica = 'Identificación'
+    columna_unica = 'Cédula'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
     col_preguntas = 28
 
@@ -45,14 +45,14 @@ def app():
                         pregs.append(col)
                         break
             
-        datos = datos[pregs]
-
+        
+        
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
-            datos, col_preguntas, chart_type)
-       
+            datos, col_preguntas, chart_type,pregs)
+            
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
@@ -61,7 +61,8 @@ def app():
 
         if preguntas['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
-
+        st.write("caterogiry otdersansers:")
+        st.write(set(datos[pregunta]))
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
 
