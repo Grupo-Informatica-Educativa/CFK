@@ -24,6 +24,12 @@ def filtros(datos, col_preguntas, tipo_grafica):
 
     pregunta = st.selectbox("Seleccione la pregunta: ",
                             sorted(preguntas_filtro))
+    
+    numero = pregunta.split(' ')[0]
+    respuestas_preguntas = [x for x in datos.columns if numero.startswith(x)]
+    if len(respuestas_preguntas) > 1:
+        respuestas = st.multiselect("Seleccione las respuestas",respuestas_preguntas)
+   
 
     try:
         cursos = datos.Grupo.unique()
@@ -40,12 +46,19 @@ def filtros(datos, col_preguntas, tipo_grafica):
     else:
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
-    lista_filtros.append(st.selectbox("Dividir por color", [
-                         " ", "Pregunta"] + lista_agrupadores))
-    lista_filtros.append(st.selectbox("Dividir por columna", [
-                         " ", "Pregunta"] + lista_agrupadores))
-    lista_filtros.append(st.selectbox("Dividir por fila", [
-                         " ", "Pregunta"] + lista_agrupadores))
+  
+
+    filtros_cols = st.beta_columns(3)
+
+    cols = st.beta_columns(3)
+    for index,col in enumerate(cols):
+        with col:
+            if index == 0:
+                lista_filtros.append(st.selectbox("Dividir por color", [" ", "Pregunta"] + lista_agrupadores))
+            elif index == 1:
+                lista_filtros.append(st.selectbox("Dividir por columna", [" ", "Pregunta"] + lista_agrupadores))
+            elif index == 2:
+                lista_filtros.append(st.selectbox("Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
@@ -55,6 +68,6 @@ def filtros(datos, col_preguntas, tipo_grafica):
 
 
 def pivot_data(datos, indices, columna_unica):
-    return datos.pivot_table(index=indices,
-                             values=columna_unica,
-                             aggfunc="count").reset_index()
+	return datos.pivot_table(index=indices,
+							 values=columna_unica,
+							 aggfunc="count").reset_index()
