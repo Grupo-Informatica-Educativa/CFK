@@ -45,7 +45,7 @@ def app():
 		tabla_preguntas = np.stack((lista_preguntas, preguntas), axis=1)
 
 		df_preguntas = pd.DataFrame(tabla_preguntas, columns=['Listado de preguntas', 'Pregunta'])
-		expander = st.beta_expander("Tabla de las preguntas", expanded=True)
+		expander = st.beta_expander("Tabla de las preguntas", expanded=False)
 		with expander:
 			st.table(df_preguntas)
 		# Este diccionario es necesario para que el checkbox apunte a la respuesta de la BD
