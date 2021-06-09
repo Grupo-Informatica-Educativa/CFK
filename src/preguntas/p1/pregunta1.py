@@ -32,7 +32,7 @@ def app():
     fig.update_layout(title='Pregunta 20',showlegend=False,xaxis=dict(title='Preferencias'),yaxis=dict(showticklabels=False),width=1100,height=600)
 
 
-    st.write(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
     
     
