@@ -6,51 +6,38 @@ import streamlit as st
 def load_data(file):
     return pd.read_excel(file)
 
-filtros_dict = [
-    "Grupo",
-    "Monitor",
-    "Mentor",
-    "Edad",
-    "Género",
-    "Departamento",
-    "Estrato",
-    "Pertecene a etnia",
-    "Etnia",
-    "Nivel educativo",
-    "Cargo",
-    "Acceso a internet",
-    "Modelo educativo actual",
-    "Participó 2020",
-    "Contexto IE",
-    "¿Es usted cabeza de hogar?",
-    "¿Es usted líder comunitario?"
-]
 
-def filtros(datos, col_preguntas, tipo_grafica,preguntas):
+def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas):
     lista_filtros = []
 
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
-    lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
-    try:
+    lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
+    '''try:
         lista_comentarios = list(datos.filter(
             regex='omentario*', axis=1).columns)
     except:
-        lista_comentarios = []
+        lista_comentarios = []'''
 
-    lista_agrupadores = filtros_dict
+    lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
-    pregunta = st.selectbox("Seleccione la pregunta: ",
-                            sorted(preguntas))
+    # Se incluyen las preguntas (sean o no divisibles)
+    lista_preguntas = set()
+
+    for preg in lista_preguntas_subpreguntas:
+        pos_punto = preg.index(".")
+        num_preg = preg[:pos_punto]
+        pregunta = nombres_preguntas[num_preg] if num_preg in nombres_preguntas else preg
+        lista_preguntas.add(pregunta)
+    pregunta = st.selectbox("Seleccione la pregunta: ", sorted(list(lista_preguntas)))
     
     numero = pregunta.split(' ')[0]
-    respuestas_preguntas = [x for x in datos.columns if x.startswith(numero) and x != pregunta]
-    if len(respuestas_preguntas) > 0:
-        pregunta = st.selectbox("Seleccione las respuestas",respuestas_preguntas)
+    lista_subpreguntas = [x for x in datos.columns if x.startswith(numero) and x != pregunta]
+    if len(lista_subpreguntas) > 0:
+        pregunta = st.selectbox("Seleccione la subpregunta:", lista_subpreguntas)
    
 
     try:
         cursos = datos.Grupo.unique()
-        # st.write(cursos)
         cursos.sort()
         lista_cursos = st.multiselect(
             'Seleccione los cursos que desea visualizar', cursos)
@@ -63,9 +50,6 @@ def filtros(datos, col_preguntas, tipo_grafica,preguntas):
     else:
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
-  
-
-    filtros_cols = st.beta_columns(3)
 
     cols = st.beta_columns(3)
     for index,col in enumerate(cols):

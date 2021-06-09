@@ -5,15 +5,15 @@ from src.utils.helper_funcs import *
 files = [
     {
         "title": "Autoeficacia",
-        "preguntas": [13,15,16,18,20]
+        "file":  "pre_inicial_autoeficacia.xlsx",
     },
     {
         "title": "Conocimientos",
-        "preguntas": [22,23,24,25,26,27,28,29,31]
+        "file":  "pre_inicial_conocimientos.xlsx",
     },
     {
         "title": "Género",
-        "preguntas":  [10,11]
+        "file":  "pre_inicial_genero.xlsx",
     }
 ]
 
@@ -47,27 +47,12 @@ def app():
 
     if file:
         datos = load_data(file)
-        st.write(datos.columns[col_preguntas:])
-        pregs = []
-        for n in preguntas['preguntas']:
-            # Columnas de las preguntas que están desde col_preguntas hasta el final
-            for col in datos.columns[col_preguntas:]: 
-                if type(col) != None:
-                    num = col.split(' ')[0]
-                    if num[-1:] == ".":
-                        num = num[:-1]
 
-                    if (num == str(n)):
-                        pregs.append(col)
-                        break
-            
-        
-        
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
-            datos, col_preguntas, chart_type,pregs)
+            datos, col_preguntas, chart_type, nombres_preguntas)
             
         ejex, color, columna, fila = filtros_def
         height = st.slider(
@@ -77,8 +62,7 @@ def app():
 
         if preguntas['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
-        st.write("caterogiry otdersansers:")
-        st.write(set(datos[pregunta]))
+        
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
 
