@@ -2,6 +2,13 @@ import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
+# Nombre de las preguntas por el indice
+# Esto se usará para aquellas preguntas que tengan subpreguntas
+nombres_preguntas = {
+    '9': '9. Por favor evalúa tus conocimientos de herramienta digitales del 1 al 10, según tu grado de familiarización en el manejo de los mismos (10 es muy hábil)',
+    '10': '10. Por favor evalúa, en la escala del 1 al 10, tus conocimientos previos sobre los contenidos pedagógicos que se estudiarán en el curso, según tu nivel de experiencia (10 es experto)',
+    '11': '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala'
+}
 
 def app():
     st.write("""# Encuesta Caracterización""")
@@ -20,7 +27,7 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros(
-            datos, col_preguntas, chart_type)
+            datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
