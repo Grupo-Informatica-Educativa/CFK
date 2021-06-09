@@ -1,6 +1,6 @@
 # CFK
 
-## Prerequisites.
+## Prerequisites
 Make sure that you have **Python 3.6 - Python 3.8** installed
 
 ## Installation.
