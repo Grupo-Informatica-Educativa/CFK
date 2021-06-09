@@ -52,7 +52,7 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
-            datos, col_preguntas, chart_type, nombres_preguntas)
+            datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
             
         ejex, color, columna, fila = filtros_def
         height = st.slider(

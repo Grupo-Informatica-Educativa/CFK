@@ -7,7 +7,7 @@ def load_data(file):
     return pd.read_excel(file)
 
 
-def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas):
+def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas={}):
     lista_filtros = []
 
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
@@ -24,7 +24,10 @@ def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas):
     lista_preguntas = set()
 
     for preg in lista_preguntas_subpreguntas:
-        pos_punto = preg.index(".")
+        try:
+            pos_punto = preg.index(".")
+        except:
+            pos_punto = 0
         num_preg = preg[:pos_punto]
         pregunta = nombres_preguntas[num_preg] if num_preg in nombres_preguntas else preg
         lista_preguntas.add(pregunta)

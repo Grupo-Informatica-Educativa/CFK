@@ -18,6 +18,11 @@ files = [
     }
 ]
 
+# Nombre de las preguntas por el indice
+# Esto se usará para aquellas preguntas que tengan subpreguntas
+nombres_preguntas = {
+    
+}
 
 def app():
     st.write("""# Pretest Avanzado""")
@@ -37,7 +42,7 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupos = filtros(
-            datos, col_preguntas, chart_type)
+            datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
