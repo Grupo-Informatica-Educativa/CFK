@@ -55,7 +55,7 @@ def app():
 							  ("Barras", "Dispersión", "Cajas"))
 
 		# OJO, se modificó el método filtros (TENER ESO EN CUENTA).
-		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros(
+		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros2(
 			datos, col_preguntas, chart_type, True, diccionario_preguntas)
 
 		ejex, color, columna, fila = filtros_def
