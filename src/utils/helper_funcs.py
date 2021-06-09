@@ -4,74 +4,73 @@ import streamlit as st
 
 # @st.cache
 def load_data(file):
-    return pd.read_excel(file)
+	return pd.read_excel(file)
 
 
 def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas={}):
-    lista_filtros = []
+	lista_filtros = []
 
-    # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
-    lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
-    '''try:
-        lista_comentarios = list(datos.filter(
-            regex='omentario*', axis=1).columns)
-    except:
-        lista_comentarios = []'''
+	# col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+	lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
+	'''try:
+		lista_comentarios = list(datos.filter(
+			regex='omentario*', axis=1).columns)
+	except:
+		lista_comentarios = []'''
 
-    lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
+	lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
-    # Se incluyen las preguntas (sean o no divisibles)
-    lista_preguntas = set()
+	# Se incluyen las preguntas (sean o no divisibles)
+	lista_preguntas = set()
 
-    for preg in lista_preguntas_subpreguntas:
-        try:
-            pos_punto = preg.index(".")
-        except:
-            pos_punto = 0
-        num_preg = preg[:pos_punto]
-        pregunta = nombres_preguntas[num_preg] if num_preg in nombres_preguntas else preg
-        lista_preguntas.add(pregunta)
-    pregunta = st.selectbox("Seleccione la pregunta: ", sorted(list(lista_preguntas)))
-    
-    numero = pregunta.split(' ')[0]
-    lista_subpreguntas = [x for x in datos.columns if x.startswith(numero) and x != pregunta]
-    if len(lista_subpreguntas) > 0:
-        pregunta = st.selectbox("Seleccione la subpregunta:", lista_subpreguntas)
-   
+	for preg in lista_preguntas_subpreguntas:
+		try:
+			pos_punto = preg.index(".")
+		except:
+			pos_punto = 0
+		num_preg = preg[:pos_punto]
+		pregunta = nombres_preguntas[num_preg] if num_preg in nombres_preguntas else preg
+		lista_preguntas.add(pregunta)
+	pregunta = st.selectbox("Seleccione la pregunta: ", sorted(list(lista_preguntas)))
 
-    try:
-        cursos = datos.Grupo.unique()
-        cursos.sort()
-        lista_cursos = st.multiselect(
-            'Seleccione los cursos que desea visualizar', cursos)
-    except:
-        lista_cursos = []
+	numero = pregunta.split(' ')[0]
+	lista_subpreguntas = [x for x in datos.columns if x.startswith(numero) and x != pregunta]
+	if len(lista_subpreguntas) > 0:
+		pregunta = st.selectbox("Seleccione la subpregunta:", lista_subpreguntas)
 
-    if tipo_grafica == 'Cajas' or tipo_grafica == 'Dispersión':
-        lista_filtros.append(st.selectbox(
-            "Seleccione el eje x", lista_agrupadores))
-    else:
-        lista_filtros.append(st.selectbox("Seleccione el eje x", [
-            "Pregunta"] + lista_agrupadores))
+	try:
+		cursos = datos.Grupo.unique()
+		cursos.sort()
+		lista_cursos = st.multiselect(
+			'Seleccione los cursos que desea visualizar', cursos)
+	except:
+		lista_cursos = []
 
-    cols = st.beta_columns(3)
-    for index,col in enumerate(cols):
-        with col:
-            if index == 0:
-                lista_filtros.append(st.selectbox("Dividir por color", [" ", "Pregunta"] + lista_agrupadores))
-            elif index == 1:
-                lista_filtros.append(st.selectbox("Dividir por columna", [" ", "Pregunta"] + lista_agrupadores))
-            elif index == 2:
-                lista_filtros.append(st.selectbox("Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
+	if tipo_grafica == 'Cajas' or tipo_grafica == 'Dispersión':
+		lista_filtros.append(st.selectbox(
+			"Seleccione el eje x", lista_agrupadores))
+	else:
+		lista_filtros.append(st.selectbox("Seleccione el eje x", [
+			"Pregunta"] + lista_agrupadores))
 
-    filtros_def = [None if x == ' ' else x for x in lista_filtros]
-    filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
-    indices = list(set(filtros_def).difference([None]))
+	cols = st.beta_columns(3)
+	for index, col in enumerate(cols):
+		with col:
+			if index == 0:
+				lista_filtros.append(st.selectbox("Dividir por color", [" ", "Pregunta"] + lista_agrupadores))
+			elif index == 1:
+				lista_filtros.append(st.selectbox("Dividir por columna", [" ", "Pregunta"] + lista_agrupadores))
+			elif index == 2:
+				lista_filtros.append(st.selectbox("Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
 
-    return pregunta, filtros_def, indices, lista_agrupadores, lista_cursos
+	filtros_def = [None if x == ' ' else x for x in lista_filtros]
+	filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
+	indices = list(set(filtros_def).difference([None]))
+
+	return pregunta, filtros_def, indices, lista_agrupadores, lista_cursos
 
 
-def filtros2(datos, col_preguntas, tipo_grafica, indice_pregunta=False, diccionario_preguntas={}):
+def filtros_tabla(datos, col_preguntas, tipo_grafica, diccionario_preguntas={}):
 	lista_filtros = []
 
 	# col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
@@ -86,25 +85,12 @@ def filtros2(datos, col_preguntas, tipo_grafica, indice_pregunta=False, dicciona
 		set(lista_preguntas).difference(set(lista_comentarios)))
 	lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
-	if not(indice_pregunta):
-		pregunta = st.selectbox("Seleccione la pregunta: ", preguntas_filtro)
-	else:
-		longitud = len(diccionario_preguntas.values())
-		lista_preguntas_indices = [str("Pregunta ") + str(x + 1) for x in range(longitud)]
-		pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas_indices)
-		pregunta = diccionario_preguntas[int(str(pregunta.split(' ')[1]))]
+	longitud = len(diccionario_preguntas.values())
+	lista_preguntas_indices = [str("Pregunta ") + str(x + 1) for x in range(longitud)]
+	pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas_indices)
+	pregunta = diccionario_preguntas[int(str(pregunta.split(' ')[1]))]
 
-	if not (indice_pregunta):
-		try:
-			cursos = datos.Grupo.unique()
-			st.write(cursos)
-			cursos.sort()
-			lista_cursos = st.multiselect(
-				'Seleccione los cursos que desea visualizar', cursos)
-		except:
-			lista_cursos = []
-	else:
-		lista_cursos = []
+	lista_cursos = []
 
 	if tipo_grafica == 'Cajas' or tipo_grafica == 'Dispersión':
 		lista_filtros.append(st.selectbox(
@@ -112,17 +98,10 @@ def filtros2(datos, col_preguntas, tipo_grafica, indice_pregunta=False, dicciona
 	else:
 		lista_filtros.append(st.selectbox("Seleccione el eje x", [
 			"Pregunta"] + lista_agrupadores))
-	if not (indice_pregunta):
-		lista_filtros.append(st.selectbox("Dividir por color", [
-			" ", "Pregunta"] + lista_agrupadores))
-		lista_filtros.append(st.selectbox("Dividir por columna", [
-			" ", "Pregunta"] + lista_agrupadores))
-		lista_filtros.append(st.selectbox("Dividir por fila", [
-			" ", "Pregunta"] + lista_agrupadores))
-	else:
-		lista_filtros.append(st.selectbox("Dividir por color", [" "] + lista_agrupadores))
-		lista_filtros.append(st.selectbox("Dividir por columna", [" "] + lista_agrupadores))
-		lista_filtros.append(st.selectbox("Dividir por fila", [" "] + lista_agrupadores))
+
+	lista_filtros.append(st.selectbox("Dividir por color", [" "] + lista_agrupadores))
+	lista_filtros.append(st.selectbox("Dividir por columna", [" "] + lista_agrupadores))
+	lista_filtros.append(st.selectbox("Dividir por fila", [" "] + lista_agrupadores))
 
 	filtros_def = [None if x == ' ' else x for x in lista_filtros]
 	filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]

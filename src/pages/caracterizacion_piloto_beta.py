@@ -8,43 +8,40 @@ def app():
 	st.write("""# Instrumento de Caracterización Previo al Pilotaje (Docentes)""")
 
 	# Nombre del archivo con los datos
-	file = "data/limpios/instrumento_caracterizacion_previo_pilotaje_docentes.xlsx"
+	file = "data/limpios/formularios_greentic_docentes.xlsx"
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
-	col_preguntas = 6
+	col_preguntas = 23
 
 	if file:
-		datos = pd.read_excel(file, sheet_name='Subhab18Mayo')
+		datos = pd.read_excel(file, sheet_name='Carac18Mayo')
 
 		# initialize list of lists
 		columnas = list(datos.columns)
-		arreglo_multi_respuesta = ['De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
-							 'La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de Jorge ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
-							 'La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este nuevo ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)']
-
-		arreglo_prengutas = ['De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
-							 'Califíquese segun el siguente creiterio:  Soy capaz de explicar lo que es el pensamiento computacional',
-							 'La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de Jorge ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
-							 'La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este nuevo ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)',
-							 'Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de instrucciones ... si por ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces.'
+		arreglo_multi_respuesta = ['Modalidad de trabajo',
+							 'Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
+							 'En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad']
+		arreglo_prengutas = ['Modalidad de trabajo',
+							 'Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
+							 'Dispositivos 2',
+							 'En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad',
+							 'Años de experiencia como docente'
 							 ]
-
 		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
 							 columnas.index(arreglo_prengutas[2]), columnas.index(arreglo_prengutas[3]),
 							 columnas.index(arreglo_prengutas[4])]
-
-		# Esta arreglo de preguntas es necesario debido a que la idea es que el usuario no vea las columnas las cuales
-		# segmentamos por respuestas y las convertimos en columnas
+		# Esta arreglo de preguntas es necesario debido a que el usuario la idea es que no vea las columnas que
+		# segmentamos las respuestas y las convertimos en columna
 		preguntas = np.concatenate((np.array(columnas[col_preguntas:indices_preguntas[0]+1]),
-									np.array(columnas[indices_preguntas[1]:indices_preguntas[2]+1]),
-									np.array(columnas[indices_preguntas[3]]),
+									np.array(columnas[indices_preguntas[1]]),
+									np.array(columnas[indices_preguntas[2]:indices_preguntas[3]+1]),
 									np.array(columnas[indices_preguntas[4]:])), axis=None)
 		# Tabla de preguntas
 		lista_preguntas = [str("Pregunta ") + str(x + 1) for x in range(len(preguntas))]
 		tabla_preguntas = np.stack((lista_preguntas, preguntas), axis=1)
 
-		df_preguntas = pd.DataFrame(tabla_preguntas, columns=['Listado de preguntas', 'Pregunta'])
+		df_preguntas = pd.DataFrame(tabla_preguntas, columns=['Listado de preguntas', 'pregunta'])
 		expander = st.beta_expander("Tabla de las preguntas", expanded=True)
 		with expander:
 			st.table(df_preguntas)
@@ -55,8 +52,9 @@ def app():
 							  ("Barras", "Dispersión", "Cajas"))
 
 		# OJO, se modificó el método filtros (TENER ESO EN CUENTA).
-		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros2(
-			datos, col_preguntas, chart_type, True, diccionario_preguntas)
+		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros_tabla(datos, col_preguntas,
+                                                                                        chart_type,
+                                                                                        diccionario_preguntas)
 
 		ejex, color, columna, fila = filtros_def
 		height = st.slider(
@@ -76,9 +74,9 @@ def app():
 					respuestas = np.array(columnas[indices_preguntas[0]+1:indices_preguntas[0] + repeticiones])
 				elif i == arreglo_multi_respuesta[1]:
 					repeticiones = 4
-					respuestas = np.array(columnas[indices_preguntas[2]+1:indices_preguntas[2] + repeticiones])
+					respuestas = np.array(columnas[indices_preguntas[1]+1:indices_preguntas[1] + repeticiones])
 				else:
-					repeticiones = 5
+					repeticiones = 6
 					respuestas = np.array(columnas[indices_preguntas[3]+1:indices_preguntas[3] + repeticiones])
 				indices_aux = st.selectbox("Seleccione la respuesta a analizar: ", respuestas)
 				category_orders = categories_order(set(datos[pregunta]), indices_aux)
