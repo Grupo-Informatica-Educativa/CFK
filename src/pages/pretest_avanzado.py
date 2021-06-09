@@ -21,7 +21,13 @@ files = [
 # Nombre de las preguntas por el indice
 # Esto se usará para aquellas preguntas que tengan subpreguntas
 nombres_preguntas = {
-    
+    '10': '10. ¿Cuáles de las siguientes estrategias usted ha usado en sus clases? (Selección múltiple con múltiple respuesta)',
+    '11': '11. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
+    '13': '13. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
+    '15': '15. Por favor evalúe las siguientes afirmaciones según qué tan de acuerdo está usted con enseñar las siguientes prácticas como objetivos de aprendizaje relacionados con el pensamiento computacional:',
+    '16': '16. Por favor evalúe los siguientes enunciados de acuerdo con qué tan preparado(a) se siente para integrar el pensamiento computacional en sus cursos:',
+    '18': '18. En una escala de 1 a 10 (donde 10 es muy a menudo), con qué frecuencia utilizarías las siguientes prácticas pedagógicas para enseñar pensamiento computacional.',
+    '20': '20. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
 }
 
 def app():
