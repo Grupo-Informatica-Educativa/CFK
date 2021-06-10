@@ -10,7 +10,16 @@ files = [
     },
     {
         "title": "Conocimientos",
-        "file":  "pre_avanzado_conocimientos.xlsx"
+        "file":  "pre_avanzado_conocimientos.xlsx",
+        "respuestas" : {
+            "22": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
+            "23": "Esta función no imprime nunca nada",
+            "24": "x ::2 * 3.14 * r  →  y ::x * r  → z ::h * x  → areaSuperficie :: y + z",
+            "25": "alfa, delta, gama, beta, épsilon",
+            "26": "Cree que, si la condición se cumple, todo lo que sigue se va a ejecutar",
+            "27": "Imagen 3",
+            "28": "Cada uno tiene un número asignado y gana solamente si presiona su botón cuando sale este número",
+        }
     },
     {
         "title": "Género",
@@ -33,10 +42,10 @@ nombres_preguntas = {
 def app():
     st.write("""# Pretest Avanzado""")
 
-    preguntas = st.selectbox("Seleccione la categoría", files,
+    categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = f"data/limpios/{preguntas['file']}"
+    file = f"data/limpios/{categoria['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -48,11 +57,16 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupos = filtros(
-            datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
+            datos, col_preguntas, chart_type, categoria, nombres_preguntas=nombres_preguntas)
+
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-        if preguntas['title'] == 'Conocimientos':
+
+        if color == "Eficacia":
+            datos = graph_answer(datos,pregunta,categoria)
+
+        if categoria['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
 
         orden_grupos = ["A"+str(x) for x in range(36)]

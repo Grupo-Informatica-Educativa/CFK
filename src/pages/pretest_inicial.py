@@ -1,6 +1,7 @@
 import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
+from src.utils.answers_funcs import *
 
 files = [
     {
@@ -10,6 +11,15 @@ files = [
     {
         "title": "Conocimientos",
         "file":  "pre_inicial_conocimientos.xlsx",
+        "respuestas" : {
+            "24": 3,
+            "25": "El programa no funciona, debe capturar nuevamente el valor de la temperatura luego de encender el ventilador",
+            "26": "6",
+            "27": "10",
+            "28": "II y III",
+            "29": "La segunda expresión es verdadera si “(a O b)” es verdadero",
+            "31": "Está equivocada, el resultado es 120.",
+        }
     },
     {
         "title": "Género",
@@ -36,10 +46,10 @@ nombres_preguntas = {
 
 def app():
     st.write("""# Pretest Inicial""")
-    preguntas = st.selectbox("Seleccione la categoría", files,
+    categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
-    file = f"data/limpios/{preguntas['file']}"
+    file = f"data/limpios/{categoria['file']}"
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -52,15 +62,19 @@ def app():
                               ("Barras", "Dispersión", "Cajas"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
-            datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
-            
+            datos, col_preguntas, chart_type, categoria, nombres_preguntas=nombres_preguntas)
+
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
+        print(datos[pregunta].unique())
+        if color == "Eficacia":
+            datos = graph_answer(datos,pregunta,categoria)
+                
         orden_grupos = ["I"+str(x) for x in range(87)]
 
-        if preguntas['title'] == 'Conocimientos':
+        if categoria['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
         
         category_orders = categories_order(
@@ -68,6 +82,7 @@ def app():
 
         if lista_grupo != []:
             datos = datos.loc[datos.Grupo.isin(lista_grupo)]
+
         if len(datos) == 0:
             st.warning(
                 "El / los grupos seleccionados no tienen datos para mostrar")
@@ -79,6 +94,7 @@ def app():
             if chart_type == "Barras":
                 """ Los diagramas de barra exigen agrupar la información antes de graficar """
                 pivot = pivot_data(datos, indices, columna_unica)
+                
                 fig = bar_chart(columna_unica=columna_unica,
                                 pivot=pivot, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices,

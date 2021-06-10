@@ -1,13 +1,13 @@
 import pandas as pd
 import streamlit as st
-
+from src.utils.answers_funcs import *
 
 # @st.cache
 def load_data(file):
 	return pd.read_excel(file)
 
 
-def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas={}):
+def filtros(datos, col_preguntas, tipo_grafica, categoria=None,nombres_preguntas={}):
 	lista_filtros = []
 
 	# col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
@@ -54,6 +54,10 @@ def filtros(datos, col_preguntas, tipo_grafica, nombres_preguntas={}):
 			"Pregunta"] + lista_agrupadores))
 
 	cols = st.beta_columns(3)
+
+	if has_answer(datos,pregunta,categoria):
+		lista_agrupadores = ["Eficacia"] + lista_agrupadores
+
 	for index, col in enumerate(cols):
 		with col:
 			if index == 0:
