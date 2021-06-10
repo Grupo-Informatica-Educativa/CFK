@@ -8,7 +8,7 @@ def app():
 	st.write("""# Instrumento de Caracterización Previo al Pilotaje (Docentes)""")
 
 	# Nombre del archivo con los datos
-	file = "data/limpios/instrumento_caracterizacion_previo_pilotaje_docentes.xlsx"
+	file = "data/limpios/formularios_greentic_docentes.xlsx"
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
@@ -52,8 +52,9 @@ def app():
 							  ("Barras", "Dispersión", "Cajas"))
 
 		# OJO, se modificó el método filtros (TENER ESO EN CUENTA).
-		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros2(
-			datos, col_preguntas, chart_type, True, diccionario_preguntas)
+		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros_tabla(datos, col_preguntas,
+                                                                                        chart_type,
+                                                                                        diccionario_preguntas)
 
 		ejex, color, columna, fila = filtros_def
 		height = st.slider(
