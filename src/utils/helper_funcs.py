@@ -61,13 +61,15 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
     cols = st.beta_columns(3)
 
     if has_answer(datos, pregunta, categoria):
-        lista_agrupadores_eficacia = ["Eficacia"] + lista_agrupadores
+        lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
+    else:
+        lista_agrupadores_color = lista_agrupadores
 
     for index, col in enumerate(cols):
         with col:
             if index == 0:
                 lista_filtros.append(st.selectbox("Dividir por color", [
-                                     " ", "Pregunta"] + lista_agrupadores_eficacia))
+                                     " ", "Pregunta"] + lista_agrupadores_color))
             elif index == 1:
                 lista_filtros.append(st.selectbox("Dividir por columna", [
                                      " ", "Pregunta"] + lista_agrupadores))
