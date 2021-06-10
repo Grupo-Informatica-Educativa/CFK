@@ -99,9 +99,15 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, diccionario_preguntas={}):
 		lista_filtros.append(st.selectbox("Seleccione el eje x", [
 			"Pregunta"] + lista_agrupadores))
 
-	lista_filtros.append(st.selectbox("Dividir por color", [" "] + lista_agrupadores))
-	lista_filtros.append(st.selectbox("Dividir por columna", [" "] + lista_agrupadores))
-	lista_filtros.append(st.selectbox("Dividir por fila", [" "] + lista_agrupadores))
+	cols = st.beta_columns(3)
+	for index, col in enumerate(cols):
+		with col:
+			if index == 0:
+				lista_filtros.append(st.selectbox("Dividir por color", [" "] + lista_agrupadores))
+			elif index == 1:
+				lista_filtros.append(st.selectbox("Dividir por columna", [" "] + lista_agrupadores))
+			elif index == 2:
+				lista_filtros.append(st.selectbox("Dividir por fila", [" "] + lista_agrupadores))
 
 	filtros_def = [None if x == ' ' else x for x in lista_filtros]
 	filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]

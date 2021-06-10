@@ -5,7 +5,7 @@ from src.utils.helper_funcs import *
 
 
 def app():
-	st.write("""# Instrumento de Caracterización Previo al Pilotaje (Docentes)""")
+	st.write("""# GreenTIC: Caracterización piloto beta""")
 
 	# Nombre del archivo con los datos
 	file = "data/limpios/formularios_greentic_docentes.xlsx"

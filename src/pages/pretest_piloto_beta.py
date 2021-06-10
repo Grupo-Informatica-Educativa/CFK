@@ -5,14 +5,14 @@ from src.utils.helper_funcs import *
 
 
 def app():
-	st.write("""# Instrumento de Caracterización Previo al Pilotaje (Docentes)""")
+	st.write("""# GreenTIC: Pretest piloto beta""")
 
 	# Nombre del archivo con los datos
 	file = "data/limpios/formularios_greentic_docentes.xlsx"
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
-	col_preguntas = 6
+	col_preguntas = 7
 
 	if file:
 		datos = pd.read_excel(file, sheet_name='Subhab18Mayo')
