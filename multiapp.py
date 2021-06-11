@@ -29,33 +29,24 @@ class MultiApp:
 
     def run(self):
         st.sidebar.write(f'# {self.page_title}')
-        ischecked = st.sidebar.checkbox('Habilitar herramientas:')
-        if not ischecked:
-            app = st.sidebar.radio(
-                'Secciones:',
-                self.apps,
-                format_func=lambda app: app['title'])
-            
-            if len(self.preguntas) > 0:
-                group_expander = st.sidebar.beta_expander(label='Graficas por Preguntas', expanded=False)
-                with group_expander:
-                    isPregunta_checked = st.checkbox('Habilitar')
-                    if (isPregunta_checked):
-                        app = st.radio(
-                            'Seleccione una pregunta',
-                            self.preguntas,
-                            format_func=lambda app: app['title']
-                        )
 
-            app['function']()
-        else:
-            graph_expander = st.sidebar.beta_expander(label='Herramientas', expanded=True)
-            with graph_expander:
-                pages = [{
-                    'title': 'Graficador',
-                    'function': ejemplo2020.app
-                }]
-                app_expander = st.radio("Seleccione herramienta: ", pages, format_func=lambda app: app['title'])
-            app_expander['function']()
+        app = st.sidebar.radio(
+            'Secciones:',
+            self.apps,
+            format_func=lambda app: app['title'])
+        
+        if len(self.preguntas) > 0:
+            group_expander = st.sidebar.beta_expander(label='Graficas por Preguntas', expanded=False)
+            with group_expander:
+                isPregunta_checked = st.checkbox('Habilitar')
+                if (isPregunta_checked):
+                    app = st.radio(
+                        'Seleccione una pregunta',
+                        self.preguntas,
+                        format_func=lambda app: app['title']
+                    )
+
+        app['function']()
+     
         
         
