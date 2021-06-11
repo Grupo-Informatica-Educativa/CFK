@@ -19,15 +19,16 @@ def app():
 
 		# initialize list of lists
 		columnas = list(datos.columns)
-		arreglo_multi_respuesta = ['Modalidad de trabajo',
-							 'Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
-							 'En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad']
-		arreglo_prengutas = ['Modalidad de trabajo',
-							 'Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
-							 'Dispositivos 2',
-							 'En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad',
-							 'Años de experiencia como docente'
+		arreglo_multi_respuesta = ['19. Modalidad de trabajo',
+							 '20. Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
+							 '31. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad']
+		arreglo_prengutas = ['19. Modalidad de trabajo',
+							 '20. Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
+							 '21. Dispositivos 2',
+							 '31. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad',
+							 '32. Años de experiencia como docente'
 							 ]
+
 		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
 							 columnas.index(arreglo_prengutas[2]), columnas.index(arreglo_prengutas[3]),
 							 columnas.index(arreglo_prengutas[4])]
@@ -38,23 +39,23 @@ def app():
 									np.array(columnas[indices_preguntas[2]:indices_preguntas[3]+1]),
 									np.array(columnas[indices_preguntas[4]:])), axis=None)
 		# Tabla de preguntas
-		lista_preguntas = [str("Pregunta ") + str(x + 1) for x in range(len(preguntas))]
-		tabla_preguntas = np.stack((lista_preguntas, preguntas), axis=1)
+		lista_preguntas = [str("Pregunta ") + preguntas[x].split(' ')[0][:-1] for x in range(len(preguntas))]
+		preguntas_tabla = [' '.join(preguntas[x].split(' ')[1:]) for x in range(len(preguntas))]
+		tabla_preguntas = np.stack((lista_preguntas, preguntas_tabla), axis=1)
 
 		df_preguntas = pd.DataFrame(tabla_preguntas, columns=['Listado de preguntas', 'pregunta'])
 		expander = st.beta_expander("Tabla de las preguntas", expanded=False)
 		with expander:
 			st.table(df_preguntas)
 		# Este diccionario es necesario para que el checkbox apunte a la respuesta de la BD
-		diccionario_preguntas = {i + 1: list(preguntas)[i] for i in range(len(preguntas))}
 
 		chart_type = st.radio("Tipo de visualización ",
 							  ("Barras", "Dispersión", "Cajas"))
 
 		# OJO, se modificó el método filtros (TENER ESO EN CUENTA).
 		pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros_tabla(datos, col_preguntas,
-                                                                                        chart_type,
-                                                                                        diccionario_preguntas)
+                                                                                        chart_type, None,
+                                                                                        preguntas)
 
 		ejex, color, columna, fila = filtros_def
 		height = st.slider(
