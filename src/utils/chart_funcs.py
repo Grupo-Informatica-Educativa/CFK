@@ -110,7 +110,7 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
     else:
-        cat_order = list(answers)
+        cat_order = list(answers).sort()
 
     category_orders = {pregunta: cat_order,
                        "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"], 'Curso': orden_cursos}
