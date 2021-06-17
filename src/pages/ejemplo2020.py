@@ -24,7 +24,7 @@ def app():
     # A partir de esta columna comienzan las preguntas (columnas de interés)
     col_preguntas = st.number_input(
         "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
-    
+
     if file:
 
         datos = load_data(file)
@@ -41,9 +41,29 @@ def app():
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-            
-        category_orders = categories_order(
-            set(datos[pregunta]), pregunta)
+
+        if ejex == 'Pregunta':
+            answer_orders = st.multiselect(
+                'Seleccione el orden en el que se debe presentar el eje x', datos[pregunta].unique())
+            category_orders = {pregunta: answer_orders}
+        else:
+            answer_orders = st.multiselect(
+                'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
+            category_orders = {ejex: answer_orders}
+        if color != None:
+            color_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías de color', datos[color].unique())
+            category_orders[color] = color_orders
+        if columna != None:
+            column_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por columnas', datos[columna].unique())
+            category_orders[columna] = column_orders
+        if fila != None:
+            row_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por fila', datos[fila].unique())
+            category_orders[fila] = row_orders
+
+        #categories_order(set(datos[pregunta]), pregunta)
 
         if len(datos) == 0:
             st.warning(
@@ -56,7 +76,7 @@ def app():
             if chart_type == "Barras":
                 """ Los diagramas de barra exigen agrupar la información antes de graficar """
                 pivot = pivot_data(datos, indices, columna_unica)
-                
+
                 fig = bar_chart(columna_unica=columna_unica,
                                 pivot=pivot, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices,
