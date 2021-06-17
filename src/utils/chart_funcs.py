@@ -100,12 +100,16 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
     yes_no = ["SI", "NO"]
     de_acuerdo = ["Totalmente en desacuerdo", "En desacuerdo",
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
+    imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
+                'Imagen 4', 'No sé/No lo conozco']
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
     elif len(set(de_acuerdo) - answers) < 2:
         cat_order = de_acuerdo
     elif len(set(yes_no) - answers) < 2:
         cat_order = yes_no
+    elif len(set(imagenes) - answers) < 2:
+        cat_order = imagenes
     elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
