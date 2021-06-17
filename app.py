@@ -7,6 +7,8 @@ from src.pages import encuesta_caracterizacion
 from src.pages import caracterizacion_piloto_beta
 from src.pages import pretest_piloto_beta
 from src.pages import pretest_mentores
+from src.pages import pretest_piloto_gamma
+from src.pages import genero_y_actitudes_ambientales_piloto_beta
 
 from src.preguntas.p1 import pregunta1
 
@@ -20,8 +22,12 @@ app.add_app("Pretest Mentores", pretest_mentores.app)
 app.add_app("Encuesta Caracterización", encuesta_caracterizacion.app)
 
 app.add_app("GreenTIC: Caracterización piloto beta",
-            caracterizacion_piloto_beta.app)
+			caracterizacion_piloto_beta.app)
 app.add_app("GreenTIC: Pretest piloto beta", pretest_piloto_beta.app)
+
+app.add_app("GreentTIC: Pretest piloto gamma",
+			pretest_piloto_gamma.app)
+app.add_app("GreenTIC: Género y actitudes ambientales", genero_y_actitudes_ambientales_piloto_beta.app)
 
 # The main app
 app.run()
