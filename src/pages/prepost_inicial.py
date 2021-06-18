@@ -6,11 +6,11 @@ from src.utils.answers_funcs import *
 files = [
     {
         "title": "Autoeficacia",
-        "file":  "pre_inicial_autoeficacia.xlsx",
+        "file":  "prepost_inicial_autoeficacia.xlsx",
     },
     {
         "title": "Conocimientos",
-        "file":  "pre_inicial_conocimientos.xlsx",
+        "file":  "prepost_inicial_conocimientos.xlsx",
         "respuestas": {
             "24": 3,
             "25": "El programa no funciona, debe capturar nuevamente el valor de la temperatura luego de encender el ventilador",
@@ -23,7 +23,7 @@ files = [
     },
     {
         "title": "Género",
-        "file":  "pre_inicial_genero.xlsx",
+        "file":  "prepost_inicial_genero.xlsx",
     }
 ]
 
@@ -45,7 +45,7 @@ nombres_preguntas = {
 
 
 def app():
-    st.write("""# Pretest Inicial""")
+    st.write("""#  Pre - Post Inicial (Datos relacionados)""")
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
@@ -53,7 +53,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 28
+    col_preguntas = 29
 
     if file:
         datos = load_data(file)
