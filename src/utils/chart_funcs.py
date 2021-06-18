@@ -78,7 +78,7 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
                  color=color, facet_row=fila,
                  facet_col=columna,
                  color_discrete_sequence=px.colors.qualitative.Pastel,
-                 facet_col_wrap=4)
+                 facet_col_wrap=4, category_orders=category_orders)
     return fig
 
 
@@ -102,6 +102,7 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
                 'Imagen 4', 'No sé/No lo conozco']
+    edades = ['16-20', '21-24', '25-34', '35-44', '45+']
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
     elif len(set(de_acuerdo) - answers) < 2:
@@ -110,6 +111,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = yes_no
     elif len(set(imagenes) - answers) < 2:
         cat_order = imagenes
+    elif len(set(edades) - answers) < 2:
+        cat_order = edades
     elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
@@ -117,6 +120,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = list(answers)
 
     category_orders = {pregunta: cat_order,
-                       "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"], 'Curso': orden_cursos}
+                       "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"],
+                       'Género': ["Femenino", "Masculino"], 'Curso': orden_cursos,
+                       'Edad': edades}
 
     return category_orders

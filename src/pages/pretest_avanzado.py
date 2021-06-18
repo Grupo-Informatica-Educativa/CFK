@@ -11,7 +11,7 @@ files = [
     {
         "title": "Conocimientos",
         "file":  "pre_avanzado_conocimientos.xlsx",
-        "respuestas" : {
+        "respuestas": {
             "22": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
             "23": "Esta función no imprime nunca nada",
             "24": "x ::2 * 3.14 * r  →  y ::x * r  → z ::h * x  → areaSuperficie :: y + z",
@@ -39,6 +39,7 @@ nombres_preguntas = {
     '20': '20. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
 }
 
+
 def app():
     st.write("""# Pretest Avanzado""")
 
@@ -49,7 +50,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 29
+    col_preguntas = 27
 
     if file:
         datos = load_data(file)
@@ -64,10 +65,13 @@ def app():
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         if color == "Eficacia":
-            datos = graph_answer(datos,pregunta,categoria)
+            datos = graph_answer(datos, pregunta, categoria)
 
         if categoria['title'] == 'Conocimientos':
-            datos[pregunta] = datos[pregunta].astype(str)
+            if pregunta == 'Puntaje Conocimiento':
+                datos[pregunta] = datos[pregunta].astype(float)
+            else:
+                datos[pregunta] = datos[pregunta].astype(str)
 
         orden_grupos = ["A"+str(x) for x in range(36)]
         category_orders = categories_order(
@@ -93,7 +97,7 @@ def app():
             elif chart_type == "Cajas":
                 fig = box_chart(columna_unica=pregunta,
                                 pivot=datos, ejex=ejex, color=color,
-                                fila=fila, columna=columna, indices=indices)
+                                fila=fila, columna=columna, indices=indices, category_orders=category_orders)
                 fig.update_yaxes(col=1, title=None)
             else:
                 fig = scatter_chart(columna_unica=columna_unica,
