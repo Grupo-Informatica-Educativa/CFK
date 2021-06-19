@@ -12,10 +12,10 @@ def app():
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
-	col_preguntas = 23
+	col_preguntas = 14
 
 	if file:
-		datos = pd.read_excel(file, sheet_name='Carac18Mayo')
+		datos = pd.read_excel(file, sheet_name='caracterizacion')
 
 		# initialize list of lists
 		columnas = list(datos.columns)

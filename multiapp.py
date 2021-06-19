@@ -7,76 +7,63 @@ from src.pages import ejemplo2020
 class MultiApp:
 
     def __init__(self, page_title):
-        self.apps = []
+        
         self.preguntas = []
+        self.inicial = []
+        self.avanzado = []
+        self.mentores = []
+        self.greentic = []
         self.page_title = page_title
         st.set_page_config(
             page_title=page_title,
             layout="wide",
         )
 
-    def add_app(self, title, func):
-        self.apps.append({
-            "title": title,
-            "function": func
-        })
-
-    def add_pregunta(self, title, func):
-        self.preguntas.append({
-            "title": title,
-            "function": func
-        }
-        )
+    def add_app(self, title, func,_type):
+        if  _type == "Inicial":
+            self.inicial.append({
+                "title": title,
+                "function": func
+            })
+        elif _type == "Avanzado":    
+            self.avanzado.append({
+                "title": title,
+                "function": func
+            })
+        elif _type == "Greentic":
+            self.greentic.append({
+                "title": title,
+                "function": func
+            })
+        elif _type == "Pregunta":
+            self.preguntas.append({
+                "title": title,
+                "function": func
+            })
+        elif _type == "Mentores":
+            self.mentores.append({
+                "title": title,
+                "function": func
+            })
 
     def run(self):
         st.sidebar.write(f'# {self.page_title}')
 
-        ischecked = st.sidebar.checkbox('Habilitar herramientas:')
-        if not ischecked:
-            app = st.sidebar.radio(
-                'Secciones:',
-                self.apps,
-                format_func=lambda app: app['title'])
-
-            if len(self.preguntas) > 0:
-                group_expander = st.sidebar.beta_expander(
-                    label='Graficas por Preguntas', expanded=False)
-                with group_expander:
-                    isPregunta_checked = st.checkbox('Habilitar')
-                    if (isPregunta_checked):
-                        app = st.radio('Seleccione una pregunta',
-                                       self.preguntas,
-                                       format_func=lambda app: app['title']
-                                       )
-
-            app['function']()
-        else:
-            graph_expander = st.sidebar.beta_expander(
-                label='Herramientas', expanded=True)
-            with graph_expander:
-                pages = [{
+        categorias = st.sidebar.radio("Secciones",["Herramientas","Cuestionario Inicial","Cuestionario Avanzado","Greentic","Mentores"])
+ 
+        if categorias == "Herramientas":
+            pages = [{
                     'title': 'Graficador',
                     'function': ejemplo2020.app
                 }]
-                app_expander = st.radio(
-                    "Seleccione herramienta: ", pages, format_func=lambda app: app['title'])
-            app_expander['function']()
-
-        # app = st.sidebar.radio(
-        #     'Secciones:',
-        #     self.apps,
-        #     format_func=lambda app: app['title'])
-
-        # if len(self.preguntas) > 0:
-        #     group_expander = st.sidebar.beta_expander(
-        #         label='Graficas por Preguntas', expanded=False)
-        #     with group_expander:
-        #         isPregunta_checked = st.checkbox('Habilitar')
-        #         if (isPregunta_checked):
-        #             app = st.radio(
-        #                 'Seleccione una pregunta',
-        #                 self.preguntas,
-        #                 format_func=lambda app: app['title']
-        #             )
-
-        # app['function']()
+            app = st.sidebar.radio("Seleccione herramienta: ", pages, format_func=lambda app: app['title'])
+        elif categorias == "Cuestionario Inicial":
+            app = st.sidebar.radio("Seleccione cuestionario: ", self.inicial, format_func=lambda app: app['title'])
+        elif categorias == "Cuestionario Avanzado":
+            app = st.sidebar.radio("Seleccione cuestionario: ", self.avanzado, format_func=lambda app: app['title'])
+        elif categorias == "Greentic":
+            app = st.sidebar.radio("Seleccione: ", self.greentic, format_func=lambda app: app['title'])
+        elif categorias == "Mentores":
+            app = st.sidebar.radio("Seleccione: ", self.mentores, format_func=lambda app: app['title'])
+        
+        app['function']()
