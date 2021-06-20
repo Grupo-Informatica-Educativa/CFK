@@ -38,8 +38,12 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
                             sorted(list(lista_preguntas)))
 
     numero = pregunta.split(' ')[0]
-    lista_subpreguntas = [
-        x for x in datos.columns if x.startswith(numero) and x != pregunta]
+
+    if numero[:-1].isdigit():
+        lista_subpreguntas = [
+            x for x in datos.columns if x.startswith(numero) and x != pregunta]
+    else:
+        lista_subpreguntas = []
     if len(lista_subpreguntas) > 0:
         pregunta = st.selectbox(
             "Seleccione la subpregunta:", lista_subpreguntas)

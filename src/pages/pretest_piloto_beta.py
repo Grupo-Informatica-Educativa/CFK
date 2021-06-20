@@ -12,10 +12,10 @@ def app():
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
-	col_preguntas = 7
+	col_preguntas = 9
 	files = {
 		"respuestas": {
-			"5": "Sí porque Maritza está usando un algoritmo para encontrar su almuerzo",
+			"5": "Sí porque Maritza está dividiendo el problema en problemas más sencillos, Sí porque Maritza está usando un algoritmo para encontrar su almuerzo",
 			"6": "Sí porque los estudiantes están aprendiendo a recolectar/organizar/analizar datos, Sí porque los estudiantes están aprendiendo sobre modelos computacionales para la predicción del clima",
 			"8": "B",
 			"9": "Alicia, Clara, Fanny, Bernardo, David, Eugenia, Henry y Gabriela",
@@ -33,21 +33,21 @@ def app():
 	# ver como acomarem al metodo graph_answer
 
 	if file:
-		datos = pd.read_excel(file, sheet_name='Subhab18Mayo')
+		datos = pd.read_excel(file, sheet_name='subhabilidades')
 
 		# initialize list of lists
 		columnas = list(datos.columns)
 		arreglo_multi_respuesta = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
-			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de Jorge ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
-			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este nuevo ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)']
+			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
+			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)']
 
 		arreglo_prengutas = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
 			'4.1. Califíquese segun el siguente creiterio:  Soy capaz de explicar lo que es el pensamiento computacional',
-			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de Jorge ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
-			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este nuevo ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)',
-			'8. Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de instrucciones ... si por ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces.'
+			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
+			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)',
+			'8. Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de ... si por ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces.'
 			]
 
 		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
@@ -99,10 +99,10 @@ def app():
 					repeticiones = 11
 					respuestas = np.array(columnas[indices_preguntas[0] + 1:indices_preguntas[0] + repeticiones])
 				elif i == arreglo_multi_respuesta[1]:
-					repeticiones = 4
+					repeticiones = 6
 					respuestas = np.array(columnas[indices_preguntas[2] + 1:indices_preguntas[2] + repeticiones])
 				else:
-					repeticiones = 5
+					repeticiones = 7
 					respuestas = np.array(columnas[indices_preguntas[3] + 1:indices_preguntas[3] + repeticiones])
 				indices_aux = st.selectbox("Seleccione la respuesta a analizar: ", respuestas)
 				category_orders = categories_order(set(datos[pregunta]), indices_aux)
