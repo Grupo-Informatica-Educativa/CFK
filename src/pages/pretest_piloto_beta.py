@@ -12,7 +12,7 @@ def app():
 	# Nombre de la columna cuyos datos son únicos para cada respuesta
 	columna_unica = 'Registro'
 	# A partir de esta columna comienzan las preguntas (columnas de interés)
-	col_preguntas = 4
+	col_preguntas = 9
 	files = {
 		"respuestas": {
 			"5": "Sí porque Maritza está dividiendo el problema en problemas más sencillos, Sí porque Maritza está usando un algoritmo para encontrar su almuerzo",
