@@ -96,7 +96,7 @@ def app():
 		for i in indices:
 			if i in arreglo_multi_respuesta:
 				if i == arreglo_multi_respuesta[0]:
-					repeticiones = 11
+					repeticiones = 12
 					respuestas = np.array(columnas[indices_preguntas[0] + 1:indices_preguntas[0] + repeticiones])
 				elif i == arreglo_multi_respuesta[1]:
 					repeticiones = 6

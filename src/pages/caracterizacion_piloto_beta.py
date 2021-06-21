@@ -21,12 +21,12 @@ def app():
 		columnas = list(datos.columns)
 		arreglo_multi_respuesta = ['19. Modalidad de trabajo',
 							 '20. Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
-							 '31. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad']
+							 '30. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad']
 		arreglo_prengutas = ['19. Modalidad de trabajo',
 							 '20. Dispositivos electrónicos que tiene a su disposición y podría utilizar para pilotear la aplicación GreenTIC.',
 							 '21. Dispositivos 2',
-							 '31. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad',
-							 '32. Años de experiencia como docente'
+							 '30. En los grados en los que enseña, ¿hay estudiantes en condición de discapacidad? \nSi los hay, indique el tipo de discapacidad',
+							 '31. Años de experiencia como docente'
 							 ]
 
 		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
