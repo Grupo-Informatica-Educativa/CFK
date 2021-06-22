@@ -81,7 +81,16 @@ def app():
 					respuestas = np.array(columnas[indices_preguntas[3]+1:indices_preguntas[3] + repeticiones])
 				indices_aux = st.selectbox("Seleccione la respuesta a analizar: ", respuestas)
 				category_orders = categories_order(set(datos[pregunta]), indices_aux)
-				ejex = indices_aux
+				posicion_pregunta = np.where(np.array(filtros_def) == pregunta)[0]
+				for j in posicion_pregunta:
+					if j == 0:
+						ejex = indices_aux
+					if j == 1:
+						color = indices_aux
+					if j == 2:
+						columna = indices_aux
+					if j == 3:
+						fila = indices_aux
 				indices[contador] = indices_aux
 			contador += 1
 
