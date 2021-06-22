@@ -25,15 +25,25 @@ def app():
 
 		# initialize list of lists
 		columnas = list(datos.columns)
-		arreglo_multi_respuesta = []
+		arreglo_multi_respuesta = ['3. ¿Qué percepción tienes de la carrera ...?',
+								   '4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
+								   '5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?']
 
-		arreglo_prengutas = []
+		arreglo_prengutas = ['3. ¿Qué percepción tienes de la carrera ...?',
+							 '4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
+							 '5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?',
+							 '6. Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de ... ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces. (Pregunta Global)']
 
-		indices_preguntas = []
+		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
+							 columnas.index(arreglo_prengutas[2]), columnas.index(arreglo_prengutas[3])
+							 ]
 
 		# Esta arreglo de preguntas es necesario debido a que la idea es que el usuario no vea las columnas las cuales
 		# segmentamos por respuestas y las convertimos en columnas
-		preguntas = columnas[col_preguntas:]
+		preguntas = np.concatenate((np.array(columnas[col_preguntas:indices_preguntas[0] + 1]),
+									np.array(columnas[indices_preguntas[1]]),
+									np.array(columnas[indices_preguntas[2]]),
+									np.array(columnas[indices_preguntas[3]:])), axis=None)
 		# Tabla de preguntas
 		lista_preguntas = [str("Pregunta ") + preguntas[x].split(' ')[0][:-1] for x in range(len(preguntas))]
 		preguntas_tabla = [' '.join(preguntas[x].split(' ')[1:]) for x in range(len(preguntas))]
@@ -70,17 +80,26 @@ def app():
 		for i in indices:
 			if i in arreglo_multi_respuesta:
 				if i == arreglo_multi_respuesta[0]:
-					repeticiones = 11
+					repeticiones = 13
 					respuestas = np.array(columnas[indices_preguntas[0] + 1:indices_preguntas[0] + repeticiones])
 				elif i == arreglo_multi_respuesta[1]:
-					repeticiones = 4
-					respuestas = np.array(columnas[indices_preguntas[2] + 1:indices_preguntas[2] + repeticiones])
+					repeticiones = 9
+					respuestas = np.array(columnas[indices_preguntas[1] + 1:indices_preguntas[1] + repeticiones])
 				else:
-					repeticiones = 5
-					respuestas = np.array(columnas[indices_preguntas[3] + 1:indices_preguntas[3] + repeticiones])
+					repeticiones = 11
+					respuestas = np.array(columnas[indices_preguntas[2] + 1:indices_preguntas[2] + repeticiones])
 				indices_aux = st.selectbox("Seleccione la respuesta a analizar: ", respuestas)
 				category_orders = categories_order(set(datos[pregunta]), indices_aux)
-				ejex = indices_aux
+				posicion_pregunta = np.where(np.array(filtros_def) == pregunta)[0]
+				for j in posicion_pregunta:
+					if j == 0:
+						ejex = indices_aux
+					if j == 1:
+						color = indices_aux
+					if j == 2:
+						columna = indices_aux
+					if j == 3:
+						fila = indices_aux
 				indices[contador] = indices_aux
 			contador += 1
 

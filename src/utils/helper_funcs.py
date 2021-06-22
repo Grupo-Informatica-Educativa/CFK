@@ -97,14 +97,14 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, categoria=None,  arreglo_p
 
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
-    try:
+    '''try:
         lista_comentarios = list(datos.filter(
             regex='omentario*', axis=1).columns)
     except:
-        lista_comentarios = []
+        lista_comentarios = []'''
 
-    preguntas_filtro = list(
-        set(lista_preguntas).difference(set(lista_comentarios)))
+    #preguntas_filtro = list(
+    #    set(lista_preguntas).difference(set(lista_comentarios)))
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
     lista_preguntas = [str("Pregunta ") + arreglo_preguntas[x].split(' ')[0][:-1]
@@ -133,13 +133,13 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, categoria=None,  arreglo_p
         with col:
             if index == 0:
                 lista_filtros.append(st.selectbox(
-                    "Dividir por color", [" "] + lista_agrupadores_color))
+                    "Dividir por color", [" ", "Pregunta"] + lista_agrupadores_color))
             elif index == 1:
                 lista_filtros.append(st.selectbox(
-                    "Dividir por columna", [" "] + lista_agrupadores))
+                    "Dividir por columna", [" ", "Pregunta"] + lista_agrupadores))
             elif index == 2:
                 lista_filtros.append(st.selectbox(
-                    "Dividir por fila", [" "] + lista_agrupadores))
+                    "Dividir por fila", [" ", "Pregunta"] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
