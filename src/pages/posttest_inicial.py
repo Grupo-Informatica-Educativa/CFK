@@ -46,6 +46,10 @@ nombres_preguntas = {
 
 def app():
     st.write("""# Posttest Inicial""")
+
+    chart_type = st.radio("Tipo de visualización ",
+                                ("Barras", "Dispersión", "Cajas"))
+
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos
@@ -58,9 +62,6 @@ def app():
     if file:
         datos = load_data(file)
 
-        chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Dispersión", "Cajas"))
-
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
             datos, col_preguntas, chart_type, categoria, nombres_preguntas=nombres_preguntas)
 
@@ -68,7 +69,6 @@ def app():
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        print(datos[pregunta].unique())
         if color == "Eficacia":
             datos = graph_answer(datos, pregunta, categoria)
 
