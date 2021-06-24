@@ -37,12 +37,13 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                  text="Frecuencia",
                  facet_col_wrap=4, range_y=(0, 1))
 
-    fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
+    fig.for_each_yaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
     fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     return fig
 
 
-def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None):
+def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
+                       category_orders=None):
     fig = px.bar(pivot, x=ejex, y=columna_unica,
                  color=color, facet_row=fila,
                  facet_col=columna, barmode="group",
@@ -57,11 +58,12 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
     return fig
 
 
-def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
+def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
+              category_orders=None):
     # st.write(columna_unica)
     if st.checkbox("Visualizar frecuencia relativa"):
         columna_total = st.selectbox(
-            "Relativo respecto a: ", ["Total"]+indices)
+            "Relativo respecto a: ", ["Total"] + indices)
         fig = relative_bar_chart(columna_total=columna_total,
                                  columna_unica=columna_unica,
                                  pivot=pivot, ejex=ejex, color=color,
@@ -73,7 +75,8 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
-def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
+def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
+              category_orders=None):
     fig = px.box(pivot, x=ejex, y=columna_unica,
                  color=color, facet_row=fila,
                  facet_col=columna,
@@ -82,7 +85,8 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
-def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, lista_agrupadores=None, category_orders=None):
+def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
+                  lista_agrupadores=None, category_orders=None):
     ejey = st.selectbox("Elija eje Y: ", lista_agrupadores)
     fig = px.scatter(pivot, x=ejex, y=ejey,
                      color=color, facet_row=fila,
@@ -101,8 +105,12 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
     de_acuerdo = ["Totalmente en desacuerdo", "En desacuerdo",
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
-                'Imagen 4', 'No sé/No lo conozco']
+                            'Imagen 4', 'No sé/No lo conozco']
     edades = ['16-20', '21-24', '25-34', '35-44', '45+']
+    edades_estudiantes = ['8-10 años', '11-12 años',
+                          '13-14 años', '15-16 años', 'No responde']
+    formacion = ['Profesional', 'Profesional licenciado', 'Especialista', 'Magister', 'Doctorado',
+                 'No responde']
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
     elif len(set(de_acuerdo) - answers) < 2:
@@ -115,13 +123,14 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = edades
     elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
-            answers) if x != 'No sé/No lo conozco']+['No sé/No lo conozco']
+            answers) if x != 'No sé/No lo conozco'] + ['No sé/No lo conozco']
     else:
         cat_order = list(answers)
 
-    category_orders = {pregunta: cat_order,
+    category_orders = {pregunta: cat_order, 'Instrumento': ['Pretest', 'Posttest'],
                        "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"],
                        'Género': ["Femenino", "Masculino"], 'Curso': orden_cursos,
-                       'Edad': edades}
+                       'Edad': edades,
+                       'Nivel de formación': formacion}
 
     return category_orders

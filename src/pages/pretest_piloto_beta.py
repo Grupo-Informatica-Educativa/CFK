@@ -39,12 +39,14 @@ def app():
 		columnas = list(datos.columns)
 		arreglo_multi_respuesta = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
+			'4. Califíquese segun el siguente criterio',
 			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
 			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)']
 
 		arreglo_prengutas = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
-			'4.1. Califíquese segun el siguente creiterio:  Soy capaz de explicar lo que es el pensamiento computacional',
+			'4. Califíquese segun el siguente criterio',
+			'4.10. Califíquese segun el siguente criterio:  Puedo utilizar la computación para resolver problemas simples',
 			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
 			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)',
 			'8. Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de ... si por ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces.'
@@ -52,14 +54,15 @@ def app():
 
 		indices_preguntas = [columnas.index(arreglo_prengutas[0]), columnas.index(arreglo_prengutas[1]),
 							 columnas.index(arreglo_prengutas[2]), columnas.index(arreglo_prengutas[3]),
-							 columnas.index(arreglo_prengutas[4])]
+							 columnas.index(arreglo_prengutas[4]), columnas.index(arreglo_prengutas[5])]
 
 		# Esta arreglo de preguntas es necesario debido a que la idea es que el usuario no vea las columnas las cuales
 		# segmentamos por respuestas y las convertimos en columnas
 		preguntas = np.concatenate((np.array(columnas[col_preguntas:indices_preguntas[0] + 1]),
-									np.array(columnas[indices_preguntas[1]:indices_preguntas[2] + 1]),
-									np.array(columnas[indices_preguntas[3]]),
-									np.array(columnas[indices_preguntas[4]:])), axis=None)
+									np.array(columnas[indices_preguntas[1]]),
+									np.array(columnas[indices_preguntas[2]+1:indices_preguntas[3] + 1]),
+									np.array(columnas[indices_preguntas[4]]),
+									np.array(columnas[indices_preguntas[5]:])), axis=None)
 		# Tabla de preguntas
 		lista_preguntas = [str("Pregunta ") + preguntas[x].split(' ')[0][:-1] for x in range(len(preguntas))]
 		preguntas_tabla = [' '.join(preguntas[x].split(' ')[1:]) for x in range(len(preguntas))]
@@ -96,17 +99,29 @@ def app():
 		for i in indices:
 			if i in arreglo_multi_respuesta:
 				if i == arreglo_multi_respuesta[0]:
-					repeticiones = 11
+					repeticiones = 12
 					respuestas = np.array(columnas[indices_preguntas[0] + 1:indices_preguntas[0] + repeticiones])
 				elif i == arreglo_multi_respuesta[1]:
+					repeticiones = 11
+					respuestas = np.array(columnas[indices_preguntas[1] + 1:indices_preguntas[1] + repeticiones])
+				elif i == arreglo_multi_respuesta[2]:
 					repeticiones = 6
-					respuestas = np.array(columnas[indices_preguntas[2] + 1:indices_preguntas[2] + repeticiones])
+					respuestas = np.array(columnas[indices_preguntas[3] + 1:indices_preguntas[3] + repeticiones])
 				else:
 					repeticiones = 7
-					respuestas = np.array(columnas[indices_preguntas[3] + 1:indices_preguntas[3] + repeticiones])
+					respuestas = np.array(columnas[indices_preguntas[4] + 1:indices_preguntas[4] + repeticiones])
 				indices_aux = st.selectbox("Seleccione la respuesta a analizar: ", respuestas)
 				category_orders = categories_order(set(datos[pregunta]), indices_aux)
-				ejex = indices_aux
+				posicion_pregunta = np.where(np.array(filtros_def) == pregunta)[0]
+				for j in posicion_pregunta:
+					if j == 0:
+						ejex = indices_aux
+					if j == 1:
+						color = indices_aux
+					if j == 2:
+						columna = indices_aux
+					if j == 3:
+						fila = indices_aux
 				indices[contador] = indices_aux
 			contador += 1
 
