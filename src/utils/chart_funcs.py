@@ -16,10 +16,25 @@ config_chart = {
 
 
 def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
-					   ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
+					   ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None,
+					   color_discrete=px.colors.qualitative.Pastel, color_continuous=px.colors.sequential.GnBu
+					   ):
 	if columna_total == "Total":
 		total = pivot[columna_unica].sum()
 		pivot['Frecuencia'] = pivot[columna_unica] / total
+	elif columna_total == "Preguntas":
+		arreglo_indices = [columna_total]
+		if fila is not None:
+			arreglo_indices.append(fila)
+		if columna is not None:
+			arreglo_indices.append(columna)
+		total = pivot.pivot_table(index=list(set(arreglo_indices)),
+								  values=columna_unica,
+								  aggfunc='sum'
+								  ).rename(columns={columna_unica: "TOTAL"}).reset_index()
+
+		pivot = pivot.merge(total, on=list(set(arreglo_indices)))
+		pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
 	else:
 		total = pivot.pivot_table(index=columna_total,
 								  values=columna_unica,
@@ -32,8 +47,8 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 	fig = px.bar(pivot, x=ejex,
 				 y="Frecuencia", color=color,
 				 facet_row=fila, facet_col=columna, barmode="group",
-				 color_discrete_sequence=px.colors.qualitative.Pastel,
-				 color_continuous_scale=px.colors.sequential.GnBu, category_orders=category_orders,
+				 color_discrete_sequence=color_discrete,
+				 color_continuous_scale=color_continuous, category_orders=category_orders,
 				 text="Frecuencia",
 				 facet_col_wrap=4, range_y=(0, 1))
 
@@ -43,12 +58,13 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 
 
 def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
-					   category_orders=None):
+					   category_orders=None, color_discrete = px.colors.qualitative.Pastel,
+					   color_continuous = px.colors.sequential.GnBu):
 	fig = px.bar(pivot, x=ejex, y=columna_unica,
 				 color=color, facet_row=fila,
 				 facet_col=columna, barmode="group",
-				 color_discrete_sequence=px.colors.qualitative.Pastel,
-				 color_continuous_scale=px.colors.sequential.GnBu,
+				 color_discrete_sequence=color_discrete,
+				 color_continuous_scale=color_continuous,
 				 text=columna_unica,
 				 facet_col_wrap=4,
 				 category_orders=category_orders)
@@ -59,19 +75,30 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
 
 
 def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
-			  category_orders=None):
-	# st.write(columna_unica)
-	if st.checkbox("Visualizar frecuencia relativa"):
-		columna_total = st.selectbox(
-			"Relativo respecto a: ", ["Total"] + indices)
+			  category_orders=None, color_discrete = px.colors.qualitative.Pastel,
+			  color_continuous = px.colors.sequential.GnBu, key='1'):
+	# La variable Key puede ser util porque facilita tener un mismo boton (con misma funcionalidad) en lugares diferentes
+	if st.checkbox("Visualizar frecuencia relativa", key=key):
+		if key == '1':
+			columna_total = st.selectbox("Relativo respecto a: ", ["Total"] + indices, key=key)
+		else:
+			# hacer arreglo con fila y columna
+			arreglo_indices = []
+			if fila is not None:
+				arreglo_indices.append(fila)
+			if columna is not None:
+				arreglo_indices.append(columna)
+			columna_total = st.selectbox("Relativo respecto a: ", ["Total", "Preguntas"] + arreglo_indices, key=key)
 		fig = relative_bar_chart(columna_total=columna_total,
 								 columna_unica=columna_unica,
 								 pivot=pivot, ejex=ejex, color=color,
-								 fila=fila, columna=columna, indices=indices, category_orders=category_orders)
+								 fila=fila, columna=columna, indices=indices, category_orders=category_orders,
+								 color_discrete= color_discrete, color_continuous=color_continuous)
 	else:
 		fig = absolute_bar_chart(columna_unica=columna_unica,
 								 pivot=pivot, ejex=ejex, color=color,
-								 fila=fila, columna=columna, category_orders=category_orders)
+								 fila=fila, columna=columna, category_orders=category_orders,
+								 color_discrete=color_discrete, color_continuous=color_continuous)
 	return fig
 
 

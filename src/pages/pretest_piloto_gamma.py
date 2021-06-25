@@ -25,6 +25,9 @@ def app():
 
 		# initialize list of lists
 		columnas = list(datos.columns)
+		arreglo_grafica_adicional = [
+			'4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
+			'5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?']
 		arreglo_multi_respuesta = ['3. ¿Qué percepción tienes de la carrera ...?',
 								   '4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
 								   '5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?']
@@ -135,3 +138,38 @@ def app():
 		fig.update_layout(height=height)
 
 		st.plotly_chart(fig, use_container_width=True, config=config_chart)
+
+		if pregunta in arreglo_grafica_adicional:
+			numero_pregunta = pregunta.split()[0].split('.')[0]
+			if chart_type == "Barras":
+				with st.beta_expander("Rendimiento general", expanded=False):
+					datos_2 = pd.read_excel(file, sheet_name='pregunta_{}'.format(numero_pregunta))
+					arreglo_indices = ['Preguntas', 'Respuestas']
+					if fila is not None and fila not in respuestas:
+						arreglo_indices.append(fila)
+						fila_aux = fila
+					else:
+						fila_aux = None
+
+					if columna is not None and columna not in respuestas:
+						arreglo_indices.append(columna)
+						columna_aux = columna
+					else:
+						columna_aux = None
+					tabla = pd.pivot_table(datos_2, values='Registro', index=arreglo_indices,
+										   aggfunc='count').reset_index()
+					tabla = tabla.sort_values(by=['Respuestas'], ascending=False)
+					fig_2 = bar_chart(columna_unica=columna_unica,
+									pivot=tabla, ejex='Preguntas', color='Respuestas',
+									fila=fila_aux, columna=columna_aux, indices=indices,
+									category_orders=category_orders, color_discrete=px.colors.qualitative.Plotly,
+									key='2')
+					#fig_2 = absolute_bar_chart('Registro', tabla, 'Preguntas', 'Respuestas', fila_aux, columna_aux,
+					#						   category_orders, px.colors.qualitative.Plotly)
+					fig_2.update_layout(barmode='stack')
+					fig_2.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+					fig_2.update_yaxes(col=1, title=None)
+					fig_2.update_xaxes(row=1, title=None)
+
+					fig_2.update_layout(height=height)
+					st.plotly_chart(fig_2, use_container_width=True, config=config_chart)

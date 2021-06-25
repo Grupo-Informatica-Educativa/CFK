@@ -29,14 +29,13 @@ def app():
 		}
 	}
 
-	# poner eficacia en el metodo Filtro
-	# ver como acomarem al metodo graph_answer
-
 	if file:
 		datos = pd.read_excel(file, sheet_name='subhabilidades')
 
 		# initialize list of lists
 		columnas = list(datos.columns)
+		"""arreglo_grafica_adicional = ['3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
+									 '4. Califíquese segun el siguente criterio']"""
 		arreglo_multi_respuesta = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
 			'4. Califíquese segun el siguente criterio',
@@ -46,7 +45,7 @@ def app():
 		arreglo_prengutas = [
 			'3. De los siguientes conceptos en computación, ¿Cuáles conoce y puede explicar? (marque todas las que apliquen)',
 			'4. Califíquese segun el siguente criterio',
-			'4.10. Califíquese segun el siguente criterio:  Puedo utilizar la computación para resolver problemas simples',
+			'4.10. Puedo utilizar la computación para resolver problemas simples',
 			'5. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de ... Maritza usando el pensamiento computacional para encontrar su almuerzo? (marque todas las opciones que apliquen)',
 			'6. La institución educativa San Mateo decidió comprar un computador por estudiante para empezar este ... ¿Está Rosa desarrollando el pensamiento computacional de sus estudiantes? (marque todas las opciones que apliquen)',
 			'8. Ayuda al robot verde a salir del laberinto utilizando uno de los conjuntos de ... si por ejemplo dice que se repite 4 veces, en total se ejecutará 5 veces.'
@@ -56,7 +55,7 @@ def app():
 							 columnas.index(arreglo_prengutas[2]), columnas.index(arreglo_prengutas[3]),
 							 columnas.index(arreglo_prengutas[4]), columnas.index(arreglo_prengutas[5])]
 
-		# Esta arreglo de preguntas es necesario debido a que la idea es que el usuario no vea las columnas las cuales
+		# Este arreglo de preguntas es necesario debido a que la idea es que el usuario no vea las columnas las cuales
 		# segmentamos por respuestas y las convertimos en columnas
 		preguntas = np.concatenate((np.array(columnas[col_preguntas:indices_preguntas[0] + 1]),
 									np.array(columnas[indices_preguntas[1]]),
@@ -88,6 +87,8 @@ def app():
 
 		if color == "Eficacia":
 			datos = graph_answer(datos, pregunta, files)
+			# Con esto siempre el valor Correcto tendrá el primer color (El dorado) y el valor Incorrecto el azul
+			datos = datos.sort_values(by=['Eficacia'], ascending=False)
 
 		if lista_cursos != []:
 			datos = datos.loc[datos.Curso.isin(lista_cursos)]
@@ -157,3 +158,39 @@ def app():
 		fig.update_layout(height=height)
 
 		st.plotly_chart(fig, use_container_width=True, config=config_chart)
+
+		"""if pregunta in arreglo_grafica_adicional:
+			numero_pregunta = pregunta.split()[0].split('.')[0]
+			if chart_type == "Barras":
+				with st.beta_expander("Rendimiento general", expanded=False):
+					datos_2 = pd.read_excel(file, sheet_name='pregunta_{}'.format(numero_pregunta))
+					arreglo_indices = ['Preguntas', 'Respuestas']
+					if fila is not None and fila not in respuestas:
+						arreglo_indices.append(fila)
+						fila_aux = fila
+					else:
+						fila_aux = None
+
+					if columna is not None and columna not in respuestas:
+						arreglo_indices.append(columna)
+						columna_aux = columna
+					else:
+						columna_aux = None
+					tabla = pd.pivot_table(datos_2, values='Registro', index=arreglo_indices,
+										   aggfunc='count').reset_index()
+					tabla = tabla.sort_values(by=['Respuestas'], ascending=False)
+					fig_2 = bar_chart(columna_unica=columna_unica,
+									pivot=tabla, ejex='Preguntas', color='Respuestas',
+									fila=fila_aux, columna=columna_aux, indices=indices,
+									category_orders=category_orders, color_discrete=px.colors.qualitative.Plotly,
+									key='2')
+					#fig_2 = absolute_bar_chart('Registro', tabla, 'Preguntas', 'Respuestas', fila_aux, columna_aux,
+					#						   category_orders, px.colors.qualitative.Plotly)
+					fig_2.update_layout(barmode='stack')
+					fig_2.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+					fig_2.update_yaxes(col=1, title=None)
+					fig_2.update_xaxes(row=1, title=None)
+
+					fig_2.update_layout(height=height)
+					st.plotly_chart(fig_2, use_container_width=True, config=config_chart)"""
+
