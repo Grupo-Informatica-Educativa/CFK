@@ -48,7 +48,7 @@ def app():
     st.write("""# Pretest Inicial""")
 
     chart_type = st.radio("Tipo de visualización ",
-                                ("Barras", "Dispersión", "Cajas"))
+                          ("Barras", "Dispersión", "Cajas"))
 
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
@@ -57,7 +57,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 28
+    col_preguntas = 30
 
     if file:
         datos = load_data(file)

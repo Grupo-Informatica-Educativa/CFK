@@ -13,6 +13,8 @@ from src.pages import pretest_piloto_beta
 from src.pages import pretest_mentores
 from src.pages import pretest_piloto_gamma
 from src.pages import genero_y_actitudes_ambientales_piloto_beta
+from src.pages import pretest_piloto_beta_analisis
+from src.pages import pretest_piloto_gamma_analisis
 
 from src.preguntas.p1 import pregunta1
 
@@ -36,10 +38,15 @@ app.add_app("GreenTIC: Caracterización piloto beta",
             caracterizacion_piloto_beta.app, "Greentic")
 app.add_app("GreenTIC: Pretest piloto beta",
             pretest_piloto_beta.app, "Greentic")
+app.add_app("GreentTIC Análisis: Pretest piloto beta",
+            pretest_piloto_beta_analisis.app, "Greentic")
+
 app.add_app("GreentTIC: Pretest piloto gamma",
             pretest_piloto_gamma.app, "Greentic")
 app.add_app("GreenTIC: Género y actitudes ambientales",
             genero_y_actitudes_ambientales_piloto_beta.app, "Greentic")
+app.add_app("GreentTIC Análisis: Pretest piloto gamma",
+            pretest_piloto_gamma_analisis.app, "Greentic")
 
 app.add_app("Graficador", ejemplo2020.app, "Herramientas")
 # The main app
