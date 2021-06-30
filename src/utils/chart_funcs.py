@@ -93,7 +93,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
 				arreglo_indices.append(fila)
 			if columna is not None:
 				arreglo_indices.append(columna)
-			columna_total = st.selectbox("Relativo respecto a: ", ["Total", "Preguntas"] + arreglo_indices, key=key)
+			columna_total = st.selectbox("Relativo respecto a: ", ["Total", "Preguntas"] + list(set(arreglo_indices)), key=key)
 		fig = relative_bar_chart(columna_total=columna_total,
 								 columna_unica=columna_unica,
 								 pivot=pivot, ejex=ejex, color=color,
