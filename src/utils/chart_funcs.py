@@ -17,8 +17,8 @@ config_chart = {
 
 def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 					   ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None,
-					   color_discrete=px.colors.qualitative.Pastel, color_continuous=px.colors.sequential.GnBu
-					   ):
+					   color_discrete=px.colors.qualitative.Pastel, color_continuous=px.colors.sequential.GnBu,
+					   invertir=False):
 	if columna_total == "Total":
 		total = pivot[columna_unica].sum()
 		pivot['Frecuencia'] = pivot[columna_unica] / total
@@ -44,13 +44,16 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 		pivot = pivot.merge(total, on=columna_total)
 		pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
 
-	fig = px.bar(pivot, x=ejex,
-				 y="Frecuencia", color=color,
-				 facet_row=fila, facet_col=columna, barmode="group",
-				 color_discrete_sequence=color_discrete,
-				 color_continuous_scale=color_continuous, category_orders=category_orders,
-				 text="Frecuencia",
-				 facet_col_wrap=4, range_y=(0, 1))
+	if not(invertir):
+		fig = px.bar(pivot, x=ejex, y="Frecuencia", color=color,
+					 facet_row=fila, facet_col=columna, barmode="group", color_discrete_sequence=color_discrete,
+					 color_continuous_scale=color_continuous, category_orders=category_orders, text="Frecuencia",
+					 facet_col_wrap=4, range_y=(0, 1))
+	else:
+		fig = px.bar(pivot, x='Frecuencia', y=ejex, color=color,
+					 facet_row=fila, facet_col=columna, barmode="group", color_discrete_sequence=color_discrete,
+					 color_continuous_scale=color_continuous, category_orders=category_orders, text="Frecuencia",
+					 facet_col_wrap=4, range_x=(0, 1))
 
 	fig.for_each_yaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
 	fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
@@ -59,15 +62,17 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 
 def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
 					   category_orders=None, color_discrete = px.colors.qualitative.Pastel,
-					   color_continuous = px.colors.sequential.GnBu):
-	fig = px.bar(pivot, x=ejex, y=columna_unica,
-				 color=color, facet_row=fila,
-				 facet_col=columna, barmode="group",
-				 color_discrete_sequence=color_discrete,
-				 color_continuous_scale=color_continuous,
-				 text=columna_unica,
-				 facet_col_wrap=4,
-				 category_orders=category_orders)
+					   color_continuous = px.colors.sequential.GnBu , invertir = False):
+	if not(invertir):
+		fig = px.bar(pivot, x=ejex, y=columna_unica, color=color, facet_row=fila,
+					 facet_col=columna, barmode="group", color_discrete_sequence=color_discrete,
+					 color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
+					 category_orders=category_orders)
+	else:
+		fig = px.bar(pivot, x=columna_unica, y=ejex, color=color, facet_row=fila,
+					 facet_col=columna, barmode="group", color_discrete_sequence=color_discrete,
+					 color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
+					 category_orders=category_orders)
 	fig.update_traces(textposition='outside', texttemplate='%{text}')
 	fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
 					  template="simple_white")
@@ -76,7 +81,7 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
 
 def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
 			  category_orders=None, color_discrete = px.colors.qualitative.Pastel,
-			  color_continuous = px.colors.sequential.GnBu, key='1'):
+			  color_continuous = px.colors.sequential.GnBu, key='1', invertir = False):
 	# La variable Key puede ser util porque facilita tener un mismo boton (con misma funcionalidad) en lugares diferentes
 	if st.checkbox("Visualizar frecuencia relativa", key=key):
 		if key == '1':
@@ -93,12 +98,14 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
 								 columna_unica=columna_unica,
 								 pivot=pivot, ejex=ejex, color=color,
 								 fila=fila, columna=columna, indices=indices, category_orders=category_orders,
-								 color_discrete= color_discrete, color_continuous=color_continuous)
+								 color_discrete= color_discrete, color_continuous=color_continuous,
+								 invertir=invertir)
 	else:
 		fig = absolute_bar_chart(columna_unica=columna_unica,
 								 pivot=pivot, ejex=ejex, color=color,
 								 fila=fila, columna=columna, category_orders=category_orders,
-								 color_discrete=color_discrete, color_continuous=color_continuous)
+								 color_discrete=color_discrete, color_continuous=color_continuous,
+								 invertir=invertir)
 	return fig
 
 

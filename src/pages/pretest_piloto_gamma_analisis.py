@@ -23,13 +23,15 @@ def app():
 		# initialize list of lists
 		columnas = list(datos.columns)
 		arreglo_grafica_adicional = [
+			'3. ¿Qué percepción tienes de la carrera ...?',
 			'4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
 			'5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?']
 
-		indices_preguntas = [columnas.index(arreglo_grafica_adicional[0]), columnas.index(arreglo_grafica_adicional[1])]
+		indices_preguntas = [columnas.index(arreglo_grafica_adicional[0]), columnas.index(arreglo_grafica_adicional[1]),
+							 columnas.index(arreglo_grafica_adicional[2])]
 
-		preguntas = np.concatenate((np.array(columnas[indices_preguntas[0]]), np.array(columnas[indices_preguntas[1]])),
-								   axis=None)
+		preguntas = np.concatenate((np.array(columnas[indices_preguntas[0]]), np.array(columnas[indices_preguntas[1]]),
+									(np.array(columnas[indices_preguntas[2]]))), axis=None)
 		# Tabla de preguntas
 		lista_preguntas = [str("Pregunta ") + preguntas[x].split(' ')[0][:-1] for x in range(len(preguntas))]
 		preguntas_tabla = [' '.join(preguntas[x].split(' ')[1:]) for x in range(len(preguntas))]
@@ -73,11 +75,15 @@ def app():
 			columna_aux = None
 		tabla = pd.pivot_table(datos_2, values='Registro', index=list(set(arreglo_indices)), aggfunc='count').reset_index()
 		tabla = tabla.sort_values(by=['Respuestas'], ascending=False)
-		fig = bar_chart(columna_unica=columna_unica,
-						pivot=tabla, ejex='Preguntas', color='Respuestas',
-						fila=fila_aux, columna=columna_aux, indices=indices,
-						category_orders=category_orders, color_discrete=px.colors.qualitative.Plotly,
-						key='2')
+		if str(numero_pregunta) == '3':
+			fig = bar_chart(columna_unica=columna_unica, pivot=tabla, ejex='Preguntas', color='Respuestas',
+							fila=fila_aux, columna=columna_aux, indices=indices,
+							category_orders=category_orders, color_discrete=px.colors.qualitative.Plotly,
+							key='2', invertir=True)
+		else:
+			fig = bar_chart(columna_unica=columna_unica, pivot=tabla, ejex='Preguntas', color='Respuestas',
+							fila=fila_aux, columna=columna_aux, indices=indices,
+							category_orders=category_orders, color_discrete=px.colors.qualitative.Plotly, key='2')
 
 		fig.update_layout(barmode='stack')
 		fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
