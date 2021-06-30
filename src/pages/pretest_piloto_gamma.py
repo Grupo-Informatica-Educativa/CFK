@@ -25,6 +25,7 @@ def app():
 
 		# initialize list of lists
 		columnas = list(datos.columns)
+
 		arreglo_multi_respuesta = ['3. ¿Qué percepción tienes de la carrera ...?',
 								   '4. De los siguientes conceptos en computación, ¿Cuáles conoces y puedes explicar? (marca todas las que apliquen)',
 								   '5. De los siguientes conceptos en computación ¿Cuáles conoces y puedes explicar?']
