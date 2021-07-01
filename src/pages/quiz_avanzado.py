@@ -30,7 +30,7 @@ def app():
         cuestionarios = st.multiselect(
             "Seleccione cuestionario(s):", datos.Cuestionario.unique())
         datos = datos.loc[datos.Cuestionario.isin(cuestionarios)]
-        
+
         intentos = st.multiselect(
             "Seleccione intento(s):", datos.Intento.unique())
         datos = datos.loc[datos.Intento.isin(intentos)]
@@ -73,13 +73,13 @@ def app():
             with col:
                 if index == 0:
                     lista_filtros.append(st.selectbox(
-                        "Dividir por color", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
+                        "Dividir por color", [" ", "Pregunta", "Cuestionario", "Intento"] + lista_agrupadores))
                 elif index == 1:
                     lista_filtros.append(st.selectbox(
-                        "Dividir por columna", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
+                        "Dividir por columna", [" ", "Pregunta", "Cuestionario", "Intento"] + lista_agrupadores))
                 elif index == 2:
                     lista_filtros.append(st.selectbox(
-                        "Dividir por fila", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
+                        "Dividir por fila", [" ", "Pregunta", "Cuestionario", "Intento"] + lista_agrupadores))
 
         filtros_def = [None if x == ' ' else x for x in lista_filtros]
         indices = list(set(filtros_def).difference([None]))
@@ -96,11 +96,8 @@ def app():
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        
-        
         orden_grupos = ["I"+str(x) for x in range(87)]
 
-        
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
         if lista_grupo != []:
@@ -115,7 +112,7 @@ def app():
         else:
             # Selecciona tipo de gráfica
             if tipo_grafica == "Barras":
-                #Los diagramas de barra exigen agrupar la información antes de graficar 
+                # Los diagramas de barra exigen agrupar la información antes de graficar
                 pivot = pivot_data(datos, indices, columna_unica)
 
                 fig = bar_chart(columna_unica=columna_unica,
