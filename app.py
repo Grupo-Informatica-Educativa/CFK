@@ -1,5 +1,5 @@
 from multiapp import MultiApp
-from src.pages import ejemplo2020
+from src.pages import graficador_horizontal
 from src.pages import encuesta_genero_mentores
 from src.pages import pretest_inicial
 from src.pages import posttest_inicial
@@ -62,6 +62,6 @@ app.add_app("GreentTIC: Datos App insignias",
 app.add_app("GreentTIC Análisis: Datos App insignias",
 			datos_app_insignia_analisis.app, "Greentic")
 
-app.add_app("Graficador", ejemplo2020.app, "Herramientas")
+app.add_app("Graficador", graficador_horizontal.app, "Herramientas")
 # The main app
 app.run()
