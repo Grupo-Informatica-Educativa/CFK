@@ -13,7 +13,7 @@ def app():
             - Las columnas 0:col_preguntas contienen información referente a cada individuo
             - Las columnas col_preguntas:(hasta el final) contienen información a graficar
     '''
-    st.write("""# Graficador""")
+    st.write("""# Graficador de datos en formato horizontal""")
 
     # La línea de abajo es una opción para cargar un archivo desde el computador
     file = st.file_uploader('Cargar archivo')

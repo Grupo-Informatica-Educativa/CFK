@@ -3,9 +3,7 @@ import streamlit as st
 from src.utils.answers_funcs import *
 
 
-# @st.cache
-
-
+@st.cache
 def load_data(file):
 	return pd.read_excel(file)
 
@@ -145,6 +143,51 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, categoria=None, arreglo_pr
 
 	return pregunta, filtros_def, indices, lista_agrupadores, lista_cursos
 
+
+def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_filtros=None):
+	if columnas_filtros is not None and columnas_filtros != []:
+		for col in columnas_filtros:
+			options = datos[col].unique()
+			options.sort()
+			filtro_list = st.multiselect(f"Seleccione {col.lower()}(s):", options)
+			if filtro_list != []: datos = datos.loc[datos[col].isin(filtro_list)]
+
+	lista_filtros = []
+
+	lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
+
+	if tipo_grafica == 'Cajas':
+		lista_filtros.append(st.selectbox(
+			"Seleccione el eje x", [' '] + lista_agrupadores))
+	elif tipo_grafica == 'Dispersión':
+		lista_filtros.append(st.selectbox(
+			"Seleccione el eje x", lista_agrupadores))
+	else:
+		lista_filtros.append(st.selectbox(
+			"Seleccione el eje x", list(dict.fromkeys(columnas_filtros + lista_agrupadores))))
+	
+	cols = st.beta_columns(3)
+	_list = list(dict.fromkeys([" "] + columnas_filtros + lista_agrupadores))
+	with cols[0]:
+		lista_filtros.append(st.selectbox(
+			"Dividir por color", _list))
+	with cols[1]:
+		lista_filtros.append(st.selectbox(
+			"Dividir por columna", _list))
+	with cols[2]:
+		lista_filtros.append(st.selectbox(
+			"Dividir por fila", _list))
+
+	filtros_def = [None if x == ' ' else x for x in lista_filtros]
+	indices = list(set(filtros_def).difference([None]))
+
+	try:
+		columns_lower = [col.lower() for col in datos.columns]
+		i = columns_lower.index('respuesta')
+		pregunta = datos.columns[i]
+	except:
+		pregunta = st.selectbox("Seleccione la columna de respuestas:", datos.columns)
+	return datos, pregunta, filtros_def, indices, lista_agrupadores
 
 def pivot_data(datos, indices, columna_unica):
 	return datos.pivot_table(index=indices,

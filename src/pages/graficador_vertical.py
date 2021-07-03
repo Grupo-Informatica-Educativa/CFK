@@ -4,44 +4,63 @@ from src.utils.helper_funcs import *
 from src.utils.answers_funcs import *
 import pandas as pd
 
-columnas_filtros = ['Cuestionario', 'Intento', 'Núm.Pregunta', 'Pregunta']
+
+@st.cache
+def load_dataset(file):
+    return pd.read_excel(file)
+
 
 def app():
-    st.write("""# Quiz Inicial""")
+    st.write("""# Graficador de datos en formato vertical""")
 
-    tipo_grafica = st.radio("Tipo de visualización ",
-                            ("Barras", "Dispersión", "Cajas"))
-
-    # Nombre del archivo con los datos
-    file = "data/limpios/Quiz_inicial_v1.xlsx"
-    # Nombre de la columna cuyos datos son únicos para cada respuesta
-    columna_unica = 'Identificación'
-    # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 22
+    # La línea de abajo es una opción para cargar un archivo desde el computador
+    file = st.file_uploader('Cargar archivo')
+    
+    col_preguntas = st.number_input(
+        "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
 
     if file:
-        datos = load_data(file)
+        datos = load_dataset(file)
+
+        # Nombre de la columna cuyos datos son únicos para cada respuesta
+        columna_unica = st.selectbox('Columna única', datos.columns)
+
+        tipo_grafica = st.radio("Tipo de visualización ",
+                            ("Barras", "Dispersión", "Cajas"))
+        
+        columnas_filtros = st.multiselect("Seleccione columnas para filtrar:", datos.columns)
 
         datos, pregunta, filtros_def, indices, lista_agrupadores = filtros_multiselect_vertical(
             datos, col_preguntas, tipo_grafica, columnas_filtros=columnas_filtros)
-        
+        # return pregunta, filtros_def, indices, lista_agrupadores
+        ################
         ejex, color, columna, fila = filtros_def
-        
-        datos.Eficacia = datos.Eficacia.astype(str)
+
+        # ---
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        orden_grupos = ["I"+str(x) for x in range(87)]
-
-        category_orders = categories_order(
-            set(datos[pregunta]), pregunta, orden_grupos)
+        
+        answer_orders = st.multiselect(
+            'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
+        category_orders = {ejex: answer_orders}
+        if color != None:
+            color_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías de color', datos[color].unique())
+            category_orders[color] = color_orders
+        if columna != None:
+            column_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por columnas', datos[columna].unique())
+            category_orders[columna] = column_orders
+        if fila != None:
+            row_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por fila', datos[fila].unique())
+            category_orders[fila] = row_orders
 
         if len(datos) == 0:
-            st.warning(
-                "El / los grupos seleccionados no tienen datos para mostrar")
+            st.warning("El / los grupos seleccionados no tienen datos para mostrar")
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
-            st.warning(
-                "Por favor use los filtros para seleccionar menos grupos")
+            st.warning("Por favor use los filtros para seleccionar menos grupos")
         else:
             # Selecciona tipo de gráfica
             if tipo_grafica == "Barras":
