@@ -40,10 +40,22 @@ def app():
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        orden_grupos = ["I"+str(x) for x in range(87)]
-
-        category_orders = categories_order(
-            set(datos[pregunta]), pregunta, orden_grupos)
+        
+        answer_orders = st.multiselect(
+            'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
+        category_orders = {ejex: answer_orders}
+        if color != None:
+            color_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías de color', datos[color].unique())
+            category_orders[color] = color_orders
+        if columna != None:
+            column_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por columnas', datos[columna].unique())
+            category_orders[columna] = column_orders
+        if fila != None:
+            row_orders = st.multiselect(
+                'Seleccione el orden en el que se deben presentar las categorías por fila', datos[fila].unique())
+            category_orders[fila] = row_orders
 
         if len(datos) == 0:
             st.warning("El / los grupos seleccionados no tienen datos para mostrar")
