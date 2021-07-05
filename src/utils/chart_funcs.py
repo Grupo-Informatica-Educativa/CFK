@@ -1,3 +1,4 @@
+from _plotly_utils.colors.qualitative import Plotly
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -19,7 +20,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                        ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None,
                        color_discrete=px.colors.qualitative.Pastel, color_continuous=px.colors.sequential.GnBu,
                        invertir=False):
-    if columna_total == "Total":
+    if columna_total == ["Total"]:
         total = pivot[columna_unica].sum()
         pivot['Frecuencia'] = pivot[columna_unica] / total
     elif columna_total == "Preguntas":
@@ -87,8 +88,8 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     # La variable Key puede ser util porque facilita tener un mismo boton (con misma funcionalidad) en lugares diferentes
     if st.checkbox("Visualizar frecuencia relativa", key=key):
         if key == '1':
-            columna_total = st.selectbox("Relativo respecto a: ", [
-                                         "Total"] + indices, key=key)
+            columna_total = st.multiselect("Relativo respecto a: ", [
+                "Total"] + indices, key=key, default='Total')
         else:
             # hacer arreglo con fila y columna
             arreglo_indices = []
@@ -98,12 +99,16 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
                 arreglo_indices.append(columna)
             columna_total = st.selectbox("Relativo respecto a: ", [
                                          "Total", "Preguntas"] + list(set(arreglo_indices)), key=key)
-        fig = relative_bar_chart(columna_total=columna_total,
-                                 columna_unica=columna_unica,
-                                 pivot=pivot, ejex=ejex, color=color,
-                                 fila=fila, columna=columna, indices=indices, category_orders=category_orders,
-                                 color_discrete=color_discrete, color_continuous=color_continuous,
-                                 invertir=invertir)
+        if len(columna_total) > 1 and 'Total' in columna_total:
+            st.warning("Selección errónea. Si desea ver el porcentaje respecto al Total, elimine los demás valores seleccionados, de lo contrario, elimine 'Total' para elegir una combinación personalizada")
+            fig = px.bar()
+        else:
+            fig = relative_bar_chart(columna_total=columna_total,
+                                     columna_unica=columna_unica,
+                                     pivot=pivot, ejex=ejex, color=color,
+                                     fila=fila, columna=columna, indices=indices, category_orders=category_orders,
+                                     color_discrete=color_discrete, color_continuous=color_continuous,
+                                     invertir=invertir)
     else:
         fig = absolute_bar_chart(columna_unica=columna_unica,
                                  pivot=pivot, ejex=ejex, color=color,
@@ -155,6 +160,7 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
 
     labores_hogar = ['Menos de 1h', 'Entre 1h y 2h',
                      'Entre 2h y 3h', 'Entre 3h y 4h', 'Mas de 5h']
+    cargo = ['Primaria', 'Secundaria', 'Ambas', 'Directivo', 'No responde']
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
     elif len(set(de_acuerdo) - answers) < 2:
@@ -169,6 +175,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = labores_hogar
     elif len(set(conozco)-answers) < 2:
         cat_order = conozco
+    elif len(set(cargo)-answers) < 2:
+        cat_order = cargo
     elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco'] + ['No sé/No lo conozco']
@@ -179,6 +187,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                        "GENERO": ["Femenino", "Masculino", "Otro", "Prefiero no responder"],
                        'Género': ["Femenino", "Masculino"], 'Curso': orden_cursos,
                        'Edad': edades,
-                       'Nivel de formación': formacion}
+                       'Nivel de formación': formacion,
+                       "dificultad del nivel": ['Básico', 'Medio', 'Alto', 'Avanzado'],
+                       "5. categoria trofeo": ["Oro", "Plata", "Bronce"]}
 
     return category_orders
