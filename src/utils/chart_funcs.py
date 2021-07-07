@@ -161,6 +161,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
     labores_hogar = ['Menos de 1h', 'Entre 1h y 2h',
                      'Entre 2h y 3h', 'Entre 3h y 4h', 'Mas de 5h']
     cargo = ['Primaria', 'Secundaria', 'Ambas', 'Directivo', 'No responde']
+    probable = ['Muy probable', 'Probable', 'Poco probable', 'No responde']
+
     if len(set(satisfaction) - answers) < 2:
         cat_order = satisfaction
     elif len(set(de_acuerdo) - answers) < 2:
@@ -177,6 +179,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = conozco
     elif len(set(cargo)-answers) < 2:
         cat_order = cargo
+    elif len(set(probable) - answers) < 2:
+        cat_order = probable
     elif 'No sé/No lo conozco' in answers:
         cat_order = [x for x in list(
             answers) if x != 'No sé/No lo conozco'] + ['No sé/No lo conozco']
