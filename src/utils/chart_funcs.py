@@ -86,10 +86,10 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
               category_orders=None, color_discrete=px.colors.qualitative.Pastel,
               color_continuous=px.colors.sequential.GnBu, key='1', invertir=False):
     # La variable Key puede ser util porque facilita tener un mismo boton (con misma funcionalidad) en lugares diferentes
-    if st.checkbox("Visualizar frecuencia relativa", key=key):
+    if st.checkbox("Visualizar frecuencia relativa"):
         if key == '1':
             columna_total = st.multiselect("Relativo respecto a: ", [
-                "Total"] + indices, key=key, default='Total')
+                "Total"] + indices, default='Total')
         else:
             # hacer arreglo con fila y columna
             arreglo_indices = []
@@ -98,7 +98,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
             if columna is not None:
                 arreglo_indices.append(columna)
             columna_total = st.selectbox("Relativo respecto a: ", [
-                                         "Total", "Preguntas"] + list(set(arreglo_indices)), key=key)
+                                         "Total", "Preguntas"] + list(set(arreglo_indices)))
         if len(columna_total) > 1 and 'Total' in columna_total:
             st.warning("Selección errónea. Si desea ver el porcentaje respecto al Total, elimine los demás valores seleccionados, de lo contrario, elimine 'Total' para elegir una combinación personalizada")
             fig = px.bar()
