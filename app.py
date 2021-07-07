@@ -22,6 +22,7 @@ from src.pages import datos_app_partida
 from src.pages import datos_app_insignia
 from src.pages import datos_app_insignia_analisis
 from src.pages import experiencia_piloto_gamma
+from src.pages import experiencia_piloto_beta
 
 # from src.preguntas.p1 import pregunta1
 
@@ -47,6 +48,8 @@ app.add_app("GreenTIC: Caracterización piloto beta",
 			caracterizacion_piloto_beta.app, "Greentic")
 app.add_app("GreenTIC: Pretest piloto beta",
 			pretest_piloto_beta.app, "Greentic")
+app.add_app("GreenTIC: Experiencia piloto beta",
+			experiencia_piloto_beta.app, "Greentic")
 app.add_app("GreentTIC Análisis: Pretest piloto beta",
 			pretest_piloto_beta_analisis.app, "Greentic")
 
