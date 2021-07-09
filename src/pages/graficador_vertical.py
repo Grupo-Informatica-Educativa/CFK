@@ -15,7 +15,7 @@ def app():
 
     # La línea de abajo es una opción para cargar un archivo desde el computador
     file = st.file_uploader('Cargar archivo')
-    
+
     col_preguntas = st.number_input(
         "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
 
@@ -27,7 +27,7 @@ def app():
 
         tipo_grafica = st.radio("Tipo de visualización ",
                             ("Barras", "Dispersión", "Cajas"))
-        
+
         columnas_filtros = st.multiselect("Seleccione columnas para filtrar:", datos.columns)
 
         datos, pregunta, filtros_def, indices, lista_agrupadores = filtros_multiselect_vertical(
@@ -40,7 +40,7 @@ def app():
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        
+
         answer_orders = st.multiselect(
             'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
         category_orders = {ejex: answer_orders}
@@ -66,7 +66,6 @@ def app():
             if tipo_grafica == "Barras":
                 # Los diagramas de barra exigen agrupar la información antes de graficar
                 pivot = pivot_data(datos, indices, columna_unica)
-
                 fig = bar_chart(columna_unica=columna_unica,
                                 pivot=pivot, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices,

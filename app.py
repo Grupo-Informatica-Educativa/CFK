@@ -24,7 +24,8 @@ from src.pages import datos_app_insignia_analisis
 from src.pages import experiencia_piloto_gamma
 from src.pages import experiencia_piloto_beta
 
-# from src.preguntas.p1 import pregunta1
+from src.preguntas.p1 import pregunta1
+from src.preguntas.genero import genero
 
 app = MultiApp('CFK 2021')
 
@@ -71,5 +72,10 @@ app.add_app("GreentTIC Análisis: Datos App insignias",
 
 app.add_app("Graficador formato horizontal", graficador_horizontal.app, "Herramientas")
 app.add_app("Graficador formato vertical", graficador_vertical.app, "Herramientas")
+
+#Preguntas
+
+app.add_app("Género", genero.app, "Pregunta")
+#app.add_app("Pregunta1", pregunta1.app, "Pregunta")
 # The main app
 app.run()

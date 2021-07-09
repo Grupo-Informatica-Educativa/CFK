@@ -54,7 +54,7 @@ class MultiApp:
         st.sidebar.write(f'# {self.page_title}')
 
         categoria = st.sidebar.radio("Secciones",
-                                     ["Curso Inicial", "Curso Avanzado", "GreenTIC", "Mentores", "Herramientas"])
+                                     ["Curso Inicial", "Curso Avanzado", "GreenTIC", "Mentores", "Herramientas", "Preguntas"])
 
         if categoria == "Herramientas":
             app = st.sidebar.radio(
@@ -71,5 +71,8 @@ class MultiApp:
         elif categoria == "Mentores":
             app = st.sidebar.radio(
                 "Seleccione instrumento:", self.mentores, format_func=lambda app: app['title'])
+        elif categoria == "Preguntas":
+            app = st.sidebar.radio(
+                "Seleccione pregunta:", self.preguntas, format_func=lambda app: app['title'])
 
         app['function']()
