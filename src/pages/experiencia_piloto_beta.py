@@ -12,7 +12,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Registro'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 7
+    col_preguntas = 9
     files = {
         "respuestas": {}
     }
@@ -108,7 +108,7 @@ def app():
                     respuestas = np.array(
                         columnas[indices_preguntas[4] + 1:indices_preguntas[4] + repeticiones])
                 else:
-                    repeticiones = 16
+                    repeticiones = 17
                     respuestas = np.array(
                         columnas[indices_preguntas[6] + 1:indices_preguntas[6] + repeticiones])
                 indices_aux = st.selectbox(
