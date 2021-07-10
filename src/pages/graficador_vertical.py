@@ -16,12 +16,9 @@ def app():
     # La línea de abajo es una opción para cargar un archivo desde el computador
     file = st.file_uploader('Cargar archivo')
 
-    col_preguntas = st.number_input(
-        "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
-
     if file:
         datos = load_dataset(file)
-
+        col_preguntas = st.number_input("Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
         # Nombre de la columna cuyos datos son únicos para cada respuesta
         columna_unica = st.selectbox('Columna única', datos.columns)
 

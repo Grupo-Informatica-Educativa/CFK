@@ -21,14 +21,11 @@ def app():
     # Nombre del archivo con los datos
     #file = "data/Ejemplo2020.xlsx"
 
-    # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = st.number_input(
-        "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
-
     if file:
 
         datos = load_data(file)
-
+        # A partir de esta columna comienzan las preguntas (columnas de interés)
+        col_preguntas = st.number_input("Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
         # Nombre de la columna cuyos datos son únicos para cada respuesta
         columna_unica = st.selectbox('Columna única', datos.columns)
 
