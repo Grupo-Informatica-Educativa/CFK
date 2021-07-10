@@ -78,7 +78,8 @@ def app():
     col_preguntas = 18
 
     if file:
-        datos = load_data(file)
+        data = load_data(file)
+        datos = data.copy()
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas"))
         
