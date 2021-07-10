@@ -12,7 +12,7 @@ files = [
         "title": "Conocimientos",
         "file":  "pre_inicial_conocimientos.xlsx",
         "respuestas": {
-            "24": 3,
+            "24": "3",
             "25": "El programa no funciona, debe capturar nuevamente el valor de la temperatura luego de encender el ventilador",
             "26": "6",
             "27": "10",
