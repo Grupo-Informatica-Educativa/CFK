@@ -11,7 +11,7 @@ files = [
     {
         "title": "Conocimientos",
         "file":  "pre_mentores_conocimientos.xlsx",
-        "respuestas" : {}
+        "respuestas": {}
     },
     {
         "title": "Género",
@@ -31,7 +31,7 @@ nombres_preguntas = {
     '20': '20. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
     '23': '''23. La cafetería del colegio empacó almuerzos iguales para todos los estudiantes, menos los de Juan Arias y María Vásquez que no pueden comer huevo. Los almuerzos están marcados con el apellido de los estudiantes y organizados alfabéticamente. Para verificar que su almuerzo cumple con la restricción alimenticia María con ayuda de su profesor buscan en las cajas. María sabe que su almuerzo debe estar al final, así que busca hasta que encuentre una caja que comience por una letra cerca de la V. Cuando una que comienza con Trujillo, mira el último almuerzo de esa caja y se da cuenta que termina en Zapata. Así, María se da cuenta que su almuerzo debe estar allí.
 ¿Está María usando el pensamiento computacional para encontrar su almuerzo? Seleccione todas las respuestas que considere correctas.''',
-    
+
 }
 
 
@@ -61,13 +61,13 @@ def app():
 
         print(datos[pregunta].unique())
         if color == "Eficacia":
-            datos = graph_answer(datos,pregunta,categoria)
-                
+            datos = graph_answer(datos, pregunta, categoria)
+
         orden_grupos = ["I"+str(x) for x in range(87)]
 
         if categoria['title'] == 'Conocimientos':
             datos[pregunta] = datos[pregunta].astype(str)
-        
+
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
 
@@ -85,7 +85,7 @@ def app():
             if chart_type == "Barras":
                 """ Los diagramas de barra exigen agrupar la información antes de graficar """
                 pivot = pivot_data(datos, indices, columna_unica)
-                
+
                 fig = bar_chart(columna_unica=columna_unica,
                                 pivot=pivot, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices,

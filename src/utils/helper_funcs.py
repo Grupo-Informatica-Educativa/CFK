@@ -3,7 +3,7 @@ import streamlit as st
 from src.utils.answers_funcs import *
 
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_data(file):
     return pd.read_excel(file)
 
