@@ -65,14 +65,14 @@ app.add_app("GreenTIC: Experiencia piloto gamma",
 app.add_app("GreenTIC Análisis: Pretest piloto gamma",
 			pretest_piloto_gamma_analisis.app, "Greentic")
 
-app.add_app("GreenTIC: Datos App partidas",
-			datos_app_partida.app, "Greentic")
-app.add_app("GreenTIC: Datos App insignias",
-			datos_app_insignia.app, "Greentic")
-app.add_app("GreenTIC Análisis: Datos App insignias",
-			datos_app_insignia_analisis.app, "Greentic")
-app.add_app("GreenTIC: Insignias", greentic_insignias.app, "Greentic")
-app.add_app("GreenTIC: Partidas", greentic_partidas.app, "Greentic")
+#app.add_app("GreenTIC: Datos App partidas",
+#			datos_app_partida.app, "Greentic")
+#app.add_app("GreenTIC: Datos App insignias",
+#			datos_app_insignia.app, "Greentic")
+#app.add_app("GreenTIC Análisis: Datos App insignias",
+#			datos_app_insignia_analisis.app, "Greentic")
+app.add_app("GreenTIC: Datos App Insignias", greentic_insignias.app, "Greentic")
+app.add_app("GreenTIC: Datos App Partidas", greentic_partidas.app, "Greentic")
 
 app.add_app("Graficador formato horizontal", graficador_horizontal.app, "Herramientas")
 app.add_app("Graficador formato vertical", graficador_vertical.app, "Herramientas")
