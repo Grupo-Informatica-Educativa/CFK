@@ -259,6 +259,7 @@ q_list = [
 
 def app():
     st.write("# Gráficas del equipo de Género")
+    q_list_sorted = sorted(q_list, key=lambda k: k['title']) 
     grafica = st.selectbox("Seleccione una gráfica",
-                           q_list, format_func=lambda i: i['title'])
+                           q_list_sorted, format_func=lambda i: i['title'])
     grafica["func"]()
