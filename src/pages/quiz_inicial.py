@@ -4,11 +4,7 @@ from src.utils.helper_funcs import *
 from src.utils.answers_funcs import *
 import pandas as pd
 
-
-@st.cache
-def load_dataset(file):
-    return pd.read_excel(file)
-
+columnas_filtros = ['Cuestionario', 'Intento', 'Núm.Pregunta', 'Pregunta']
 
 def app():
     st.write("""# Quiz Inicial""")
@@ -24,84 +20,21 @@ def app():
     col_preguntas = 22
 
     if file:
-        datos = load_dataset(file)
+        datos = load_data(file)
 
-        # ---
-        cuestionarios = st.multiselect(
-            "Seleccione cuestionario(s):", datos.Cuestionario.unique())
-        datos = datos.loc[datos.Cuestionario.isin(cuestionarios)]
+        datos, pregunta, filtros_def, indices, lista_agrupadores = filtros_multiselect_vertical(
+            datos, col_preguntas, tipo_grafica, columnas_filtros=columnas_filtros)
         
-        intentos = st.multiselect(
-            "Seleccione intento(s):", datos.Intento.unique())
-        datos = datos.loc[datos.Intento.isin(intentos)]
-
-        numpregs = st.multiselect(
-            "Seleccione número de pregunta(s):", datos['Núm.Pregunta'].unique())
-        datos = datos.loc[datos['Núm.Pregunta'].isin(numpregs)]
-
-        preguntas = st.multiselect(
-            "Seleccione pregunta(s):", datos.Pregunta.unique())
-        datos = datos.loc[datos.Pregunta.isin(preguntas)]
-
-        datos.Eficacia = datos.Eficacia.astype(str)
-        # de filtros() - helper_functs
-        lista_filtros = []
-
-        lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)  # yes
-
-        try:
-            cursos = datos.Grupo.unique()
-            cursos.sort()
-            lista_grupo = st.multiselect(
-                'Seleccione los cursos que desea visualizar', cursos)  # yes
-        except:
-            lista_grupo = []
-
-        if tipo_grafica == 'Cajas':
-            lista_filtros.append(st.selectbox(
-                "Seleccione el eje x", [' '] + lista_agrupadores))
-        elif tipo_grafica == 'Dispersión':
-            lista_filtros.append(st.selectbox(
-                "Seleccione el eje x", lista_agrupadores))
-        else:
-            lista_filtros.append(st.selectbox("Seleccione el eje x", [
-                "Pregunta", "Cuestionario"] + lista_agrupadores))
-        # yes hasta aqui
-        cols = st.beta_columns(3)
-
-        for index, col in enumerate(cols):
-            with col:
-                if index == 0:
-                    lista_filtros.append(st.selectbox(
-                        "Dividir por color", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
-                elif index == 1:
-                    lista_filtros.append(st.selectbox(
-                        "Dividir por columna", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
-                elif index == 2:
-                    lista_filtros.append(st.selectbox(
-                        "Dividir por fila", [" ", "Pregunta", "Cuestionario"] + lista_agrupadores))
-
-        filtros_def = [None if x == ' ' else x for x in lista_filtros]
-        indices = list(set(filtros_def).difference([None]))
-
-        # return pregunta, filtros_def, indices, lista_agrupadores, lista_grupo
-
-        ################
-        pregunta = 'Respuesta'
-        pregunta, filtros_def, indices, lista_agrupadores, lista_grupo
-
         ejex, color, columna, fila = filtros_def
-
-        # ---
+        
+        datos.Eficacia = datos.Eficacia.astype(str)
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-        
+
         orden_grupos = ["I"+str(x) for x in range(87)]
 
         category_orders = categories_order(
             set(datos[pregunta]), pregunta, orden_grupos)
-        if lista_grupo != []:
-            datos = datos.loc[datos.Grupo.isin(lista_grupo)]
 
         if len(datos) == 0:
             st.warning(
@@ -112,7 +45,7 @@ def app():
         else:
             # Selecciona tipo de gráfica
             if tipo_grafica == "Barras":
-                #Los diagramas de barra exigen agrupar la información antes de graficar 
+                # Los diagramas de barra exigen agrupar la información antes de graficar
                 pivot = pivot_data(datos, indices, columna_unica)
 
                 fig = bar_chart(columna_unica=columna_unica,
