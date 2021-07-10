@@ -11,16 +11,14 @@ def load_dataset(file):
 
 
 def app():
-    st.write("""# Graficador de datos en formato vertical""")
+    st.write("""# GreenTIC: Insignias""")
 
     file = "data/limpios/greentic_insignias.xlsx"
 
-    col_preguntas = st.number_input(
-        "Cuántas columnas tiene de datos sociodemográficos", 1, 40)
-
     if file:
         datos = load_dataset(file)
-
+        
+        col_preguntas = st.number_input("Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
         # Nombre de la columna cuyos datos son únicos para cada respuesta
         columna_unica = st.selectbox('Columna única', datos.columns)
 
