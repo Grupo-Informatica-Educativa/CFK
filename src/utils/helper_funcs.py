@@ -8,7 +8,7 @@ def load_data(file):
     return pd.read_excel(file)
 
 
-def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}):
+def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True):
     lista_filtros = []
 
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
@@ -66,7 +66,7 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
 
     cols = st.beta_columns(3)
 
-    if has_answer(datos, pregunta, categoria):
+    if has_answer(datos, pregunta, categoria, pregunta_con_numero):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
     else:
         lista_agrupadores_color = lista_agrupadores

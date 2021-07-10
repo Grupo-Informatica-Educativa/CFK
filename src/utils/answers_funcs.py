@@ -1,6 +1,9 @@
-def graph_answer(datos, pregunta, preguntas):
+def graph_answer(datos, pregunta, preguntas, pregunta_con_numero=True):
     if 'respuestas' in preguntas:
-        numero = pregunta.split(' ')[0][:-1]
+        if pregunta_con_numero:
+            numero = pregunta.split(' ')[0][:-1]
+        else:
+            numero = pregunta
         if numero not in preguntas['respuestas']:
             return datos
         else:
@@ -12,12 +15,14 @@ def graph_answer(datos, pregunta, preguntas):
             return datos
 
 
-def has_answer(datos, pregunta, categoria):
+def has_answer(datos, pregunta, categoria, pregunta_con_numero=True):
     if categoria == None:
         return False
-    if 'respuestas' in categoria.keys():
-        numero = pregunta.split(' ')[0][:-1]
-        print(numero in categoria['respuestas'])
+    if 'respuestas' in categoria:
+        if pregunta_con_numero:
+            numero = pregunta.split(' ')[0][:-1]
+        else: 
+            numero = pregunta
         return (numero in categoria['respuestas'])
     else:
         return False
