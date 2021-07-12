@@ -6,11 +6,12 @@ import pandas as pd
 
 columnas_filtros = ['Cuestionario', 'Intento', 'Núm.Pregunta', 'Pregunta']
 
+
 def app():
     st.write("""# Quiz Inicial""")
 
     tipo_grafica = st.radio("Tipo de visualización ",
-                            ("Barras", "Dispersión", "Cajas"))
+                            ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
     # Nombre del archivo con los datos
     file = "data/limpios/Quiz_inicial_v1.xlsx"
@@ -24,9 +25,9 @@ def app():
 
         datos, pregunta, filtros_def, indices, lista_agrupadores = filtros_multiselect_vertical(
             datos, col_preguntas, tipo_grafica, columnas_filtros=columnas_filtros)
-        
+
         ejex, color, columna, fila = filtros_def
-        
+
         datos.Eficacia = datos.Eficacia.astype(str)
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
@@ -58,12 +59,17 @@ def app():
                                 pivot=datos, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices, category_orders=category_orders)
                 fig.update_yaxes(col=1, title=None)
+            elif tipo_grafica == "Tendencia":
+                fig = line_chart(columna_unica=columna_unica,
+                                 pivot=datos, ejex=ejex, color=color, indices=datos.columns.tolist(),
+                                 fila=fila, columna=columna,
+                                 lista_agrupadores=datos.columns.tolist(),
+                                 category_orders=category_orders)
             else:
                 fig = scatter_chart(columna_unica=columna_unica,
                                     pivot=datos, ejex=ejex, color=color,
                                     fila=fila, columna=columna,
-                                    lista_agrupadores=[
-                                        pregunta]+lista_agrupadores,
+                                    lista_agrupadores=datos.columns.tolist(),
                                     category_orders=category_orders)
 
             # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor

@@ -138,7 +138,7 @@ def line_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None,
     fig = px.line(pivot, x=ejex, y=ejey,
                   color=color, facet_row=fila,
                   facet_col=columna,
-                  color_discrete_sequence=px.colors.qualitative.Pastel,
+                  color_discrete_sequence=color_discrete,
                   facet_col_wrap=4,
                   category_orders=category_orders)
     return fig
