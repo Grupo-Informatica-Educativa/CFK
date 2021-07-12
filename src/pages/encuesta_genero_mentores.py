@@ -16,7 +16,7 @@ def app():
     if file:
         datos = load_data(file)
         chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Dispersión", "Cajas"))
+                              ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros(
             datos, col_preguntas, chart_type)

@@ -48,8 +48,7 @@ def app():
     st.write("""#  Pre - Post Inicial (Datos relacionados)""")
 
     chart_type = st.radio("Tipo de visualización ",
-                          ("Barras", "Dispersión", "Cajas"))
-
+                          ("Barras", "Dispersión", "Cajas", "Tendencia"))
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
     # Nombre del archivo con los datos

@@ -25,12 +25,13 @@ def app():
 
         datos = load_data(file)
         # A partir de esta columna comienzan las preguntas (columnas de interés)
-        col_preguntas = st.number_input("Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
+        col_preguntas = st.number_input(
+            "Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
         # Nombre de la columna cuyos datos son únicos para cada respuesta
         columna_unica = st.selectbox('Columna única', datos.columns)
 
         chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Dispersión", "Cajas"))
+                              ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_grupo = filtros(
             datos, col_preguntas, chart_type)

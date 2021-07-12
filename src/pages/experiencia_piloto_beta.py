@@ -72,7 +72,7 @@ def app():
         # Este diccionario es necesario para que el checkbox apunte a la respuesta de la BD
 
         chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Dispersión", "Cajas"))
+                              ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
         # OJO, se modificó el método filtros (TENER ESO EN CUENTA).
         pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros_tabla(datos, col_preguntas,

@@ -44,7 +44,7 @@ def app():
     st.write("""# Posttest Avanzado""")
 
     chart_type = st.radio("Tipo de visualización ",
-                          ("Barras", "Dispersión", "Cajas"))
+                          ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])

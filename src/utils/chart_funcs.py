@@ -132,6 +132,18 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
+def line_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
+               category_orders=None, color_discrete=px.colors.qualitative.Pastel, lista_agrupadores=None):
+    ejey = st.selectbox("Elija eje Y: ", lista_agrupadores)
+    fig = px.line(pivot, x=ejex, y=ejey,
+                  color=color, facet_row=fila,
+                  facet_col=columna,
+                  color_discrete_sequence=px.colors.qualitative.Pastel,
+                  facet_col_wrap=4,
+                  category_orders=category_orders)
+    return fig
+
+
 def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
                   lista_agrupadores=None, category_orders=None):
     ejey = st.selectbox("Elija eje Y: ", lista_agrupadores)

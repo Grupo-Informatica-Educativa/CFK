@@ -10,6 +10,7 @@ nombres_preguntas = {
     '11': '11. Por favor evalúa tus habilidades previas en programación, según la siguiente escala'
 }
 
+
 def app():
     st.write("""# Encuesta Caracterización""")
 
@@ -24,7 +25,7 @@ def app():
         datos = load_data(file)
 
         chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Dispersión", "Cajas"))
+                              ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
         pregunta, filtros_def, indices, lista_agrupadores, lista_cursos = filtros(
             datos, col_preguntas, chart_type, nombres_preguntas=nombres_preguntas)
