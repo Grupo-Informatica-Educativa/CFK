@@ -57,7 +57,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                      facet_row=fila, facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, category_orders=category_orders, text="Frecuencia",
                      facet_col_wrap=4, range_x=(0, 1))
-        fig.update_yaxes(categoryorder="category descending")
+        #fig.update_yaxes(categoryorder="category descending")
         fig.for_each_xaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
         fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
 
