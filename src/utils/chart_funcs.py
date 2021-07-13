@@ -59,7 +59,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                      facet_col_wrap=4, range_x=(0, 1))
         #fig.update_yaxes(categoryorder="category descending")
         fig.for_each_xaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
-        fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
+        fig.update_traces(textposition='inside', texttemplate='%{text:,.2%}')
 
     return fig
 
