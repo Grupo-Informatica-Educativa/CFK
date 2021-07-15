@@ -136,17 +136,23 @@ def grafica7_cohorte_1():
     st.plotly_chart(fig, use_container_width=True)
 
 def grafica8_cohorte_1():
-    df8 = pd.read_csv("DataMonitoreo/Grafica_6.csv")
-    df6 = df6.replace({"Línea Temática": labels})
-    df6 = df6.melt(["Línea Temática","Mes"])
-    df6.columns = ["Línea Temática","Mes","Reacción","Valor"]
-    df6 = df6.groupby(["Línea Temática"]).sum().reset_index()
-    fig = px.bar(df6,
-             x="Valor",
-             y="Línea Temática",
+    df8 = pd.read_csv(path+"Grafica_6.csv")
+    df8["Fecha"] = pd.to_datetime(df8["Fecha"],format='%d-%b')
+    df8['Fecha'] = df8['Fecha'] + pd.DateOffset(years=121)
+    df8 = df8.drop_duplicates("Actividad")
+    df8["Programado"] = 1
+    df8["Ejecutado"] = 1
+    df8 = df8.melt(["Actividad","Fecha"])
+    df8 = df8.drop("value",axis=1)
+    df8.columns = ["Actividad","Fecha","Estado"]
+    fig = px.bar(df8,
+             x="Fecha",
+             y="Actividad",
              color_discrete_sequence=color,
-             title="Alcance por tipo de post",
-             text="Valor")
+             title="Cumplimiento de actividades CAP",
+             color="Estado",
+             barmode="group",
+             orientation='h')
     fig.update_layout(title_x=0.5, height=600) 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -194,6 +200,10 @@ q_list = [
         "func": grafica7_cohorte_1
     },
     {
+    "title": "Cumplimiento de actividades CAP",
+    "func": grafica8_cohorte_1
+    },
+    {
         "title": "Cumplimiento actividades por líneas tematicas",
         "func": grafica9_cohorte_1
     },
@@ -201,10 +211,7 @@ q_list = [
 ]
 
 '''
-{
-    "title": "Cumplimiento de actividades CAP",
-    "func": grafica8_cohorte_1
-},
+
 '''
 
 def app():
