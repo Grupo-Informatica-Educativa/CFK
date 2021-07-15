@@ -28,6 +28,7 @@ from src.pages import greentic_partidas
 
 from src.preguntas.p1 import pregunta1
 from src.preguntas.genero import genero
+from src.preguntas.monitoreo import monitoreo
 
 app = MultiApp('CFK 2021')
 
@@ -80,6 +81,7 @@ app.add_app("Graficador formato vertical", graficador_vertical.app, "Herramienta
 #Preguntas
 
 app.add_app("Género", genero.app, "Pregunta")
+app.add_app("Monitoreo", monitoreo.app, "Pregunta")
 #app.add_app("Pregunta1", pregunta1.app, "Pregunta")
 # The main app
 app.run()
