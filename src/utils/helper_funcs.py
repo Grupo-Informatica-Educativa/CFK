@@ -9,15 +9,21 @@ def load_data(file):
 
 
 def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True):
+    if tipo_grafica == "Tabla resumen":
+        if not st.checkbox("Habilitar filtros"):  # TODO: guardar la salida de este checkbox
+            try:
+                cursos = datos.Grupo.unique()
+                cursos.sort()
+                lista_cursos = st.multiselect('Seleccione los cursos que desea visualizar', cursos)
+            except:
+                lista_cursos = []
+            # pregunta: se devuelve por defecto la columna del indice col_preguntas 
+            # (igual esto no se usa y es para que no de error)
+            return datos.columns[col_preguntas], [None]*4, None, [], lista_cursos
+
     lista_filtros = []
 
-    # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
-    '''try:
-		lista_comentarios = list(datos.filter(
-			regex='omentario*', axis=1).columns)
-	except:
-		lista_comentarios = []'''
 
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
