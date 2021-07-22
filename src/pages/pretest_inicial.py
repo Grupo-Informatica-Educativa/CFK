@@ -102,7 +102,7 @@ def app():
                             and indices == None and lista_agrupadores == [])
             
             if filters_off:
-                df = datos
+                df = datos.iloc[:, 1:] # Don't show ids
             else: 
                 df = pivot_data(datos, indices, columna_unica)
             
