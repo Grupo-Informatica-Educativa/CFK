@@ -51,7 +51,7 @@ def app():
     st.write("""# Pretest Inicial""")
 
     chart_type = st.radio("Tipo de visualización ",
-                          ("Barras", "Dispersión", "Cajas", "Tabla resumen"))
+                          ("Barras", "Dispersión", "Cajas", "Tendencia", "Tabla resumen"))
 
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
@@ -124,12 +124,17 @@ def app():
                                 pivot=datos, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices, category_orders=category_orders)
                 fig.update_yaxes(col=1, title=None)
+            elif chart_type == "Tendencia":
+                fig = line_chart(columna_unica=columna_unica,
+                                 pivot=datos, ejex=ejex, color=color, indices=indices,
+                                 fila=fila, columna=columna,
+                                 lista_agrupadores=datos.columns.tolist(),
+                                 category_orders=category_orders)
             else:
                 fig = scatter_chart(columna_unica=columna_unica,
                                     pivot=datos, ejex=ejex, color=color,
                                     fila=fila, columna=columna,
-                                    lista_agrupadores=[
-                                        pregunta]+lista_agrupadores,
+                                    lista_agrupadores=datos.columns.tolist(),
                                     category_orders=category_orders)
 
             # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor

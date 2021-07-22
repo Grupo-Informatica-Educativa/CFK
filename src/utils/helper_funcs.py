@@ -60,6 +60,10 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
     elif tipo_grafica == 'Dispersión':
         lista_filtros.append(st.selectbox(
             "Seleccione el eje x", lista_agrupadores))
+    elif tipo_grafica == 'Tendencia':
+        lista_filtros.append(st.selectbox(
+            "Seleccione el eje x", lista_agrupadores))
+
     else:
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
@@ -157,7 +161,7 @@ def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_fi
         for col in columnas_filtros:
             options = datos[col].unique()
             options = ["NR" if pd.isna(x) else x for x in options]
-            options.sort()
+            # options.sort()
             filtro_list = st.multiselect(
                 f"Seleccione {col.lower()}(s):", options)
             if filtro_list != []:

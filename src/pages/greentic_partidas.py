@@ -18,15 +18,17 @@ def app():
     if file:
         datos = load_dataset(file)
 
-        col_preguntas = st.number_input("Cuántas columnas tiene de datos sociodemográficos", 2, len(datos.columns))
+        col_preguntas = st.number_input(
+            "Cuántas columnas tiene de datos sociodemográficos", 2, len(datos.columns))
 
         # Nombre de la columna cuyos datos son únicos para cada respuesta
         columna_unica = st.selectbox('Columna única', datos.columns)
 
         tipo_grafica = st.radio("Tipo de visualización ",
-                            ("Barras", "Dispersión", "Cajas"))
+                                ("Barras", "Dispersión", "Cajas", "Tendencia"))
 
-        columnas_filtros = st.multiselect("Seleccione columnas para filtrar:", datos.columns)
+        columnas_filtros = st.multiselect(
+            "Seleccione columnas para filtrar:", datos.columns)
 
         datos, pregunta, filtros_def, indices, lista_agrupadores = filtros_multiselect_vertical(
             datos, col_preguntas, tipo_grafica, columnas_filtros=columnas_filtros)
@@ -37,7 +39,6 @@ def app():
         # ---
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-
 
         answer_orders = st.multiselect(
             'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
@@ -56,9 +57,11 @@ def app():
             category_orders[fila] = row_orders
 
         if len(datos) == 0:
-            st.warning("El / los grupos seleccionados no tienen datos para mostrar")
+            st.warning(
+                "El / los grupos seleccionados no tienen datos para mostrar")
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
-            st.warning("Por favor use los filtros para seleccionar menos grupos")
+            st.warning(
+                "Por favor use los filtros para seleccionar menos grupos")
         else:
             # Selecciona tipo de gráfica
             if tipo_grafica == "Barras":
@@ -74,12 +77,17 @@ def app():
                                 pivot=datos, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices, category_orders=category_orders)
                 fig.update_yaxes(col=1, title=None)
+            elif tipo_grafica == "Tendencia":
+                fig = line_chart(columna_unica=columna_unica,
+                                 pivot=datos, ejex=ejex, color=color, indices=datos.columns.tolist(),
+                                 fila=fila, columna=columna,
+                                 lista_agrupadores=datos.columns.tolist(),
+                                 category_orders=category_orders)
             else:
                 fig = scatter_chart(columna_unica=columna_unica,
                                     pivot=datos, ejex=ejex, color=color,
                                     fila=fila, columna=columna,
-                                    lista_agrupadores=[
-                                        pregunta]+lista_agrupadores,
+                                    lista_agrupadores=datos.columns.tolist(),
                                     category_orders=category_orders)
 
             # Evita que los títulos de las subfiguras sean de forma VARIABLE=valor

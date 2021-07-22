@@ -48,6 +48,44 @@ def box_plot_annotations(df,fig,name):
             )
     fig.update_layout(title_x=0.5, height=700)
 
+def box_plot_annotations_2(df,fig,name):
+    colors = []
+    tipo = []
+    sexo = ["Masculino","Femenino","Masculino","Femenino"]
+    x_ = [-0.18,0.83,0.18,1.18]
+    
+    for val in fig["data"]:
+        colors.append(val["marker"]["color"])
+        tipo.append(val["legendgroup"])
+    
+    for i,t in enumerate(tipo):
+        helper = df[(df["Género"] == sexo[i]) & (df["Tipo de test"] == t) & (df["Nivel"] == name)]
+        cuartiles = helper.quantile([0,0.25,0.5,0.75,1]).iloc[:,0].values
+    
+        data = zip(["min","q1","median","q3","max"],cuartiles)
+        
+        for y in data:
+            fig.add_annotation(
+                y=y[1],
+                x=x_[i],
+                text=y[0] + ": " + str(round(y[1],4)),
+                showarrow=False,
+                xref="x",
+                yref="y",
+                font=dict(
+                    size=12,
+                    color="#31333F"
+                    ),
+                align="center",
+                ax=20,
+                ay=-30,
+                bordercolor="#c7c7c7",
+                borderwidth=2,
+                borderpad=4,
+                bgcolor=colors[i],
+                opacity=0.9
+            )
+    fig.update_layout(title_x=0.5, height=700)
 
 # Graficas correo 1
 
@@ -66,21 +104,40 @@ def grafica1_repertorios():
 
 def grafica2_sexismonivelygenero():
     aux = pd.read_csv(path+"Grafica_2_Genero_Benevolente.csv")
-    aux["Valor"] = aux["Valor"]/100
-    fig = px.bar(aux, x="Nivel",
-                 y="Valor",
-                 color="Tipo de test",
-                 barmode="group",
-                 title="Sexismo Benevolente en Pretest y Postest discriminado por Nivel y Género",
-                 labels=dict(Valor="Promedio"),
-                 facet_col="Género",
-                 color_discrete_sequence=color,
-                 text="Valor")
-    fig.update_layout(title_x=0.5, height=600)
-    fig.update_traces(opacity=0.8)
-    fig.for_each_annotation(lambda a: a.update(
-        text=a.text.replace("Género=", "")))
-    fig.update_traces(texttemplate='%{text:.2%}', textposition='outside')
+    aux = aux.drop("Unnamed: 0",axis=1)
+    boton = st.checkbox("Mostrar valores")
+    if boton:
+        nivel = st.selectbox("Seleccion un nivel",["Avanzado","Inicial"])
+        fig = px.box(aux, x="Género",
+                    y="Valor",
+                    color="Tipo de test",
+                    title="Sexismo Benevolente en Pretest y Postest discriminado por Nivel y Género",
+                    labels=dict(Valor="Promedio"),
+                    facet_col="Nivel",
+                    color_discrete_sequence=color,
+                    category_orders={"Nivel": [ "Avanzado","Inicial"] if nivel == "Avanzado" else ["Inicial","Avanzado"]})
+        fig.update_layout(title_x=0.5, height=600)
+        fig.update_traces(opacity=0.8)
+        fig.for_each_annotation(lambda a: a.update(
+            text=a.text.replace("Nivel=", "")))
+        box_plot_annotations_2(aux,fig,nivel)
+    else:
+        fig = px.box(aux, x="Género",
+                    y="Valor",
+                    color="Tipo de test",
+                    title="Sexismo Benevolente en Pretest y Postest discriminado por Nivel y Género",
+                    labels=dict(Valor="Promedio"),
+                    facet_col="Nivel",
+                    color_discrete_sequence=color,
+                    category_orders={"Nivel": [ "Avanzado","Inicial"]})
+        fig.update_layout(title_x=0.5, height=600)
+        fig.update_traces(opacity=0.8)
+        fig.for_each_annotation(lambda a: a.update(
+            text=a.text.replace("Nivel=", "")))
+    
+    
+    
+    
     st.plotly_chart(fig, use_container_width=True)
 
 def grafica21_seximobenevolbasico():
