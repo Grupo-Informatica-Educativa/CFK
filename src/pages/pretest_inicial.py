@@ -1,4 +1,7 @@
 import streamlit as st
+from st_aggrid import AgGrid, GridOptionsBuilder
+import pandas as pd
+import numpy as np
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 from src.utils.answers_funcs import *
@@ -48,7 +51,7 @@ def app():
     st.write("""# Pretest Inicial""")
 
     chart_type = st.radio("Tipo de visualización ",
-                          ("Barras", "Dispersión", "Cajas"))
+                          ("Barras", "Dispersión", "Cajas", "Tabla resumen"))
 
     categoria = st.selectbox("Seleccione la categoría", files,
                              format_func=lambda itemArray: itemArray['title'])
@@ -92,6 +95,19 @@ def app():
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
             st.warning(
                 "Por favor use los filtros para seleccionar menos grupos")
+        elif chart_type == "Tabla resumen":
+            #rowHeight = st.slider("Ajuste la altura de cada fila en la tabla", 40, 1000)          
+            #pivot = pivot_data(datos, indices, columna_unica)
+            df = datos
+            gb = GridOptionsBuilder.from_dataframe(df)
+            #gb.configure_grid_options(rowHeight=rowHeight)
+            gb.configure_default_column(wrapText=True, autoHeight=True)
+            gb.configure_selection()
+            gb.configure_grid_options(suppressFieldDotNotation=True)
+            gridOptions = gb.build()
+            #st.write(gridOptions)
+            AgGrid(df, gridOptions=gridOptions, fit_columns_on_grid_load=df.columns.shape[0] < 5)
+
         else:
             # Selecciona tipo de gráfica
             if chart_type == "Barras":
