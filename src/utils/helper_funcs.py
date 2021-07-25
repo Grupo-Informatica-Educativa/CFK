@@ -8,16 +8,22 @@ def load_data(file):
     return pd.read_excel(file)
 
 
-def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}):
+def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True):
+    if tipo_grafica == "Tabla resumen":
+        if not st.checkbox("Habilitar filtros"):  # TODO: guardar la salida de este checkbox
+            try:
+                cursos = datos.Grupo.unique()
+                cursos.sort()
+                lista_cursos = st.multiselect('Seleccione los cursos que desea visualizar', cursos)
+            except:
+                lista_cursos = []
+            # pregunta: se devuelve por defecto la columna del indice col_preguntas 
+            # (igual esto no se usa y es para que no de error)
+            return datos.columns[col_preguntas], [None]*4, None, [], lista_cursos
+
     lista_filtros = []
 
-    # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
-    '''try:
-		lista_comentarios = list(datos.filter(
-			regex='omentario*', axis=1).columns)
-	except:
-		lista_comentarios = []'''
 
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
 
@@ -60,13 +66,17 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
     elif tipo_grafica == 'Dispersión':
         lista_filtros.append(st.selectbox(
             "Seleccione el eje x", lista_agrupadores))
+    elif tipo_grafica == 'Tendencia':
+        lista_filtros.append(st.selectbox(
+            "Seleccione el eje x", lista_agrupadores))
+
     else:
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
 
     cols = st.beta_columns(3)
 
-    if has_answer(datos, pregunta, categoria):
+    if has_answer(datos, pregunta, categoria, pregunta_con_numero):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
     else:
         lista_agrupadores_color = lista_agrupadores
@@ -157,7 +167,7 @@ def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_fi
         for col in columnas_filtros:
             options = datos[col].unique()
             options = ["NR" if pd.isna(x) else x for x in options]
-            options.sort()
+            # options.sort()
             filtro_list = st.multiselect(
                 f"Seleccione {col.lower()}(s):", options)
             if filtro_list != []:

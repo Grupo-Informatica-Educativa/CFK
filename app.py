@@ -23,9 +23,12 @@ from src.pages import datos_app_insignia
 from src.pages import datos_app_insignia_analisis
 from src.pages import experiencia_piloto_gamma
 from src.pages import experiencia_piloto_beta
+from src.pages import greentic_insignias
+from src.pages import greentic_partidas
 
 from src.preguntas.p1 import pregunta1
 from src.preguntas.genero import genero
+from src.preguntas.monitoreo import monitoreo
 
 app = MultiApp('CFK 2021')
 
@@ -58,17 +61,19 @@ app.add_app("GreentTIC: Pretest piloto gamma",
 			pretest_piloto_gamma.app, "Greentic")
 app.add_app("GreenTIC: Género y actitudes ambientales",
 			genero_y_actitudes_ambientales_piloto_beta.app, "Greentic")
-app.add_app("GreentTIC: Experiencia piloto gamma",
+app.add_app("GreenTIC: Experiencia piloto gamma",
 			experiencia_piloto_gamma.app, "Greentic")
-app.add_app("GreentTIC Análisis: Pretest piloto gamma",
+app.add_app("GreenTIC Análisis: Pretest piloto gamma",
 			pretest_piloto_gamma_analisis.app, "Greentic")
 
-app.add_app("GreentTIC: Datos App partidas",
-			datos_app_partida.app, "Greentic")
-app.add_app("GreentTIC: Datos App insignias",
-			datos_app_insignia.app, "Greentic")
-app.add_app("GreentTIC Análisis: Datos App insignias",
-			datos_app_insignia_analisis.app, "Greentic")
+#app.add_app("GreenTIC: Datos App partidas",
+#			datos_app_partida.app, "Greentic")
+#app.add_app("GreenTIC: Datos App insignias",
+#			datos_app_insignia.app, "Greentic")
+#app.add_app("GreenTIC Análisis: Datos App insignias",
+#			datos_app_insignia_analisis.app, "Greentic")
+app.add_app("GreenTIC: Datos App Insignias", greentic_insignias.app, "Greentic")
+app.add_app("GreenTIC: Datos App Partidas", greentic_partidas.app, "Greentic")
 
 app.add_app("Graficador formato horizontal", graficador_horizontal.app, "Herramientas")
 app.add_app("Graficador formato vertical", graficador_vertical.app, "Herramientas")
@@ -76,6 +81,7 @@ app.add_app("Graficador formato vertical", graficador_vertical.app, "Herramienta
 #Preguntas
 
 app.add_app("Género", genero.app, "Pregunta")
+app.add_app("Monitoreo", monitoreo.app, "Pregunta")
 #app.add_app("Pregunta1", pregunta1.app, "Pregunta")
 # The main app
 app.run()
