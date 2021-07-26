@@ -8,7 +8,7 @@ def load_data(file):
     return pd.read_excel(file)
 
 
-def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True):
+def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True, preguntas_en_ejex=False):
     if tipo_grafica == "Tabla resumen":
         if not st.checkbox("Habilitar filtros"):  # TODO: guardar la salida de este checkbox
             try:
@@ -26,6 +26,8 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
     lista_preguntas_subpreguntas = list(datos.iloc[:, col_preguntas:].columns)
 
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
+    if preguntas_en_ejex:
+        lista_agrupadores = list(datos.iloc[:, 1:].columns)
 
     # Se incluyen las preguntas (sean o no divisibles)
     lista_preguntas = set()
