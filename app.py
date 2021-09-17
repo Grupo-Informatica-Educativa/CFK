@@ -25,6 +25,7 @@ from src.pages import experiencia_piloto_gamma
 from src.pages import experiencia_piloto_beta
 from src.pages import greentic_insignias
 from src.pages import greentic_partidas
+from src.pages import pretest_eje_x
 
 from src.preguntas.p1 import pregunta1
 from src.preguntas.genero import genero
@@ -37,6 +38,7 @@ app.add_app("Pretest Inicial", pretest_inicial.app, "Inicial")
 app.add_app("Posttest Inicial", posttest_inicial.app, "Inicial")
 app.add_app("Pre - Post tests Inicial", prepost_inicial.app, "Inicial")
 app.add_app("Quiz Inicial", quiz_inicial.app, "Inicial")
+app.add_app("Eje X inicial - Avanzado", pretest_eje_x.app, "Inicial")
 
 app.add_app("Pretest Avanzado", pretest_avanzado.app, "Avanzado")
 app.add_app("Posttest Avanzado", posttest_avanzado.app, "Avanzado")
