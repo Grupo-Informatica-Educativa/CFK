@@ -287,6 +287,7 @@ pivot_inicial = df_inicial.pivot_table(
     ).reset_index()
 
 pivot_inicial.columns = [col.replace("\n", " ").strip() for col in pivot_inicial.columns]
+pivot_inicial.columns = [col.replace("\r", " ").strip() for col in pivot_inicial.columns]
 
 pivot_inicial.columns = [col.replace("\b", " ").strip() for col in pivot_inicial.columns]
 
@@ -359,11 +360,6 @@ for a in pivot_inicial.columns:
 pivot_inicial2 = pivot_inicial.rename(columns={aux:'Por favor evalúa tus habilidades previas en programación, según la siguiente escala'}) 
 to_drop = list(encuesta_caraterizacion.keys())
 
-for col in pivot_inicial.columns:
-    if "verdaderos" in col:
-        aux = a
-
-pivot_inicial2 = pivot_inicial2.rename(columns={aux:'30. Considera el siguiente código: Después de que se ejecute el código anterior, ¿Cuáles de los siguientes enunciados son verdaderos?'}) 
 
 #########################
 
@@ -460,8 +456,8 @@ preguntas_propias_rename = {
     "Considera el siguiente código: Si a=3, b=8 y c=10, ¿Qué imprimirá el programa?": 
     "29. Considera el siguiente código: Si a=3, b=8 y c=10, ¿Qué imprimirá el programa?",
 
-    #" código: Después de que se ejecute el código anterior, ¿Cuáles de los siguientes enunciados sonverdaderos? ": 
-    #"30. Considera el siguiente código: Después de que se ejecute el código anterior, ¿Cuáles de los siguientes enunciados son verdaderos?",
+    "Considera el siguiente  código: Después de que se ejecute el código anterior, ¿Cuáles de los siguientes enunciados sonverdaderos?": 
+    "30. Considera el siguiente código: Después de que se ejecute el código anterior, ¿Cuáles de los siguientes enunciados son verdaderos?",
 
     "Suponiendo que “a” y “b” son variables booleanas. Considera la siguiente expresión lógica:¿Cuál de las siguientes afirmaciones describe de manera más precisa la evaluación de las expresiones?": 
     "31. Suponiendo que “a” y “b” son variables booleanas. Considera la siguiente expresión lógica:¿Cuál de las siguientes afirmaciones describe de manera más precisa la evaluación de las expresiones?",
@@ -489,9 +485,10 @@ merged = preguntas_info_inicial | preguntas_propias_rename
 cols =[]
 for e in merged:
     cols.append(merged[e])
-
+        
 
 pivot_inicial.rename(merged, axis=1, inplace=True)
+
 add_equal_columns(pivot_inicial)
 merge = []
 merge.extend(otras)
