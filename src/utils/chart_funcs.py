@@ -19,7 +19,7 @@ config_chart = {
 def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                        ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None,
                        color_discrete=px.colors.qualitative.Pastel, color_continuous=px.colors.sequential.GnBu,
-                       invertir=False, barmode='group'):
+                       invertir=False, barmode='group', orientation='v'):
     if columna_total == ["Total"]:
         total = pivot[columna_unica].sum()
         pivot['Frecuencia'] = pivot[columna_unica] / total
@@ -50,31 +50,33 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                      facet_row=fila, facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, category_orders=category_orders, text="Frecuencia",
                      facet_col_wrap=4, range_y=(0, 1))
+        fig.for_each_yaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
+        fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     else:
         fig = px.bar(pivot, x='Frecuencia', y=ejex, color=color,
                      facet_row=fila, facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, category_orders=category_orders, text="Frecuencia",
                      facet_col_wrap=4, range_x=(0, 1))
-        fig.update_yaxes(categoryorder="category descending")
+        #fig.update_yaxes(categoryorder="category descending")
+        fig.for_each_xaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
+        fig.update_traces(textposition='inside', texttemplate='%{text:,.2%}')
 
-    fig.for_each_yaxis(lambda yaxis: yaxis.update(tickformat=',.0%'))
-    fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     return fig
 
 
 def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
                        category_orders=None, color_discrete=px.colors.qualitative.Pastel,
-                       color_continuous=px.colors.sequential.GnBu, invertir=False, barmode='group'):
+                       color_continuous=px.colors.sequential.GnBu, orientation='v', invertir=False, barmode='group'):
     if not(invertir):
         fig = px.bar(pivot, x=ejex, y=columna_unica, color=color, facet_row=fila,
                      facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
-                     category_orders=category_orders)
+                     category_orders=category_orders, orientation=orientation)
     else:
         fig = px.bar(pivot, x=columna_unica, y=ejex, color=color, facet_row=fila,
                      facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
-                     category_orders=category_orders)
+                     category_orders=category_orders, orientation=orientation)
         fig.update_yaxes(categoryorder="category descending")
     fig.update_traces(textposition='outside', texttemplate='%{text}')
     fig.update_layout(legend=dict(orientation="h"),
@@ -90,6 +92,12 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
         barmode = 'stack'
     else:
         barmode = 'group'
+    if st.checkbox("Ver barras horizontales"):
+        orientation = 'h'
+        invertir = True
+    else:
+        orientation = 'v'
+
     if st.checkbox("Visualizar frecuencia relativa"):
         if key == '1':
             columna_total = st.multiselect("Relativo respecto a: ", [
@@ -112,13 +120,13 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
                                      pivot=pivot, ejex=ejex, color=color,
                                      fila=fila, columna=columna, indices=indices, category_orders=category_orders,
                                      color_discrete=color_discrete, color_continuous=color_continuous,
-                                     invertir=invertir, barmode=barmode)
+                                     invertir=invertir, barmode=barmode, orientation=orientation)
     else:
         fig = absolute_bar_chart(columna_unica=columna_unica,
                                  pivot=pivot, ejex=ejex, color=color,
                                  fila=fila, columna=columna, category_orders=category_orders,
                                  color_discrete=color_discrete, color_continuous=color_continuous,
-                                 invertir=invertir, barmode=barmode)
+                                 invertir=invertir, barmode=barmode, orientation=orientation)
     return fig
 
 
@@ -129,6 +137,18 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
                  facet_col=columna,
                  color_discrete_sequence=px.colors.qualitative.Pastel,
                  facet_col_wrap=4, category_orders=category_orders)
+    return fig
+
+
+def line_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None,
+               category_orders=None, color_discrete=px.colors.qualitative.Pastel, lista_agrupadores=None):
+    ejey = st.selectbox("Elija eje Y: ", lista_agrupadores)
+    fig = px.line(pivot, x=ejex, y=ejey,
+                  color=color, facet_row=fila,
+                  facet_col=columna,
+                  color_discrete_sequence=color_discrete,
+                  facet_col_wrap=4,
+                  category_orders=category_orders)
     return fig
 
 
@@ -153,6 +173,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
                             'Imagen 4', 'No sé/No lo conozco']
+    raton = [str(x) for x in range(1, 6)]
+    secuela = ['2', '3', '6', '8', '9', 'No sé/No lo conozco']
     edades = ['16-20', '21-24', '25-34', '35-44', '45+']
     edades_estudiantes = ['8-10 años', '11-12 años',
                           '13-14 años', '15-16 años', 'No responde']
@@ -175,6 +197,10 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = yes_no
     elif len(set(imagenes) - answers) < 2:
         cat_order = imagenes
+    elif len(set(raton) - answers) < 2:
+        cat_order = raton
+    elif len(set(secuela) - answers) < 2:
+        cat_order = secuela
     elif len(set(edades) - answers) < 2:
         cat_order = edades
     elif len(set(labores_hogar) - answers) < 2:

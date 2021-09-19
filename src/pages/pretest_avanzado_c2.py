@@ -6,42 +6,44 @@ from src.utils.helper_funcs import *
 files = [
     {
         "title": "Autoeficacia",
-        "file":  "prepost_avanzado_autoeficacia.xlsx"
+        "file":  "pre_avanzado_autoeficacia_C2.xlsx"
     },
     {
         "title": "Conocimientos",
-        "file":  "prepost_avanzado_conocimientos.xlsx",
+        "file":  "pre_avanzado_conocimientos_C2.xlsx",
         "respuestas": {
-            "22": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
-            "23": "Esta función no imprime nunca nada",
-            "24": "x ::2 * 3.14 * r  →  y ::x * r  → z ::h * x  → areaSuperficie :: y + z",
-            "25": "alfa, delta, gama, beta, épsilon",
-            "26": "Cree que, si la condición se cumple, todo lo que sigue se va a ejecutar",
-            "27": "Imagen 3",
-            "28": "Cada uno tiene un número asignado y gana solamente si presiona su botón cuando sale este número",
+            "26": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
+            "27": "Esta función no imprime nunca nada",
+            "28": "b",
+            "29": "alfa, delta, gama, beta, épsilon",
+            "30": "Cree que, si la condición se cumple, todo lo que sigue se va a ejecutar",
+            "31": "Imagen 3",
+            "32": "Cada uno tiene un número asignado y gana solamente si presiona su botón cuando sale este número",
+            "34": "Imagen 3",
+            "35": "x::3, y::5, z::10",
         }
     },
     {
         "title": "Género",
-        "file":  "prepost_avanzado_genero.xlsx"
+        "file":  "pre_avanzado_genero_C2.xlsx"
     }
 ]
 
 # Nombre de las preguntas por el indice
 # Esto se usará para aquellas preguntas que tengan subpreguntas
 nombres_preguntas = {
-    '10': '10. ¿Cuáles de las siguientes estrategias usted ha usado en sus clases? (Selección múltiple con múltiple respuesta)',
-    '11': '11. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
-    '13': '13. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
-    '15': '15. Por favor evalúe las siguientes afirmaciones según qué tan de acuerdo está usted con enseñar las siguientes prácticas como objetivos de aprendizaje relacionados con el pensamiento computacional:',
-    '16': '16. Por favor evalúe los siguientes enunciados de acuerdo con qué tan preparado(a) se siente para integrar el pensamiento computacional en sus cursos:',
-    '18': '18. En una escala de 1 a 10 (donde 10 es muy a menudo), con qué frecuencia utilizarías las siguientes prácticas pedagógicas para enseñar pensamiento computacional.',
-    '20': '20. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
+    '14': '14. ¿Cuáles de las siguientes estrategias usted ha usado en sus clases?',
+    '15': '15. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
+    '17': '17. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
+    '19': '19. Por favor evalúe las siguientes afirmaciones según qué tan de acuerdo está usted con enseñar las siguientes prácticas como objetivos de aprendizaje relacionados con el pensamiento computacional:',
+    '20': '20. Por favor evalúe los siguientes enunciados de acuerdo con qué tan preparado(a) se siente para integrar el pensamiento computacional en sus cursos:',
+    '22': '22. En una escala de 1 a 10 (donde 10 es muy a menudo), con qué frecuencia utilizarías las siguientes prácticas pedagógicas para enseñar pensamiento computacional.',
+    '24': '24. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
 }
 
 
 def app():
-    st.write("""# Pre - Post Avanzado (Datos relacionados)""")
+    st.write("""# Pretest Avanzado C2""")
 
     chart_type = st.radio("Tipo de visualización ",
                           ("Barras", "Dispersión", "Cajas", "Tendencia"))
@@ -53,7 +55,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 31
+    col_preguntas = 25
 
     if file:
         datos = load_data(file)
@@ -102,7 +104,7 @@ def app():
                 fig.update_yaxes(col=1, title=None)
             elif chart_type == "Tendencia":
                 fig = line_chart(columna_unica=columna_unica,
-                                 pivot=datos, ejex=ejex, color=color, indices=indices,
+                                 pivot=datos, ejex=ejex, color=color, indices=datos.columns.tolist(),
                                  fila=fila, columna=columna,
                                  lista_agrupadores=datos.columns.tolist(),
                                  category_orders=category_orders)
