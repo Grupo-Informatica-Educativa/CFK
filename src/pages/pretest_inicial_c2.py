@@ -19,7 +19,7 @@ files = [
             "29": "10",
             "30": "II y III",
             "31": "La segunda expresión es verdadera si “(a O b)” es verdadero",
-            "32": "Imagen 4",
+            "32": "Imagen 3",
             "33": "La botella B debe ser verde",
             "34": "Está equivocada, el resultado es 120.",
         }
