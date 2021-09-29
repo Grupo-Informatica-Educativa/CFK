@@ -173,6 +173,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
                             'Imagen 4', 'No sé/No lo conozco']
+    raton = [str(x) for x in range(1, 6)]
+    secuela = ['2', '3', '6', '8', '9', 'No sé/No lo conozco']
     edades = ['16-20', '21-24', '25-34', '35-44', '45+']
     edades_estudiantes = ['8-10 años', '11-12 años',
                           '13-14 años', '15-16 años', 'No responde']
@@ -195,6 +197,10 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = yes_no
     elif len(set(imagenes) - answers) < 2:
         cat_order = imagenes
+    elif len(set(raton) - answers) < 2:
+        cat_order = raton
+    elif len(set(secuela) - answers) < 2:
+        cat_order = secuela
     elif len(set(edades) - answers) < 2:
         cat_order = edades
     elif len(set(labores_hogar) - answers) < 2:
