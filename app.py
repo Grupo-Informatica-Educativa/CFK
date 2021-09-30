@@ -10,6 +10,7 @@ from src.pages import pretest_avanzado
 from src.pages import posttest_avanzado
 from src.pages import prepost_avanzado
 from src.pages import pretest_avanzado_c2
+from src.pages import posttest_avanzado_c2
 # from src.pages import encuesta_caracterizacion
 from src.pages import caracterizacion_piloto_beta
 from src.pages import pretest_piloto_beta
@@ -50,6 +51,7 @@ app.add_app("Quiz Avanzado", quiz_avanzado.app, "Avanzado C1")
 app.add_app("Pretest Inicial C2", pretest_inicial_c2.app, "Inicial C2")
 
 app.add_app("Pretest Avanzado C2", pretest_avanzado_c2.app, "Avanzado C2")
+app.add_app("Posttest Avanzado C2", posttest_avanzado_c2.app, "Avanzado C2")
 
 app.add_app("Encuesta Género a Mentores",
             encuesta_genero_mentores.app, "Mentores")
