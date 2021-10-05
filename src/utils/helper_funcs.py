@@ -78,7 +78,7 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
 
     if has_answer(datos, pregunta, categoria, pregunta_con_numero):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
@@ -128,7 +128,7 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, categoria=None, arreglo_pr
             lista_filtros.append(st.selectbox(
                 "Seleccione el eje x", ["Pregunta"]))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
 
     if has_answer(datos, pregunta, categoria):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
@@ -191,7 +191,7 @@ def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_fi
         lista_filtros.append(st.selectbox(
             "Seleccione el eje x", list(dict.fromkeys(columnas_filtros + lista_agrupadores))))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
     _list = list(dict.fromkeys([" "] + columnas_filtros + lista_agrupadores))
     with cols[0]:
         lista_filtros.append(st.selectbox(
