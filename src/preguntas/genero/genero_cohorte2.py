@@ -6,7 +6,7 @@ import numpy as np
 
 
 path = "src/preguntas/genero/data/Genero_Cohorte2.csv"
-df = pd.read_csv(path)
+df = pd.read_csv(path, encoding="latin-1")
 var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
 var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
 vars_ = ["sb","r","stem"]
