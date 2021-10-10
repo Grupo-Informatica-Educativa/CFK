@@ -223,6 +223,6 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                        'Edad': edades,
                        'Nivel de formación': formacion,
                        "dificultad del nivel": ['Básico', 'Medio', 'Alto', 'Avanzado'],
-                       "5. categoria trofeo": ["Oro", "Plata", "Bronce"]}
+                       "5. categoria trofeo": ["Oro", "Plata", "Bronce"], 'Cohorte': ['C1', 'C2']}
 
     return category_orders
