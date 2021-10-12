@@ -3,17 +3,19 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
-
-
-path = "src/preguntas/genero/data/Genero_Cohorte2.csv"
-df = pd.read_csv(path, encoding="latin-1")
-var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
-var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
-vars_ = ["sb","r","stem"]
-
+from src.utils.chart_funcs import *
 
 color = px.colors.qualitative.Pastel
 
+equipos = [
+    {"name":"Equipo de Genero", "value":0},
+    {"name":"Equipo de Visitas", "value":1},
+]
+
+paths = [
+    "src/preguntas/genero/data/2021 10 04 Reporte observaciones de aula.csv",
+    "src/preguntas/genero/data/Genero_Cohorte2.csv"
+]
 
 def box_plot_annotations(df,fig,name):
     colors = []
@@ -56,8 +58,11 @@ def box_plot_annotations(df,fig,name):
             )
     fig.update_layout(title_x=0.5, height=700)
 
-def app():
-    st.write("# Gráficas del equipo de Género")
+def app_genero():
+    df = pd.read_csv(paths[1], encoding="latin-1")
+    var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
+    var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
+    vars_ = ["sb","r","stem"]
     copy = df.copy()
     btn_demo = st.checkbox("Habilitar Sociodemográfico")    
     if btn_demo:
@@ -99,5 +104,58 @@ def app():
         box_plot_annotations(df_c,fig,"x")
     fig.update_layout(title_x=0.5, height=600) 
     st.plotly_chart(fig, use_container_width=True)
+
+def app_visitas():
+    df = pd.read_csv(paths[0])
+    copy = df.copy()
+    new_header = copy.iloc[0] 
+    copy = copy[1:] 
+    copy.columns = new_header 
+    var = st.selectbox("Elija una variable",[{"name":"Repertorios","value": 0},{"name":"P40_X","value": 1}],format_func= lambda x: x["name"])["value"]
+    isRelative = st.checkbox("Frencuencia Relativa")
+
+    if var == 0:
+        col = "repertorios"
+        copy = copy[col].value_counts().reset_index()
+        
+        x = "Repertorio"
+        y = "Cantidad"
+        copy.columns = [x,y]
+        copy["Cantidad"] = copy["Cantidad"].astype(int)
+            
+    else:
+        col = ["p40_1", "p40_2","p40_3", "p40_4", "p40_5"]
+        selected = st.multiselect("Elija las variables",col)
+        copy = copy[selected]
+        copy = copy.replace("--",0)
+        copy = copy.melt()
+        copy.columns = ["Variable","Cantidad"]
+        copy["Cantidad"] = copy["Cantidad"].astype(int)
+        copy = copy.groupby(["Variable"]).sum().reset_index()
+        x = "Variable"
+        y = "Cantidad"
+
+    if isRelative:
+        copy['Porcentaje'] = (copy["Cantidad"] / copy["Cantidad"].sum())*100
+        y = "Porcentaje"
+        
+    fig = px.bar(copy,x=x,y=y)
+    if isRelative: 
+        fig.update_yaxes(dict(ticksuffix=".0%"))
+    
+    fig.update_layout(title_x=0.5, height=600) 
+    st.plotly_chart(fig, use_container_width=True)
+
+   
+
+def app():
+    st.write("# Gráficas del equipo de Género")
+    opcion = st.radio("Elija el equipo",equipos,format_func=lambda x: x['name'])['value']
+
+    if opcion == 0:
+        app_genero()
+    elif opcion == 1:
+        app_visitas()
+    
 
 
