@@ -104,6 +104,22 @@ def app():
             fig.update_yaxes(col=1, title=None)
             fig.update_xaxes(row=1, title=None)
 
-            fig.update_layout(height=height)
+            fig.update_layout(height=height, font=dict(
+                #family="Courier New, Monospace",
+                size=18,
+                color='#000000'
+            ))
+
+            config_chart = {
+                'scrollZoom': True, 'displaylogo': False, 'responsive': True,
+                'editable': True,
+                'toImageButtonOptions': {
+                    'format': 'png',  # one of png, svg, jpeg, webp
+                    'filename': 'custom_image',
+                    'height': None,
+                    'width': None,
+                    'scale': 10  # Multiply title/legend/axis/canvas sizes by this factor
+                }
+            }
 
             st.plotly_chart(fig, use_container_width=True, config=config_chart)
