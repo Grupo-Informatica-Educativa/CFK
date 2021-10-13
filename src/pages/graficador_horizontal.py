@@ -3,6 +3,18 @@ import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 
+config_chart = {
+    'scrollZoom': True, 'displaylogo': False, 'responsive': True,
+    'editable': True,
+    'toImageButtonOptions': {
+        'format': 'png',  # one of png, svg, jpeg, webp
+        'filename': 'custom_image',
+        'height': None,
+        'width': None,
+        'scale': 3  # Multiply title/legend/axis/canvas sizes by this factor
+    }
+}
+
 
 def app():
     ''' Esta plantilla busca que sea posible graficar la información de cualquier archivo que cumpla las condiciones:
