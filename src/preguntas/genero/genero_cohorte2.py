@@ -14,7 +14,8 @@ equipos = [
 
 paths = [
     "src/preguntas/genero/data/2021 10 04 Reporte observaciones de aula.csv",
-    "src/preguntas/genero/data/Genero_Cohorte2.csv"
+    "src/preguntas/genero/data/Genero_Cohorte2.csv",
+    "src/preguntas/genero/data/Otros Genero Cohorte 2.csv"
 ]
 
 def box_plot_annotations(df,fig,name):
@@ -59,10 +60,11 @@ def box_plot_annotations(df,fig,name):
     fig.update_layout(title_x=0.5, height=700)
 
 def app_genero():
-    df = pd.read_csv(paths[1], encoding="latin-1")
+    df = pd.read_csv(paths[2], encoding="latin-1")
     var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
     var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
-    vars_ = ["sb","r","stem"]
+    vars_ = ["sb","r","stem","este"]
+
     copy = df.copy()
     btn_demo = st.checkbox("Habilitar Sociodemográfico")    
     if btn_demo:
@@ -96,10 +98,12 @@ def app_genero():
     var = st.selectbox("Seleccione la variable",vars_)
     if btn_comparativa:
         df_c = copy[["test",var]]
+    
         fig = px.box(df_c, y=var, title=f"Genero - {var}", color="test",color_discrete_sequence=color)
         box_plot_annotations(df_c,fig,"test")
     else:
         df_c = copy[var]
+
         fig = px.box(copy, y=var, title=f"Genero - {var}", color_discrete_sequence=color)
         box_plot_annotations(df_c,fig,"x")
     fig.update_layout(title_x=0.5, height=600) 
