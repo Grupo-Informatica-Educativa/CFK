@@ -63,6 +63,7 @@ def app_genero():
     var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
     var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
     vars_ = ["sb","r","stem","este"]
+
     copy = df.copy()
     btn_demo = st.checkbox("Habilitar Sociodemográfico")    
     if btn_demo:
