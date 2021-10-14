@@ -59,7 +59,7 @@ def box_plot_annotations(df,fig,name):
     fig.update_layout(title_x=0.5, height=700)
 
 def app_genero():
-    df = pd.read_csv(paths[1], encoding="latin-1")
+    df = pd.read_csv(paths[2], encoding="latin-1")
     var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
     var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
     vars_ = ["sb","r","stem","este"]
