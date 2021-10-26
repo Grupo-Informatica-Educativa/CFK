@@ -93,13 +93,12 @@ def filtros():
     return copy,btn_comparativa
 
 def app_genero(copy,btn_comparativa):
+    copy = copy[copy["nivel"] == "Avanzado"]
     vars_ = ["sb","r","stem","este"]
     st.markdown("---")
     var = st.selectbox("Seleccione la variable",vars_)
     title = st.text_input("Digite el título",value="Gráfica Género")
-    
-    if var == "r":
-        copy = copy[copy["nivel"] == "Avanzado"]
+
 
     if btn_comparativa:
         df_c = copy[["test",var]]
@@ -113,12 +112,12 @@ def app_genero(copy,btn_comparativa):
     st.plotly_chart(fig, use_container_width=True)
 
 def app_visitas(copy):
+    copy = copy[copy["nivel"] == "Avanzado"]
     var = st.selectbox("Elija una variable",[{"name":"Repertorios","value": 0},{"name":"P40_X","value": 1}],format_func= lambda x: x["name"])["value"]
     isRelative = st.checkbox("Frencuencia Relativa")
 
     if var == 0:
         col = "r"
-        copy = copy[copy["nivel"] == "Avanzado"]
         copy = copy[col]
         
     
