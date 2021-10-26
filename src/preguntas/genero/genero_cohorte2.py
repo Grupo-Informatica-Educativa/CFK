@@ -100,7 +100,7 @@ def app_genero(copy,btn_comparativa):
     st.markdown("---")
     var = st.selectbox("Seleccione la variable",vars_)
     title = st.text_input("Digite el título",value="Gráfica Género")
-
+    y_text_value = st.text_input("Digite el valor de Y",value="Valor")
 
     if btn_comparativa:
         df_c = copy[["test",var]]
@@ -110,7 +110,7 @@ def app_genero(copy,btn_comparativa):
         df_c = copy[var]
         fig = px.box(copy, y=var, color_discrete_sequence=color,title=title)
         box_plot_annotations(df_c,fig,"x")
-    fig.update_yaxes(title="Valor",showgrid=False)
+    fig.update_yaxes(title=y_text_value,showgrid=False)
     st.plotly_chart(fig, use_container_width=True)
 
 def app_visitas(copy):
@@ -140,13 +140,14 @@ def app_visitas(copy):
         y = "Porcentaje"
         
     title = st.text_input("Digite el título",value="Gráfica Género")
+    y_text_value = st.text_input("Digite el valor de Y",value="Valor")
 
     fig = px.box(copy,color_discrete_sequence=color,title=title)
     box_plot_annotations(copy,fig,"x")
 
     if isRelative: 
         fig.update_yaxes(dict(ticksuffix=".0%"))
-    fig.update_yaxes(title="Valor",showgrid=False)
+    fig.update_yaxes(title=y_text_value,showgrid=False)
     fig.update_layout(title_x=0.5, height=600) 
     st.plotly_chart(fig, use_container_width=True)
 
