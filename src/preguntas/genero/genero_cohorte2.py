@@ -57,8 +57,10 @@ def box_plot_annotations(df,fig,name):
             )
     fig.update_layout(title_x=0.5, height=700)
 
+
 def filtros():
     df = pd.read_csv(paths[0], encoding="latin-1")
+
     var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
     var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
     
@@ -136,11 +138,12 @@ def app_visitas(copy):
     if isRelative:
         copy['Porcentaje'] = (copy["Cantidad"] / copy["Cantidad"].sum())*100
         y = "Porcentaje"
-    
+        
     title = st.text_input("Digite el título",value="Gráfica Género")
 
     fig = px.box(copy,color_discrete_sequence=color,title=title)
     box_plot_annotations(copy,fig,"x")
+
     if isRelative: 
         fig.update_yaxes(dict(ticksuffix=".0%"))
     fig.update_yaxes(title="Valor",showgrid=False)
