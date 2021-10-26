@@ -13,7 +13,6 @@ equipos = [
 ]
 
 paths = [
-    "src/preguntas/genero/data/2021 10 04 Reporte observaciones de aula.csv",
     "src/preguntas/genero/data/Insumos 2 Cohorte 2 Equipo de Género para actualización constructos.csv"
 ]
 
@@ -58,11 +57,11 @@ def box_plot_annotations(df,fig,name):
             )
     fig.update_layout(title_x=0.5, height=700)
 
-def app_genero():
-    df = pd.read_csv(paths[1], encoding="latin-1")
+def filtros():
+    df = pd.read_csv(paths[0], encoding="latin-1")
     var_demo = [{"col":"edad","name":"Edad"},{"name":"Género","col":"genero"},{"name":"Contexto","col":"contexto"},{"name":"Area Docente","col":"areadocente"}]
     var_tipo = [{"col":"test","name":"Test"},{"col":"nivel","name":"Nivel"}]
-    vars_ = ["sb","r","stem","este"]
+    
 
     copy = df.copy()
     btn_demo = st.checkbox("Habilitar Sociodemográfico")    
@@ -91,41 +90,38 @@ def app_genero():
     if not btn_test:
         btn_comparativa = st.checkbox("Comparar Pretest con Postest")
 
+    return copy,btn_comparativa
 
-
+def app_genero(copy,btn_comparativa):
+    vars_ = ["sb","r","stem","este"]
     st.markdown("---")
     var = st.selectbox("Seleccione la variable",vars_)
+    title = st.text_input("Digite el título",value="Gráfica Género")
+    
+    if var == "r":
+        copy = copy[copy["nivel"] == "Avanzado"]
+
     if btn_comparativa:
         df_c = copy[["test",var]]
-    
-        fig = px.box(df_c, y=var, title=f"Genero - {var}", color="test",color_discrete_sequence=color)
+        fig = px.box(df_c, y=var, color="test",color_discrete_sequence=color,title=title)
         box_plot_annotations(df_c,fig,"test")
     else:
         df_c = copy[var]
-
-        fig = px.box(copy, y=var, title=f"Genero - {var}", color_discrete_sequence=color)
+        fig = px.box(copy, y=var, color_discrete_sequence=color,title=title)
         box_plot_annotations(df_c,fig,"x")
-    fig.update_layout(title_x=0.5, height=600) 
+    fig.update_yaxes(title="Valor",showgrid=False)
     st.plotly_chart(fig, use_container_width=True)
 
-def app_visitas():
-    df = pd.read_csv(paths[0])
-    copy = df.copy()
-    new_header = copy.iloc[0] 
-    copy = copy[1:] 
-    copy.columns = new_header 
+def app_visitas(copy):
     var = st.selectbox("Elija una variable",[{"name":"Repertorios","value": 0},{"name":"P40_X","value": 1}],format_func= lambda x: x["name"])["value"]
     isRelative = st.checkbox("Frencuencia Relativa")
 
     if var == 0:
-        col = "repertorios"
-        copy = copy[col].value_counts().reset_index()
+        col = "r"
+        copy = copy[copy["nivel"] == "Avanzado"]
+        copy = copy[col]
         
-        x = "Repertorio"
-        y = "Cantidad"
-        copy.columns = [x,y]
-        copy["Cantidad"] = copy["Cantidad"].astype(int)
-            
+    
     else:
         col = ["p40_1", "p40_2","p40_3", "p40_4", "p40_5"]
         selected = st.multiselect("Elija las variables",col)
@@ -141,11 +137,14 @@ def app_visitas():
     if isRelative:
         copy['Porcentaje'] = (copy["Cantidad"] / copy["Cantidad"].sum())*100
         y = "Porcentaje"
-        
-    fig = px.bar(copy,x=x,y=y,color_discrete_sequence=color)
+    
+    title = st.text_input("Digite el título",value="Gráfica Género")
+
+    fig = px.box(copy,color_discrete_sequence=color,title=title)
+    box_plot_annotations(copy,fig,"x")
     if isRelative: 
         fig.update_yaxes(dict(ticksuffix=".0%"))
-    
+    fig.update_yaxes(title="Valor",showgrid=False)
     fig.update_layout(title_x=0.5, height=600) 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -154,11 +153,11 @@ def app_visitas():
 def app():
     st.write("# Gráficas del equipo de Género")
     opcion = st.radio("Elija el equipo",equipos,format_func=lambda x: x['name'])['value']
-
+    copy,btn_comparativa = filtros()
     if opcion == 0:
-        app_genero()
+        app_genero(copy,btn_comparativa )
     elif opcion == 1:
-        app_visitas()
+        app_visitas(copy)
     
 
 
