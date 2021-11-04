@@ -4,6 +4,9 @@ from src.pages import graficador_vertical
 from src.pages import encuesta_genero_mentores
 from src.pages import pretest_inicial
 from src.pages import pretest_inicial_c2
+from src.pages import posttest_inicial_c2
+from src.pages import prepost_inicial_c2
+#from src.pages import prepost_inicial_c1_c2
 from src.pages import posttest_inicial
 from src.pages import prepost_inicial
 from src.pages import pretest_avanzado
@@ -51,6 +54,9 @@ app.add_app("Pre - Post tests Avanzado", prepost_avanzado.app, "Avanzado C1")
 app.add_app("Quiz Avanzado", quiz_avanzado.app, "Avanzado C1")
 
 app.add_app("Pretest Inicial C2", pretest_inicial_c2.app, "Inicial C2")
+app.add_app("Posttest Inicial C2", posttest_inicial_c2.app, "Inicial C2")
+app.add_app("Pre - Post tests Inicial C2", prepost_inicial_c2.app, "Inicial C2")
+# app.add_app("Comparativo Inicial C1 - C2", prepost_inicial_c1_c2.app, "Inicial C2")
 
 app.add_app("Pretest Avanzado C2", pretest_avanzado_c2.app, "Avanzado C2")
 app.add_app("Posttest Avanzado C2", posttest_avanzado_c2.app, "Avanzado C2")
