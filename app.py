@@ -35,6 +35,7 @@ from src.pages import greentic_insignias
 from src.pages import greentic_partidas
 from src.pages import pretest_eje_x
 from src.pages import observaciones_gen
+from src.pages import observaciones_unidos
 
 from src.preguntas.p1 import pregunta1
 from src.preguntas.genero import genero_cohorte2
@@ -74,6 +75,8 @@ app.add_app("Pretest Mentores", pretest_mentores.app, "Mentores")
 # app.add_app("Encuesta Caracterización", encuesta_caracterizacion.app)
 
 app.add_app("Observaciones Género", observaciones_gen.app, "Observaciones")
+app.add_app("Observaciones Género Unidas",
+            observaciones_unidos.app, "Observaciones")
 
 app.add_app("GreenTIC: Caracterización piloto beta",
             caracterizacion_piloto_beta.app, "Greentic")
