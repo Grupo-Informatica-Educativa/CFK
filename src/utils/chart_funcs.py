@@ -77,7 +77,7 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
                      facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
                      category_orders=category_orders, orientation=orientation)
-        fig.update_yaxes(categoryorder="category descending")
+        #fig.update_yaxes(categoryorder="category descending")
     fig.update_traces(textposition='outside', texttemplate='%{text}')
     fig.update_layout(legend=dict(orientation="h"),
                       template="simple_white")
@@ -95,6 +95,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     if st.checkbox("Ver barras horizontales"):
         orientation = 'h'
         invertir = True
+
     else:
         orientation = 'v'
 
