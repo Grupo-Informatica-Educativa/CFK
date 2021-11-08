@@ -12,6 +12,7 @@ class MultiApp:
         self.inicialC2 = []
         self.avanzadoC2 = []
         self.mentores = []
+        self.observaciones = []
         self.greentic = []
         self.herramientas = []
         self.page_title = page_title
@@ -56,6 +57,11 @@ class MultiApp:
                 "title": title,
                 "function": func
             })
+        elif _type == "Observaciones":
+            self.observaciones.append({
+                "title": title,
+                "function": func
+            })
         elif _type == "Herramientas":
             self.herramientas.append({
                 "title": title,
@@ -66,7 +72,7 @@ class MultiApp:
         st.sidebar.write(f'# {self.page_title}')
 
         categoria = st.sidebar.radio("Secciones", ["Curso Inicial C1", "Curso Avanzado C1",
-                                     "Curso Inicial C2", "Curso Avanzado C2", "Mentores", "Herramientas", "Preguntas"])
+                                     "Curso Inicial C2", "Curso Avanzado C2", "Mentores", "Observaciones", "Herramientas", "Preguntas"])
 
         if categoria == "Herramientas":
             app = st.sidebar.radio(
@@ -89,6 +95,9 @@ class MultiApp:
         elif categoria == "Mentores":
             app = st.sidebar.radio(
                 "Seleccione instrumento:", self.mentores, format_func=lambda app: app['title'])
+        elif categoria == "Observaciones":
+            app = st.sidebar.radio(
+                "Seleccione instrumento:", self.observaciones, format_func=lambda app: app['title'])
         elif categoria == "Preguntas":
             app = st.sidebar.radio(
                 "Seleccione pregunta:", self.preguntas, format_func=lambda app: app['title'])
