@@ -9,6 +9,7 @@ from src.pages import prepost_inicial_c2
 from src.pages import prepost_inicial_C1_C2
 from src.pages import posttest_inicial
 from src.pages import prepost_inicial
+from src.pages import evaluacion_final_inicial_c2
 from src.pages import pretest_avanzado
 from src.pages import posttest_avanzado
 from src.pages import prepost_avanzado
@@ -61,6 +62,7 @@ app.add_app("Pre - Post tests Inicial C2",
             prepost_inicial_c2.app, "Inicial C2")
 app.add_app("Comparativo Inicial C1 - C2",
             prepost_inicial_C1_C2.app, "Inicial C2")
+app.add_app("Evaluación final Curso Inicial C2", evaluacion_final_inicial_c2.app, "Inicial C2")
 
 app.add_app("Pretest Avanzado C2", pretest_avanzado_c2.app, "Avanzado C2")
 app.add_app("Posttest Avanzado C2", posttest_avanzado_c2.app, "Avanzado C2")
