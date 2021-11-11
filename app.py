@@ -9,6 +9,7 @@ from src.pages import prepost_inicial_c2
 from src.pages import prepost_inicial_C1_C2
 from src.pages import posttest_inicial
 from src.pages import prepost_inicial
+from src.pages import evaluacion_final_inicial_c2
 from src.pages import pretest_avanzado
 from src.pages import posttest_avanzado
 from src.pages import prepost_avanzado
@@ -34,6 +35,8 @@ from src.pages import experiencia_piloto_beta
 from src.pages import greentic_insignias
 from src.pages import greentic_partidas
 from src.pages import pretest_eje_x
+from src.pages import observaciones_gen
+from src.pages import observaciones_unidos
 
 from src.preguntas.p1 import pregunta1
 from src.preguntas.genero import genero_cohorte2
@@ -59,6 +62,7 @@ app.add_app("Pre - Post tests Inicial C2",
             prepost_inicial_c2.app, "Inicial C2")
 app.add_app("Comparativo Inicial C1 - C2",
             prepost_inicial_C1_C2.app, "Inicial C2")
+app.add_app("Evaluación final Curso Inicial C2", evaluacion_final_inicial_c2.app, "Inicial C2")
 
 app.add_app("Pretest Avanzado C2", pretest_avanzado_c2.app, "Avanzado C2")
 app.add_app("Posttest Avanzado C2", posttest_avanzado_c2.app, "Avanzado C2")
@@ -71,6 +75,10 @@ app.add_app("Encuesta Género a Mentores",
             encuesta_genero_mentores.app, "Mentores")
 app.add_app("Pretest Mentores", pretest_mentores.app, "Mentores")
 # app.add_app("Encuesta Caracterización", encuesta_caracterizacion.app)
+
+app.add_app("Observaciones Género", observaciones_gen.app, "Observaciones")
+app.add_app("Observaciones Género Unidas",
+            observaciones_unidos.app, "Observaciones")
 
 app.add_app("GreenTIC: Caracterización piloto beta",
             caracterizacion_piloto_beta.app, "Greentic")
