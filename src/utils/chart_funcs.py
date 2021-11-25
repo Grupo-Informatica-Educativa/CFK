@@ -77,7 +77,7 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
                      facet_col=columna, barmode=barmode, color_discrete_sequence=color_discrete,
                      color_continuous_scale=color_continuous, text=columna_unica, facet_col_wrap=4,
                      category_orders=category_orders, orientation=orientation)
-        fig.update_yaxes(categoryorder="category descending")
+        #fig.update_yaxes(categoryorder="category descending")
     fig.update_traces(textposition='outside', texttemplate='%{text}')
     fig.update_layout(legend=dict(orientation="h"),
                       template="simple_white")
@@ -95,6 +95,7 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     if st.checkbox("Ver barras horizontales"):
         orientation = 'h'
         invertir = True
+
     else:
         orientation = 'v'
 
@@ -173,6 +174,8 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                   "Neutro", "De acuerdo", "Totalmente de acuerdo"]
     imagenes = ['Imagen 1', 'Imagen 2', 'Imagen 3',
                             'Imagen 4', 'No sé/No lo conozco']
+    raton = [str(x) for x in range(1, 6)]
+    secuela = ['2', '3', '6', '8', '9', 'No sé/No lo conozco']
     edades = ['16-20', '21-24', '25-34', '35-44', '45+']
     edades_estudiantes = ['8-10 años', '11-12 años',
                           '13-14 años', '15-16 años', 'No responde']
@@ -195,6 +198,10 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
         cat_order = yes_no
     elif len(set(imagenes) - answers) < 2:
         cat_order = imagenes
+    elif len(set(raton) - answers) < 2:
+        cat_order = raton
+    elif len(set(secuela) - answers) < 2:
+        cat_order = secuela
     elif len(set(edades) - answers) < 2:
         cat_order = edades
     elif len(set(labores_hogar) - answers) < 2:
@@ -217,6 +224,6 @@ def categories_order(answers=None, pregunta=None, orden_cursos=None):
                        'Edad': edades,
                        'Nivel de formación': formacion,
                        "dificultad del nivel": ['Básico', 'Medio', 'Alto', 'Avanzado'],
-                       "5. categoria trofeo": ["Oro", "Plata", "Bronce"]}
+                       "5. categoria trofeo": ["Oro", "Plata", "Bronce"], 'Cohorte': ['C1', 'C2']}
 
     return category_orders

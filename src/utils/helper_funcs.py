@@ -3,21 +3,23 @@ import streamlit as st
 from src.utils.answers_funcs import *
 
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_data(file):
     return pd.read_excel(file)
 
 
 def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_preguntas={}, pregunta_con_numero=True, preguntas_en_ejex=False):
     if tipo_grafica == "Tabla resumen":
-        if not st.checkbox("Habilitar filtros"):  # TODO: guardar la salida de este checkbox
+        # TODO: guardar la salida de este checkbox
+        if not st.checkbox("Habilitar filtros"):
             try:
                 cursos = datos.Grupo.unique()
                 cursos.sort()
-                lista_cursos = st.multiselect('Seleccione los cursos que desea visualizar', cursos)
+                lista_cursos = st.multiselect(
+                    'Seleccione los cursos que desea visualizar', cursos)
             except:
                 lista_cursos = []
-            # pregunta: se devuelve por defecto la columna del indice col_preguntas 
+            # pregunta: se devuelve por defecto la columna del indice col_preguntas
             # (igual esto no se usa y es para que no de error)
             return datos.columns[col_preguntas], [None]*4, None, [], lista_cursos
 
@@ -76,7 +78,7 @@ def filtros(datos, col_preguntas, tipo_grafica, categoria=None, nombres_pregunta
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
             "Pregunta"] + lista_agrupadores))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
 
     if has_answer(datos, pregunta, categoria, pregunta_con_numero):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
@@ -126,7 +128,7 @@ def filtros_tabla(datos, col_preguntas, tipo_grafica, categoria=None, arreglo_pr
             lista_filtros.append(st.selectbox(
                 "Seleccione el eje x", ["Pregunta"]))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
 
     if has_answer(datos, pregunta, categoria):
         lista_agrupadores_color = ["Eficacia"] + lista_agrupadores
@@ -189,7 +191,7 @@ def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_fi
         lista_filtros.append(st.selectbox(
             "Seleccione el eje x", list(dict.fromkeys(columnas_filtros + lista_agrupadores))))
 
-    cols = st.beta_columns(3)
+    cols = st.columns(3)
     _list = list(dict.fromkeys([" "] + columnas_filtros + lista_agrupadores))
     with cols[0]:
         lista_filtros.append(st.selectbox(

@@ -5,45 +5,19 @@ from src.utils.helper_funcs import *
 
 files = [
     {
-        "title": "Autoeficacia",
-        "file":  "post_avanzado_autoeficacia.xlsx"
-    },
-    {
-        "title": "Conocimientos",
-        "file":  "post_avanzado_conocimientos.xlsx",
-        "respuestas": {
-            "26": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
-            "27": "Esta función no imprime nunca nada",
-            "28": "b",
-            "29": "alfa, delta, gama, beta, épsilon",
-            "30": "Cree que, si la condición se cumple, todo lo que sigue se va a ejecutar",
-            "31": "Imagen 3",
-            "32": "Cada uno tiene un número asignado y gana solamente si presiona su botón cuando sale este número",
-            "34": "Imagen 3",
-            "35": "x::3, y::5, z::10",
-        }
-    },
-    {
-        "title": "Género",
-        "file":  "post_avanzado_genero.xlsx"
+        "title": "Puntajes",
+        "file":  "puntajes_avanzado_C1C2.xlsx"
     }
 ]
 
 # Nombre de las preguntas por el indice
 # Esto se usará para aquellas preguntas que tengan subpreguntas
 nombres_preguntas = {
-    '14': '14. ¿Cuáles de las siguientes estrategias usted ha usado en sus clases?',
-    '15': '15. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
-    '17': '17. Por favor evalúe los siguientes enunciados de acuerdo con su experiencia:',
-    '19': '19. Por favor evalúe las siguientes afirmaciones según qué tan de acuerdo está usted con enseñar las siguientes prácticas como objetivos de aprendizaje relacionados con el pensamiento computacional:',
-    '20': '20. Por favor evalúe los siguientes enunciados de acuerdo con qué tan preparado(a) se siente para integrar el pensamiento computacional en sus cursos:',
-    '22': '22. En una escala de 1 a 10 (donde 10 es muy a menudo), con qué frecuencia utilizarías las siguientes prácticas pedagógicas para enseñar pensamiento computacional.',
-    '24': '24. Cuando un estudiante se enfrenta a una dificultad creando un programa y no sabe si está correcto, qué tan a menudo, en una escala de 1-10 (donde 10 es siempre), usted:',
 }
 
 
 def app():
-    st.write("""# Posttest Avanzado C2""")
+    st.write("""# Comparativo cohortes nivel Avanzado""")
 
     chart_type = st.radio("Tipo de visualización ",
                           ("Barras", "Dispersión", "Cajas", "Tendencia"))
@@ -55,7 +29,7 @@ def app():
     # Nombre de la columna cuyos datos son únicos para cada respuesta
     columna_unica = 'Identificación'
     # A partir de esta columna comienzan las preguntas (columnas de interés)
-    col_preguntas = 25
+    col_preguntas = 27
 
     if file:
         datos = load_data(file)

@@ -6,11 +6,11 @@ from src.utils.helper_funcs import *
 files = [
     {
         "title": "Autoeficacia",
-        "file":  "post_avanzado_autoeficacia.xlsx"
+        "file":  "post_avanzado_autoeficacia_C2.xlsx"
     },
     {
         "title": "Conocimientos",
-        "file":  "post_avanzado_conocimientos.xlsx",
+        "file":  "post_avanzado_conocimientos_C2.xlsx",
         "respuestas": {
             "26": "Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",
             "27": "Esta función no imprime nunca nada",
@@ -25,7 +25,7 @@ files = [
     },
     {
         "title": "Género",
-        "file":  "post_avanzado_genero.xlsx"
+        "file":  "post_avanzado_genero_C2.xlsx"
     }
 ]
 
@@ -104,7 +104,7 @@ def app():
                 fig.update_yaxes(col=1, title=None)
             elif chart_type == "Tendencia":
                 fig = line_chart(columna_unica=columna_unica,
-                                 pivot=datos, ejex=ejex, color=color, indices=indices,
+                                 pivot=datos, ejex=ejex, color=color, indices=datos.columns.tolist(),
                                  fila=fila, columna=columna,
                                  lista_agrupadores=datos.columns.tolist(),
                                  category_orders=category_orders)

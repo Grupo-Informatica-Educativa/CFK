@@ -13,22 +13,22 @@ def app():
             - Las columnas 0:col_preguntas contienen información referente a cada individuo
             - Las columnas col_preguntas:(hasta el final) contienen información a graficar
     '''
-    st.write("""# Graficador de datos en formato horizontal""")
+    st.write("""# Observaciones visitas género""")
 
     # La línea de abajo es una opción para cargar un archivo desde el computador
-    file = st.file_uploader('Cargar archivo')
+    #file = st.file_uploader('Cargar archivo')
 
     # Nombre del archivo con los datos
-    #file = "data/Ejemplo2020.xlsx"
+    file = f"data/limpios/revisiongen.xlsx"
 
     if file:
 
         datos = load_data(file)
         # A partir de esta columna comienzan las preguntas (columnas de interés)
-        col_preguntas = st.number_input(
-            "Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
+        col_preguntas = 19
+        #st.number_input(  "Cuántas columnas tiene de datos sociodemográficos", 1, len(datos.columns))
         # Nombre de la columna cuyos datos son únicos para cada respuesta
-        columna_unica = st.selectbox('Columna única', datos.columns)
+        columna_unica = "ID"
 
         chart_type = st.radio("Tipo de visualización ",
                               ("Barras", "Dispersión", "Cajas", "Tendencia"))

@@ -41,7 +41,7 @@ nombres_preguntas = {
 
 
 def app():
-    st.write("""# Pretest Avanzado""")
+    st.write("""# Pretest Avanzado C1""")
 
     chart_type = st.radio("Tipo de visualización ",
                           ("Barras", "Dispersión", "Cajas", "Tendencia"))
