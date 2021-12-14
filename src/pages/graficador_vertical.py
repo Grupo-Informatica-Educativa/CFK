@@ -2,6 +2,7 @@ import streamlit as st
 from src.utils.chart_funcs import *
 from src.utils.helper_funcs import *
 from src.utils.answers_funcs import *
+from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
 
 
@@ -24,7 +25,7 @@ def app():
         columna_unica = st.selectbox('Columna única', datos.columns)
 
         tipo_grafica = st.radio("Tipo de visualización ",
-                                ("Barras", "Dispersión", "Cajas", "Tendencia"))
+                                ("Barras", "Barras suma", "Dispersión", "Cajas", "Tendencia", "Tabla resumen", "Histograma"))
 
         columnas_filtros = st.multiselect(
             "Seleccione columnas para filtrar:", datos.columns)
@@ -36,8 +37,9 @@ def app():
         ejex, color, columna, fila = filtros_def
 
         # ---
-        height = st.slider(
-            "Ajuste el tamaño vertical de la gráfica", 500, 1000)
+        if tipo_grafica != "Tabla resumen":
+            height = st.slider(
+                "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         answer_orders = st.multiselect(
             'Seleccione el orden en el que se debe presentar el eje x', datos[ejex].unique())
@@ -61,11 +63,38 @@ def app():
         elif (fila == "Grupo" or columna == "Grupo") and (len(datos.Grupo.unique()) > 10):
             st.warning(
                 "Por favor use los filtros para seleccionar menos grupos")
+        elif tipo_grafica == "Tabla resumen":
+            # En helper_functs.filtros se devuelve
+            # datos.columns[col_preguntas], [None]*4, None, [], lista_cursos
+            # cuando no están habilitados los filtros (checkbox)
+            filters_off = (pregunta == datos.columns[col_preguntas] and filtros_def == [None] * 4
+                           and indices == None and lista_agrupadores == [])
+
+            if filters_off:
+                df = datos.iloc[:, 1:]  # Don't show ids
+            else:
+                df = pivot_data(datos, indices, columna_unica)
+
+            gb = GridOptionsBuilder.from_dataframe(df)
+            gb.configure_default_column(wrapText=True, autoHeight=True)
+            gb.configure_selection()
+            gb.configure_grid_options(suppressFieldDotNotation=True)
+            gridOptions = gb.build()
+            AgGrid(df, gridOptions=gridOptions,
+                   fit_columns_on_grid_load=df.columns.shape[0] < 5)
         else:
             # Selecciona tipo de gráfica
             if tipo_grafica == "Barras":
                 # Los diagramas de barra exigen agrupar la información antes de graficar
                 pivot = pivot_data(datos, indices, columna_unica)
+                fig = bar_chart(columna_unica=columna_unica,
+                                pivot=pivot, ejex=ejex, color=color,
+                                fila=fila, columna=columna, indices=indices,
+                                category_orders=category_orders)
+            elif tipo_grafica == "Barras suma":
+                # Los diagramas de barra exigen agrupar la información antes de graficar
+                pivot = pivot_data(
+                    datos, indices, columna_unica, aggfunc='sum')
                 fig = bar_chart(columna_unica=columna_unica,
                                 pivot=pivot, ejex=ejex, color=color,
                                 fila=fila, columna=columna, indices=indices,
@@ -79,6 +108,13 @@ def app():
             elif tipo_grafica == "Tendencia":
                 fig = line_chart(columna_unica=columna_unica,
                                  pivot=datos, ejex=ejex, color=color, indices=datos.columns.tolist(),
+                                 fila=fila, columna=columna,
+                                 lista_agrupadores=datos.columns.tolist(),
+                                 category_orders=category_orders)
+            elif tipo_grafica == 'Histograma':
+                pivot = pivot_data(datos, indices, columna_unica)
+                fig = histograma(columna_unica=columna_unica,
+                                 pivot=pivot, ejex=ejex, color=color,
                                  fila=fila, columna=columna,
                                  lista_agrupadores=datos.columns.tolist(),
                                  category_orders=category_orders)

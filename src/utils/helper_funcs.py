@@ -216,7 +216,7 @@ def filtros_multiselect_vertical(datos, col_preguntas, tipo_grafica, columnas_fi
     return datos, pregunta, filtros_def, indices, lista_agrupadores
 
 
-def pivot_data(datos, indices, columna_unica):
+def pivot_data(datos, indices, columna_unica, aggfunc='count'):
     return datos.pivot_table(index=indices,
                              values=columna_unica,
-                             aggfunc="count").reset_index()
+                             aggfunc=aggfunc).reset_index()
