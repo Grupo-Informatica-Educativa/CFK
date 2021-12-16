@@ -128,9 +128,6 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
                                  fila=fila, columna=columna, category_orders=category_orders,
                                  color_discrete=color_discrete, color_continuous=color_continuous,
                                  invertir=invertir, barmode=barmode, orientation=orientation)
-
-    fig.update_layout(barmode='group', bargap=0.30, bargroupgap=0.0)
-
     return fig
 
 
@@ -166,19 +163,6 @@ def scatter_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=No
                      color_continuous_scale=px.colors.sequential.GnBu,
                      facet_col_wrap=4,
                      category_orders=category_orders)
-    return fig
-
-
-def histograma(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None,
-               lista_agrupadores=None, category_orders=None):
-    ejey = st.selectbox("Elija eje Y: ", lista_agrupadores)
-    nbins = st.number_input('Cuantas barras', 2)
-    fig = px.histogram(pivot, x=ejex, y=ejey,
-                       color=color, facet_row=fila,
-                       facet_col=columna,
-                       color_discrete_sequence=px.colors.qualitative.Pastel,
-                       facet_col_wrap=4,
-                       category_orders=category_orders, nbins=nbins)
     return fig
 
 
